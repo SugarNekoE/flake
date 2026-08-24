@@ -1,4 +1,0 @@
-interface:
-  display_name: 'Windi Human Review'
-  short_description: 'Track Windi implementation review decisions'
-  default_prompt: "Use $human-review to build or continue Windi's tracked human review checklist."

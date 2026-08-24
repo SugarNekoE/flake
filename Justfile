@@ -44,18 +44,18 @@ generate-hardware-remote target output="/tmp/laptop-hardware.nix":
     ssh "{{ target }}" "nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#nixos-install-tools -c nixos-generate-config --show-hardware-config --no-filesystems" > "{{ output }}"
     @echo "Generated {{ output }} from {{ target }}. Review it before replacing hardware/laptop.nix."
 
-# Preview what a laptop build would realize without building it.
-dry-run hostname="laptop":
+# Preview what a asaipc build would realize without building it.
+dry-run hostname="asaipc":
     nh os build --dry "path:.#{{ hostname }}"
 
-# Build the laptop configuration without activating it.
-build hostname="laptop":
+# Build the asaipc configuration without activating it.
+build hostname="asaipc":
     nh os build "path:.#{{ hostname }}"
 
-# Build and activate the laptop configuration.
-switch hostname="laptop": _require-real-hardware
+# Build and activate the asaipc configuration.
+switch hostname="asaipc": _require-real-hardware
     nh os switch "path:.#{{ hostname }}"
 
-# Build the laptop configuration for the next boot without activating it now.
-boot hostname="laptop": _require-real-hardware
+# Build the asaipc configuration for the next boot without activating it now.
+boot hostname="asaipc": _require-real-hardware
     nh os boot "path:.#{{ hostname }}"

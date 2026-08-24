@@ -1,0 +1,96 @@
+{ inputs, ... }:
+{
+  machines.asaipc = {
+    system = "x86_64-linux";
+    imports = with inputs.self.modules.aspects; [
+      base
+      efi
+      xfs
+      cifs
+      nvidia
+    ];
+    diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
+    hardware =
+      {
+        config,
+        lib,
+        modulesPath,
+        ...
+      }:
+      let
+        cifsCredentialsFile =
+          config.sops.secrets."cifs-credentials".path or "/run/secrets/cifs-credentials";
+      in
+      {
+        imports = [
+          (modulesPath + "/installer/scan/not-detected.nix")
+        ];
+
+        boot.initrd.availableKernelModules = [
+          "nvme"
+          "ahci"
+          "sd_mod"
+        ];
+        boot.initrd.kernelModules = [ "dm-snapshot" ];
+        boot.kernelModules = [ "kvm-amd" ];
+        boot.extraModulePackages = [ ];
+
+        disko.devices.disk.system.device = "/dev/disk/by-id/REPLACE-WITH-SYSTEM-DISK";
+
+        mounts.xfs = {
+          "/mnt/data" = {
+            device = "/dev/disk/by-uuid/86ac1715-d3f0-43b4-824f-9c83f8e3e3b2";
+          };
+          "/mnt/meta" = {
+            device = "/dev/disk/by-uuid/017bcde8-d534-47e8-b848-f7f70d96b6d2";
+          };
+        };
+
+        mounts.cifs = {
+          "/mnt/sugar-storage" = {
+            remote = "//10.0.0.23/sugar";
+            credentialsFile = cifsCredentialsFile;
+            extraOptions = [
+              "uid=1000"
+              "gid=100"
+            ];
+          };
+          "/mnt/nixcn-media" = {
+            remote = "//10.0.0.23/nixcn-media";
+            credentialsFile = cifsCredentialsFile;
+            extraOptions = [
+              "uid=1000"
+              "gid=100"
+            ];
+          };
+          "/mnt/jellyfin" = {
+            remote = "//10.0.0.23/jellyfin";
+            credentialsFile = cifsCredentialsFile;
+            extraOptions = [
+              "uid=1000"
+              "gid=100"
+            ];
+          };
+          "/mnt/ignis-network" = {
+            remote = "//10.0.0.23/ignis-network";
+            credentialsFile = cifsCredentialsFile;
+            extraOptions = [
+              "uid=1000"
+              "gid=100"
+            ];
+          };
+          "/mnt/lolihoust" = {
+            remote = "//10.0.0.23/lolihoust";
+            credentialsFile = cifsCredentialsFile;
+            extraOptions = [
+              "uid=1000"
+              "gid=100"
+            ];
+          };
+        };
+
+        nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+        hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      };
+  };
+}
