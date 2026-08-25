@@ -1,5 +1,6 @@
 _: {
   identity.gpgKeys = {
-    # example = "0123456789ABCDEF0123456789ABCDEF01234567";
+    main = "FC2CA37958700609";
+    homo = "1F41145141919810";
   };
 }
