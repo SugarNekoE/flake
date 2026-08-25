@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.aspects.base.imports = with inputs.self.modules.aspects; [
+  flake.modules.aspects.base.imports = with inputs.self.aspects; [
     nix
     disko
     secrets

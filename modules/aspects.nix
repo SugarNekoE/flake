@@ -54,6 +54,8 @@ let
     options = {
       nixosModule = nullableModule "NixOS module contributed by this aspect.";
       homeModule = nullableModule "Home Manager module contributed by this aspect.";
+      home = nullableModule "Selector that keeps only this aspect's Home Manager module.";
+      nixos = nullableModule "Selector that keeps only this aspect's NixOS module.";
     };
   };
 
@@ -85,6 +87,43 @@ let
       homeModule = config.flake.modules.homeManager.${name} or null;
     };
   });
+
+  selectAspect =
+    aspect:
+    let
+      parsed =
+        (lib.evalModules {
+          class = "aspects";
+          modules = [
+            aspectType
+            aspect
+          ];
+        }).config;
+      modules = lib.filterAttrs (_field: module: module != null) {
+        nixosModule = parsed.nixosModule;
+        homeModule = parsed.homeModule;
+      };
+      homeOnly = {
+        _class = "aspects";
+      }
+      // lib.optionalAttrs (parsed.homeModule != null) {
+        homeModule = parsed.homeModule;
+      };
+      nixosOnly = {
+        _class = "aspects";
+      }
+      // lib.optionalAttrs (parsed.nixosModule != null) {
+        nixosModule = parsed.nixosModule;
+      };
+    in
+    {
+      _class = "aspects";
+      home = homeOnly;
+      nixos = nixosOnly;
+    }
+    // modules;
+
+  selectableAspects = lib.mapAttrs (_name: selectAspect) config.flake.modules.aspects;
 
   buildMachine =
     _name: machine:
@@ -133,6 +172,7 @@ in
   config = {
     flake.modules.generic.aspect-interface = aspectType;
     flake.modules.aspects = inferredAspects;
+    flake.aspects = selectableAspects;
     flake.nixosConfigurations = lib.mapAttrs buildMachine config.machines;
   };
 }
