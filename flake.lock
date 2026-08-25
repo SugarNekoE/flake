@@ -241,6 +241,22 @@
     },
     "nixpkgs_6": {
       "locked": {
+        "lastModified": 1787305858,
+        "narHash": "sha256-IxabTv0+vrHxWceCvIDOGKedms6MdkIgsMqkAugNoN8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "63a410de48ab4442e5bf62ee5b4ce71bdf7478b0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_7": {
+      "locked": {
         "lastModified": 1787101114,
         "narHash": "sha256-BA7sSNjLDuPGSOYBGpr6WQjke1MQ8AZpJ8GlYZM/mOc=",
         "rev": "b18a4b905f8d028dc4476412e6d6891728695379",
@@ -286,12 +302,31 @@
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
+        "sfd-nix": "sfd-nix",
         "sops-nix": "sops-nix"
+      }
+    },
+    "sfd-nix": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_6"
+      },
+      "locked": {
+        "lastModified": 1787586343,
+        "narHash": "sha256-xjZPqCxTVaknO+REWhri3n3mKXwms3nyzLMGQ5gVZRM=",
+        "ref": "refs/heads/main",
+        "rev": "75df9932568d746b096e4f702e1184beb3e46cc9",
+        "revCount": 14,
+        "type": "git",
+        "url": "https://forge.asnk.io/sugar/sfd-nix"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://forge.asnk.io/sugar/sfd-nix"
       }
     },
     "sops-nix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_6"
+        "nixpkgs": "nixpkgs_7"
       },
       "locked": {
         "lastModified": 1786629091,

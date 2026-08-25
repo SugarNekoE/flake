@@ -21,6 +21,7 @@
     nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz";
     nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
+    sfd-nix.url = "git+https://forge.asnk.io/sugar/sfd-nix";
     sops-nix.url = "github:Mic92/sops-nix";
   };
 }
