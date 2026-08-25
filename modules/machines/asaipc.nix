@@ -3,12 +3,25 @@
   machines.asaipc = {
     user = config.userProfiles.sugar;
     system = "x86_64-linux";
-    imports = with inputs.self.modules.aspects; [
+    imports = with inputs.self.aspects; [
       base
       efi
       xfs
       cifs
       nvidia
+      gnupg
+      git
+      zed
+      slack
+      bazaar
+      telegram
+      localsend
+      mission-center
+      solaar
+      qq
+      wechat
+      wemeet
+      singbox-gui
       sugar
     ];
     diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
