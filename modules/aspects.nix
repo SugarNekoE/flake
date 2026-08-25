@@ -14,6 +14,10 @@ let
     in
     if name == "default" then baseNameOf (dirOf path) else name;
   moduleFiles = builtins.filter (file: toString file != adapterFile) (inputs.import-tree.leafs ./.);
+  sourceModuleNames = map moduleName moduleFiles;
+  duplicateSourceNames = lib.filter (
+    name: builtins.length (lib.filter (candidate: candidate == name) sourceModuleNames) > 1
+  ) (lib.unique sourceModuleNames);
 
   adaptModule =
     file: moduleArgs:
@@ -34,10 +38,10 @@ let
         imports = [
           passthrough
         ]
-        ++ lib.optional (definition ? nixos) {
+        ++ lib.optional ((definition.nixos or null) != null) {
           flake.modules.nixos.${name} = definition.nixos;
         }
-        ++ lib.optional (definition ? home) {
+        ++ lib.optional ((definition.home or null) != null) {
           flake.modules.homeManager.${name} = definition.home;
         };
       };
@@ -151,9 +155,14 @@ let
       specialArgs = sharedArgs;
       modules = machineModules ++ homeManagerModule;
     };
+  validatedModuleFiles =
+    if duplicateSourceNames == [ ] then
+      moduleFiles
+    else
+      throw "duplicate aspect module names are not allowed: ${lib.concatStringsSep ", " duplicateSourceNames}";
 in
 {
-  imports = map adaptModule moduleFiles;
+  imports = map adaptModule validatedModuleFiles;
 
   options.machines = lib.mkOption {
     type = lib.types.lazyAttrsOf (
