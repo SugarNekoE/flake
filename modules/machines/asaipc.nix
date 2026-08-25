@@ -1,6 +1,7 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 {
   machines.asaipc = {
+    user = config.userProfiles.sugar;
     system = "x86_64-linux";
     imports = with inputs.self.modules.aspects; [
       base
@@ -8,6 +9,7 @@
       xfs
       cifs
       nvidia
+      sugar
     ];
     diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
     hardware =

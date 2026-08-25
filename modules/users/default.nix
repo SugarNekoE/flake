@@ -1,19 +1,28 @@
-_: {
-  flake-file.inputs = {
-    nix-index-database.url = "github:nix-community/nix-index-database";
-    home-manager.url = "github:nix-community/home-manager/release-26.05";
+{ lib, ... }:
+let
+  userProfileType = lib.types.submodule {
+    options = {
+      username = lib.mkOption {
+        type = lib.types.str;
+        description = "System and Home Manager username.";
+      };
+
+      fullName = lib.mkOption {
+        type = lib.types.str;
+        description = "Display name shared by user-facing modules.";
+      };
+
+      email = lib.mkOption {
+        type = lib.types.str;
+        description = "Email address shared by user-facing modules.";
+      };
+    };
   };
-
-  flake.modules.nixos.user = {
-    users.users.user = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-    };
-
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      users.user = { };
-    };
+in
+{
+  options.userProfiles = lib.mkOption {
+    type = lib.types.lazyAttrsOf userProfileType;
+    default = { };
+    description = "Reusable user profiles available to Aspect machines.";
   };
 }
