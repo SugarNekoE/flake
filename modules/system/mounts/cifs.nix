@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.cifs =
+  nixos =
     {
       config,
       lib,

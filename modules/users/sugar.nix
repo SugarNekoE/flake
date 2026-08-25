@@ -11,7 +11,7 @@
     email = "sugar@sne.moe";
   };
 
-  flake.modules.nixos.sugar =
+  nixos =
     { user, ... }:
     {
       users.users.${user.username} = {
@@ -27,7 +27,7 @@
       };
     };
 
-  flake.modules.homeManager.sugar =
+  home =
     { user, ... }:
     {
       imports = [ inputs.nix-index-database.homeModules.nix-index ];

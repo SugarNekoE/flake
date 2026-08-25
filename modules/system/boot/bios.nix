@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.bios = {
+  nixos = {
     boot.loader = {
       systemd-boot.enable = false;
       grub = {

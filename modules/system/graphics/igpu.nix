@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.igpu =
+  nixos =
     { pkgs, ... }:
     {
       hardware.graphics = {

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.xfs =
+  nixos =
     { config, lib, ... }:
     let
       mounts = config.mounts.xfs;

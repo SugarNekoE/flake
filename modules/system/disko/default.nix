@@ -4,7 +4,7 @@
 
   imports = [ inputs.disko.flakeModules.default ];
 
-  flake.modules.nixos.disko = {
+  nixos = {
     imports = [ inputs.disko.nixosModules.disko ];
   };
 }

@@ -6,7 +6,7 @@
     secrets
   ];
 
-  flake.modules.nixos.base = {
+  nixos = {
     imports = [ inputs.home-manager.nixosModules.home-manager ];
     system.stateVersion = "26.05";
   };
