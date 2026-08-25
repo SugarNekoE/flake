@@ -1,6 +1,7 @@
 { inputs, ... }:
 {
   flake.modules.aspects.desktop.imports = with inputs.self.aspects; [
+    secrets.home
     gnupg
     git
     zed

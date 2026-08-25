@@ -1,4 +1,7 @@
+{ inputs, ... }:
 {
+  flake.modules.aspects.gnupg.imports = [ inputs.self.aspects.secrets.home ];
+
   home =
     {
       config,

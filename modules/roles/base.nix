@@ -2,12 +2,10 @@
 {
   flake.modules.aspects.base.imports = with inputs.self.aspects; [
     nix
-    disko
-    secrets
+    secrets.nixos
   ];
 
   nixos = {
-    imports = [ inputs.home-manager.nixosModules.home-manager ];
     system.stateVersion = "26.05";
   };
 }

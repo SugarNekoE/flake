@@ -133,27 +133,33 @@ let
     _name: machine:
     let
       sharedArgs = {
+        inherit inputs;
         identity = config.identity;
       }
       // lib.optionalAttrs (machine.user != null) {
         user = machine.user;
       };
-      machineModules = builtins.filter (module: module != null) [
-        machine.nixosModule
-        machine.diskoConfig
-        machine.hardware
-      ];
-      homeManagerModule = lib.optional (machine.homeModule != null) {
-        home-manager = {
-          extraSpecialArgs = sharedArgs;
-          sharedModules = [ machine.homeModule ];
-        };
-      };
+      machineModules =
+        lib.optional (machine.nixosModule != null) machine.nixosModule
+        ++ lib.optional (machine.hardware != null) machine.hardware
+        ++ lib.optionals (machine.diskoConfig != null) [
+          inputs.disko.nixosModules.disko
+          machine.diskoConfig
+        ]
+        ++ lib.optionals (machine.homeModule != null) [
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              extraSpecialArgs = sharedArgs;
+              sharedModules = [ machine.homeModule ];
+            };
+          }
+        ];
     in
     inputs.nixpkgs.lib.nixosSystem {
       inherit (machine) system;
       specialArgs = sharedArgs;
-      modules = machineModules ++ homeManagerModule;
+      modules = machineModules;
     };
   validatedModuleFiles =
     if duplicateSourceNames == [ ] then
