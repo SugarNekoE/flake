@@ -5,40 +5,36 @@
   ...
 }:
 let
+  nullableModule =
+    description:
+    lib.mkOption {
+      type = lib.types.nullOr lib.types.deferredModule;
+      default = null;
+      inherit description;
+    };
+
   aspectType = {
     options = {
-      nixosModule = lib.mkOption {
-        type = lib.types.nullOr lib.types.deferredModule;
-        default = null;
-        description = "NixOS module contributed by this aspect.";
-      };
-
-      homeModule = lib.mkOption {
-        type = lib.types.nullOr lib.types.deferredModule;
-        default = null;
-        description = "Home Manager module contributed by this aspect.";
-      };
+      nixosModule = nullableModule "NixOS module contributed by this aspect.";
+      homeModule = nullableModule "Home Manager module contributed by this aspect.";
     };
   };
 
   machineType = {
     options = {
+      user = lib.mkOption {
+        type = lib.types.nullOr lib.types.attrs;
+        default = null;
+        description = "Selected user profile passed to NixOS and Home Manager modules.";
+      };
+
       system = lib.mkOption {
         type = lib.types.str;
         description = "Nix system used by this machine.";
       };
 
-      diskoConfig = lib.mkOption {
-        type = lib.types.nullOr lib.types.deferredModule;
-        default = null;
-        description = "Optional disko layout for this machine.";
-      };
-
-      hardware = lib.mkOption {
-        type = lib.types.nullOr lib.types.deferredModule;
-        default = null;
-        description = "Hardware module for this machine.";
-      };
+      diskoConfig = nullableModule "Optional disko layout for this machine.";
+      hardware = nullableModule "Hardware module for this machine.";
     };
   };
 
@@ -47,26 +43,37 @@ let
   );
 
   inferredAspects = lib.genAttrs moduleNames (name: {
-    config =
-      lib.optionalAttrs (builtins.hasAttr name config.flake.modules.nixos) {
-        nixosModule = config.flake.modules.nixos.${name};
-      }
-      // lib.optionalAttrs (builtins.hasAttr name config.flake.modules.homeManager) {
-        homeModule = config.flake.modules.homeManager.${name};
-      };
+    config = lib.filterAttrs (_field: module: module != null) {
+      nixosModule = config.flake.modules.nixos.${name} or null;
+      homeModule = config.flake.modules.homeManager.${name} or null;
+    };
   });
 
   buildMachine =
     _name: machine:
+    let
+      sharedArgs = {
+        identity = config.identity;
+      }
+      // lib.optionalAttrs (machine.user != null) {
+        user = machine.user;
+      };
+      machineModules = builtins.filter (module: module != null) [
+        machine.nixosModule
+        machine.diskoConfig
+        machine.hardware
+      ];
+      homeManagerModule = lib.optional (machine.homeModule != null) {
+        home-manager = {
+          extraSpecialArgs = sharedArgs;
+          sharedModules = [ machine.homeModule ];
+        };
+      };
+    in
     inputs.nixpkgs.lib.nixosSystem {
       inherit (machine) system;
-      modules =
-        lib.optional (machine.nixosModule != null) machine.nixosModule
-        ++ lib.optional (machine.diskoConfig != null) machine.diskoConfig
-        ++ lib.optional (machine.hardware != null) machine.hardware
-        ++ lib.optional (machine.homeModule != null) {
-          home-manager.sharedModules = [ machine.homeModule ];
-        };
+      specialArgs = sharedArgs;
+      modules = machineModules ++ homeManagerModule;
     };
 in
 {
