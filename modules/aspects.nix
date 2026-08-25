@@ -5,6 +5,43 @@
   ...
 }:
 let
+  adapterFile = toString ./aspects.nix;
+  moduleName =
+    file:
+    let
+      path = toString file;
+      name = lib.removeSuffix ".nix" (baseNameOf path);
+    in
+    if name == "default" then baseNameOf (dirOf path) else name;
+  moduleFiles = builtins.filter (file: toString file != adapterFile) (inputs.import-tree.leafs ./.);
+
+  adaptModule =
+    file: moduleArgs:
+    let
+      name = moduleName file;
+      source = import file;
+      definition = if builtins.isFunction source then source moduleArgs else source;
+      passthrough = removeAttrs definition [
+        "home"
+        "nixos"
+      ];
+    in
+    if !builtins.isAttrs definition then
+      throw "module `${name}` must return a flake-parts module attribute set"
+    else
+      {
+        _file = toString file;
+        imports = [
+          passthrough
+        ]
+        ++ lib.optional (definition ? nixos) {
+          flake.modules.nixos.${name} = definition.nixos;
+        }
+        ++ lib.optional (definition ? home) {
+          flake.modules.homeManager.${name} = definition.home;
+        };
+      };
+
   nullableModule =
     description:
     lib.mkOption {
@@ -77,6 +114,8 @@ let
     };
 in
 {
+  imports = map adaptModule moduleFiles;
+
   options.machines = lib.mkOption {
     type = lib.types.lazyAttrsOf (
       lib.types.submoduleWith {
