@@ -1,4 +1,7 @@
 {
+  nixos = {
+    programs.git.enable = true;
+  };
   home =
     {
       identity,
