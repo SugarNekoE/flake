@@ -27,8 +27,6 @@
 
       programs.btop.enable = true;
 
-      stylix.targets.btop.enable = true;
-
       programs.nix-index-database.comma.enable = true;
 
       programs.command-not-found.enable = false;
@@ -47,6 +45,16 @@
       programs.nix-index = {
         enable = true;
         enableFishIntegration = true;
+      };
+
+      programs.zellij = {
+        enable = true;
+        exitShellOnExit = true;
+      };
+
+      stylix.targets = {
+        btop.enable = true;
+        zellij.enable = true;
       };
     };
 }
