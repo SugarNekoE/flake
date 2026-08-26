@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.aspects.desktop.imports = with inputs.self.aspects; [
+  imports = with inputs.self.aspects; [
     _1password
     codex
     fcitx5

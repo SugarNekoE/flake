@@ -6,6 +6,7 @@
 }:
 let
   adapterFile = toString ./aspects.nix;
+  moduleRoot = toString ./.;
   moduleName =
     file:
     let
@@ -14,6 +15,17 @@ let
       name = if builtins.match "^[0-9].*" fileName != null then "_${fileName}" else fileName;
     in
     if name == "default" then baseNameOf (dirOf path) else name;
+  moduleKind =
+    file:
+    let
+      relativePath = lib.removePrefix "${moduleRoot}/" (toString file);
+    in
+    if lib.hasPrefix "roles/" relativePath then
+      "role"
+    else if lib.hasPrefix "machines/" relativePath then
+      "machine"
+    else
+      "module";
   moduleFiles = builtins.filter (file: toString file != adapterFile) (inputs.import-tree.leafs ./.);
   sourceModuleNames = map moduleName moduleFiles;
   duplicateSourceNames = lib.filter (
@@ -33,6 +45,22 @@ let
     in
     if !builtins.isAttrs definition then
       throw "module `${name}` must return a flake-parts module attribute set"
+    else if moduleKind file == "machine" then
+      {
+        _file = toString file;
+        config.machines.${name} = definition;
+      }
+    else if moduleKind file == "role" then
+      {
+        _file = toString file;
+        config.flake.modules.aspects.${name} = {
+          imports = [ passthrough ];
+          config = lib.filterAttrs (_field: module: module != null) {
+            nixosModule = definition.nixos or null;
+            homeModule = definition.home or null;
+          };
+        };
+      }
     else
       {
         _file = toString file;
