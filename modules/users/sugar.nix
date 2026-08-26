@@ -8,6 +8,7 @@ _: {
     username = "sugar";
     fullName = "Asai Neko";
     email = "sugar@sne.moe";
+    git.signingKey = "main";
   };
 
   nixos =

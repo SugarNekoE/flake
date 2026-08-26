@@ -58,13 +58,5 @@ _: {
 
         Install.WantedBy = [ "default.target" ];
       };
-
-      programs.git = {
-        signing = {
-          key = identity.gpgKeys.main.fingerprint;
-          signByDefault = true;
-          signer = lib.getExe pkgs.gnupg;
-        };
-      };
     };
 }

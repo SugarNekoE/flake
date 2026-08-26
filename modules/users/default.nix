@@ -16,6 +16,11 @@ let
         type = lib.types.str;
         description = "Email address shared by user-facing modules.";
       };
+
+      git.signingKey = lib.mkOption {
+        type = lib.types.str;
+        description = "Named identity.gpgKeys entry used for Git commit signing.";
+      };
     };
   };
 in
