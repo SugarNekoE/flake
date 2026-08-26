@@ -19,6 +19,7 @@
     podman
     power
     plymouth
+    polkit
     (openssh.withKnownHosts { })
     (singbox-gui.withProfile {
       name = "SNEPX";

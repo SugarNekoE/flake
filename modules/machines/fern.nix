@@ -22,6 +22,7 @@
     networkmanager
     podman
     power
+    polkit
     (openssh.withKnownHosts {
       daisy = {
         hostNames = [ "daisy" ];

@@ -36,8 +36,6 @@
 
       nixpkgs.config.allowUnfree = true;
 
-      security.polkit.enable = true;
-
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_18;
     };
 }
