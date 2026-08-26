@@ -10,7 +10,6 @@
     gnupg
     kitty
     neovim
-    singbox-gui
     starship
     unix-tools
     vicinae

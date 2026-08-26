@@ -16,9 +16,13 @@
     fonts
     netbird
     networkmanager
-    openssh
     podman
     power
+    (openssh.withKnownHosts { })
+    (singbox-gui.withProfile {
+      name = "SNEPX";
+      sopsFile = ../secrets/sing-box/remote.json;
+    })
     (stylix.withWallpaper {
       url = "https://assets.sne.moe/Backgrounds/Frieren.jpg";
       hash = "sha256-/W5n8M8vVqwr0bQPJK+mVCzBzpQk9AcBdb8iPyWszPY=";

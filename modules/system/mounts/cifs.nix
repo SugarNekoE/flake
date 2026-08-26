@@ -1,4 +1,28 @@
+{ inputs, ... }:
+let
+  withCredentials =
+    { sopsFile }:
+    {
+      _class = "aspects";
+      imports = [ inputs.self.modules.aspects.cifs ];
+      nixosModule =
+        { lib, ... }:
+        let
+          hasCredentials = builtins.pathExists sopsFile;
+        in
+        {
+          sops.secrets."cifs-credentials" = lib.mkIf hasCredentials {
+            format = "yaml";
+            inherit sopsFile;
+            key = "cifs-credentials";
+            mode = "0400";
+          };
+        };
+    };
+in
 {
+  aspectHelpers.cifs = { inherit withCredentials; };
+
   nixos =
     {
       config,

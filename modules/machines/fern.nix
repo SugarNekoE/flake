@@ -7,10 +7,12 @@
 
     # system
     efi
-    xfs
-    cifs
     nvidia
     i18n
+    xfs
+    (cifs.withCredentials {
+      sopsFile = ../secrets/cifs/home-cifs.yaml;
+    })
 
     # services
     audio
@@ -18,10 +20,18 @@
     fonts
     netbird
     networkmanager
-    openssh
     podman
     power
-    # stylic
+    (openssh.withKnownHosts {
+      daisy = {
+        hostNames = [ "daisy" ];
+        publicKey = config.identity.sshKeys.daisy;
+      };
+    })
+    (singbox-gui.withProfile {
+      name = "SNEPX";
+      sopsFile = ../secrets/sing-box/home.json;
+    })
     (stylix.withWallpaper {
       url = "https://assets.sne.moe/Backgrounds/StarNightGirl.jpg";
       hash = "sha256-M4gQnXnNA7tJzSpf0tFWOyHCjablUXQWWAhdDdApHAA=";

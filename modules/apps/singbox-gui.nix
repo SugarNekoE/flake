@@ -3,8 +3,45 @@
   lib,
   ...
 }:
+let
+  withProfile =
+    {
+      name ? "Default",
+      sopsFile,
+    }:
+    {
+      _class = "aspects";
+      imports = [ inputs.self.modules.aspects.singbox-gui ];
+      nixosModule =
+        { config, lib, ... }:
+        let
+          hasProfile = builtins.pathExists sopsFile;
+        in
+        lib.mkIf hasProfile {
+          sops.secrets."sing-box-profile" = {
+            format = "json";
+            inherit sopsFile;
+            key = "";
+            group = "sing-box";
+            mode = "0440";
+          };
+
+          programs.sing-box-for-desktop = {
+            profiles = [
+              {
+                inherit name;
+                configurationPath = config.sops.secrets."sing-box-profile".path;
+              }
+            ];
+            defaultProfile = name;
+          };
+        };
+    };
+in
 {
   flake-file.inputs.sfd-nix.url = "git+https://forge.asnk.io/sugar/sfd-nix";
+
+  aspectHelpers.singbox-gui = { inherit withProfile; };
 
   flake-file.prune-lock.program = lib.mkForce (
     pkgs:
@@ -18,29 +55,23 @@
   );
 
   nixos =
-    {
-      user,
-      config,
-      ...
-    }:
+    { user, ... }:
     {
       imports = [
         inputs.sfd-nix.nixosModules.default
-        ({ lib, ... }: {
-          options.security.polkit.enablePkexecWrapper = lib.mkEnableOption ''
-            the legacy pkexec wrapper expected by sing-box-for-desktop
-          '';
-        })
+        (
+          { lib, ... }:
+          {
+            options.security.polkit.enablePkexecWrapper = lib.mkEnableOption ''
+              the legacy pkexec wrapper expected by sing-box-for-desktop
+            '';
+          }
+        )
       ];
 
       users = {
         groups.sing-box = { };
         users.${user.username}.extraGroups = [ "sing-box" ];
-      };
-
-      sops.secrets."sing-box-profile" = {
-        group = "sing-box";
-        mode = "0440";
       };
 
       nix.settings = {
@@ -84,13 +115,6 @@
           };
         };
 
-        profiles = [
-          {
-            name = "Default";
-            configurationPath = config.sops.secrets."sing-box-profile".path;
-          }
-        ];
-        defaultProfile = "Default";
       };
     };
 }
