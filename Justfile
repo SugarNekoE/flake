@@ -1,6 +1,6 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
-# List the available project commands.
+# List project commands.
 default:
     @just --list
 
@@ -8,25 +8,21 @@ default:
 _require-tracked-flake:
     @if ! git ls-files --error-unmatch flake.nix >/dev/null 2>&1; then echo "flake.nix must be reviewed and tracked before flake-file can regenerate it."; exit 1; fi
 
-# Refuse activation while the evaluation-only hardware stub is present.
-_require-real-hardware:
-    @if grep -Eq 'nodev|fsType = "tmpfs"' hardware/laptop.nix; then echo "Replace hardware/laptop.nix and add the real boot/filesystem or disko layout first."; exit 1; fi
-
-# Regenerate flake.nix and normalize flake.lock with flake-file.
+# Regenerate flake.nix and normalize flake.lock.
 generate: _require-tracked-flake
     nix run path:.#write-flake
 
-# Update every flake input, then regenerate and normalize generated files.
+# Update every flake input, then regenerate generated files.
 update: _require-tracked-flake
     nix flake update
     nix run path:.#write-flake
 
-# Update one flake input, then regenerate and normalize generated files.
+# Update one flake input, then regenerate generated files.
 update-input input: _require-tracked-flake
     nix flake update "{{ input }}"
     nix run path:.#write-flake
 
-# Run all flake-file and NixOS evaluation checks.
+# Run flake-file and NixOS evaluation checks.
 check:
     nix flake check path:.
 
@@ -34,28 +30,42 @@ check:
 show:
     nix flake show path:.
 
-# Generate local hardware facts to a reviewable file outside the repository.
-generate-hardware output="/tmp/laptop-hardware.nix":
+# List available NixOS machine configurations.
+hosts:
+    @nix eval path:.#nixosConfigurations --apply builtins.attrNames
+
+# Fully evaluate a machine's system derivation without building it.
+evaluate hostname:
+    nix eval --raw "path:.#nixosConfigurations.{{ hostname }}.config.system.build.toplevel.drvPath"
+
+# Generate local hardware facts outside the repository.
+generate-hardware output="/tmp/hardware.nix":
     sudo nixos-generate-config --show-hardware-config --no-filesystems > "{{ output }}"
-    @echo "Generated {{ output }}. Review it before replacing hardware/laptop.nix."
 
-# Generate hardware facts from an SSH target to a reviewable local file.
-generate-hardware-remote target output="/tmp/laptop-hardware.nix":
+# Generate hardware facts from an SSH target outside the repository.
+generate-hardware-remote target output="/tmp/hardware.nix":
     ssh "{{ target }}" "nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#nixos-install-tools -c nixos-generate-config --show-hardware-config --no-filesystems" > "{{ output }}"
-    @echo "Generated {{ output }} from {{ target }}. Review it before replacing hardware/laptop.nix."
 
-# Preview what a asaipc build would realize without building it.
-dry-run hostname="asaipc":
+# Preview a machine build without realizing it.
+dry-run hostname:
     nh os build --dry "path:.#{{ hostname }}"
 
-# Build the asaipc configuration without activating it.
-build hostname="asaipc":
+# Build a machine without activating it.
+build hostname:
     nh os build "path:.#{{ hostname }}"
 
-# Build and activate the asaipc configuration.
-switch hostname="asaipc": _require-real-hardware
+# Build and activate a machine locally.
+switch hostname:
     nh os switch "path:.#{{ hostname }}"
 
-# Build the asaipc configuration for the next boot without activating it now.
-boot hostname="asaipc": _require-real-hardware
+# Build a machine and activate it on the next boot.
+boot hostname:
     nh os boot "path:.#{{ hostname }}"
+
+# Destructively install a machine over SSH while preserving its SSH host keys.
+install hostname target:
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys
+
+# Install with an additional root tree copied into the target installation.
+install-with-files hostname target files:
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --extra-files "{{ files }}"
