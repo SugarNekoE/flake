@@ -29,9 +29,23 @@
       "org.videolan.VLC"
     ])
   ];
+
+  nixos.programs.dconf.enable = true;
+
   home =
     { pkgs, ... }:
     {
+      gtk = {
+        enable = true;
+        colorScheme = "dark";
+      };
+
+      qt = {
+        enable = true;
+        platformTheme.name = "adwaita";
+        style.name = "adwaita-dark";
+      };
+
       home.packages = with pkgs; [
         google-chrome
         splayer

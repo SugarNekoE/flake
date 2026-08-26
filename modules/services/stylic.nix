@@ -31,6 +31,7 @@ in
       stylix = {
         enable = true;
         autoEnable = false;
+        polarity = "dark";
         base16Scheme = "${inputs.stylix.inputs.tinted-schemes}/base16/catppuccin-macchiato.yaml";
         cursor = {
           name = "macOS";
