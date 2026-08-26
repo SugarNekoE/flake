@@ -37,6 +37,8 @@ _: {
       screenshot = "grimshot copy anything";
     in
     {
+      stylix.targets.sway.enable = true;
+
       systemd.user.services.fcitx5-daemon = {
         Unit = {
           PartOf = [ "sway-session.target" ];

@@ -1,5 +1,11 @@
 _: {
   home = {
+    stylix.targets.waybar = {
+      enable = true;
+      addCss = false;
+      opacity.enable = false;
+    };
+
     services.playerctld.enable = true;
 
     programs.waybar = {

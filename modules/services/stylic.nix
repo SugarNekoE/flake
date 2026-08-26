@@ -76,12 +76,6 @@ in
       autoEnable = false;
       targets = {
         fish.enable = true;
-        sway.enable = true;
-        waybar = {
-          enable = true;
-          addCss = false;
-          opacity.enable = false;
-        };
       };
     };
   };
