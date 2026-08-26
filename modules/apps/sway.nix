@@ -26,6 +26,7 @@ _: {
       services.displayManager.defaultSession = "sway-uwsm";
 
       systemd.user.targets."nixos-fake-graphical-session".enable = false;
+      systemd.user.targets.sway-session.wants = [ "xdg-desktop-autostart.target" ];
     };
 
   flake.modules.homeManager.sway =
