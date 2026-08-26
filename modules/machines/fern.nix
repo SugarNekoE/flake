@@ -18,7 +18,6 @@
     audio
     bluetooth
     fonts
-    netbird
     networkmanager
     podman
     power

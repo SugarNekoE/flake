@@ -8,6 +8,7 @@
     git
     gnupg
     kitty
+    netbird-app
     neovim
     starship
     stasis
