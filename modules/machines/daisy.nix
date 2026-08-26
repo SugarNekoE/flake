@@ -50,7 +50,7 @@
     wayland.windowManager.sway.config.output = {
       "eDP-1" = {
         mode = "1920x1200@60Hz";
-        scale = "1.25";
+        scale = "1.5";
       };
     };
   };
