@@ -14,17 +14,17 @@ _require-real-hardware:
 
 # Regenerate flake.nix and normalize flake.lock with flake-file.
 generate: _require-tracked-flake
-    nix run .#write-flake
+    nix run path:.#write-flake
 
 # Update every flake input, then regenerate and normalize generated files.
 update: _require-tracked-flake
     nix flake update
-    nix run .#write-flake
+    nix run path:.#write-flake
 
 # Update one flake input, then regenerate and normalize generated files.
 update-input input: _require-tracked-flake
     nix flake update "{{ input }}"
-    nix run .#write-flake
+    nix run path:.#write-flake
 
 # Run all flake-file and NixOS evaluation checks.
 check:
