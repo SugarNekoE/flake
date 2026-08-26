@@ -24,6 +24,7 @@ _: {
           "ll" = "ls -lha";
           "la" = "ls -la";
           "zed" = "zeditor";
+          "z" = "cd";
         };
         plugins = map (x: { inherit (x) name src; }) (
           with pkgs.fishPlugins;
