@@ -2,6 +2,8 @@ _: {
   home =
     { pkgs, ... }:
     {
+      stylix.targets.fcitx5.enable = true;
+
       xdg.dataFile."fcitx5/rime/default.custom.yaml".text = ''
         patch:
           __include: rime_ice_suggestion:/
