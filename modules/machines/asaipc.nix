@@ -11,6 +11,7 @@
       cifs
       nvidia
       sugar
+      ly
     ];
     diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
     hardware =
