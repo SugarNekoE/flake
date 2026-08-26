@@ -1,0 +1,8 @@
+keys:
+  - &sugar age12phtgx8szhz263fch6v0fpq2xeqsg2tsexrekgcn4z95ut4sg3sqdcf4yp
+
+creation_rules:
+  - path_regex: ^modules/secrets/.*\.(yaml|json)$
+    key_groups:
+      - age:
+          - *sugar

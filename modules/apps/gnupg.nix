@@ -8,12 +8,9 @@ _: {
       ...
     }:
     let
-      sopsFile = ../../secrets/gpg.yaml;
+      sopsFile = ../secrets/gpg.yaml;
       hasPrivateKeys = builtins.pathExists sopsFile;
-      privateKeys = {
-        main = "gpg/privateKeys/main";
-        homo = "gpg/privateKeys/homo";
-      };
+      keyPairs = identity.gpgKeys;
       secretName = name: "gpg-${name}-private-key";
       secretPath = name: config.sops.secrets.${secretName name}.path;
       importPrivateKeys = pkgs.writeShellScript "gpg-import-private-keys" (
@@ -22,7 +19,7 @@ _: {
         ''
         + lib.concatMapStringsSep "\n" (name: ''
           ${lib.getExe pkgs.gnupg} --batch --import ${lib.escapeShellArg (secretPath name)}
-        '') (builtins.attrNames privateKeys)
+        '') (builtins.attrNames keyPairs)
       );
     in
     {
@@ -36,12 +33,13 @@ _: {
 
       sops.secrets = lib.mkIf hasPrivateKeys (
         lib.mapAttrs' (
-          name: key:
+          name: keyPair:
           lib.nameValuePair (secretName name) {
-            inherit key sopsFile;
+            inherit sopsFile;
+            key = keyPair.privateKey;
             mode = "0400";
           }
-        ) privateKeys
+        ) keyPairs
       );
 
       systemd.user.services.gpg-import-private-keys = lib.mkIf hasPrivateKeys {
@@ -63,7 +61,7 @@ _: {
 
       programs.git = {
         signing = {
-          key = identity.gpgKeys.main;
+          key = identity.gpgKeys.main.fingerprint;
           signByDefault = true;
           signer = lib.getExe pkgs.gnupg;
         };
