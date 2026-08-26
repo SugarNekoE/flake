@@ -12,6 +12,9 @@
   home =
     { pkgs, ... }:
     {
-      home.packages = [ pkgs.llm-agents.codex ];
+      home.packages = [
+        pkgs.llm-agents.chatgpt
+        pkgs.llm-agents.codex
+      ];
     };
 }
