@@ -3,6 +3,9 @@
   imports = with inputs.self.aspects; [
     codex
     zed
+    (flatpak.withPackages [
+      "com.redisinsight.RedisInsight"
+    ])
   ];
   home =
     { pkgs, ... }:
@@ -15,7 +18,6 @@
         android-tools
         android-studio
         winbox
-        redisinsight
         podman-desktop
         apache-directory-studio
         blender
