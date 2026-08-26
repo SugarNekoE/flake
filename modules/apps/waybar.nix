@@ -1,4 +1,8 @@
-_: {
+_:
+let
+  largeIcon = icon: "<span size='140%'>${icon}</span>";
+in
+{
   home = {
     stylix.targets.waybar = {
       enable = true;
@@ -20,8 +24,8 @@ _: {
           margin-top = 0;
           exclusive = true;
           passthrough = false;
-          height = 30;
-          spacing = 20;
+          height = 34;
+          spacing = 4;
           modules-left = [
             "clock"
             "custom/hostname"
@@ -33,7 +37,6 @@ _: {
             "memory"
             "battery"
             "backlight"
-            "wireplumber"
             "tray"
           ];
 
@@ -50,14 +53,14 @@ _: {
 
           systemd-failed-units = {
             hide-on-ok = true;
-            format = " {nr_failed}";
-            format-ok = "";
+            format = "${largeIcon ""} {nr_failed}";
+            format-ok = largeIcon "";
             system = true;
             user = true;
           };
 
           backlight = {
-            format = "{icon} {percent}%";
+            format = "${largeIcon "{icon}"} {percent}%";
             format-icons = [
               "󰃞"
               "󰃝"
@@ -69,9 +72,9 @@ _: {
           };
 
           battery = {
-            format = "{icon} {capacity}%";
-            format-charging = " {capacity}%";
-            format-plugged = " {capacity}%";
+            format = "${largeIcon "{icon}"} {capacity}%";
+            format-charging = "${largeIcon ""} {capacity}%";
+            format-plugged = "${largeIcon ""} {capacity}%";
             format-icons = [
               "󰂎"
               "󰁺"
@@ -87,23 +90,14 @@ _: {
             ];
           };
 
-          wireplumber = {
-            format = "{icon} {volume}%";
-            format-muted = "";
-            scroll-step = 1;
-            on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            on-click-right = "pavucontrol";
-            format-icons.default = "";
-          };
-
           cpu = {
             interval = 3;
-            format = " {}%";
+            format = "${largeIcon ""} {}%";
           };
 
           memory = {
             interval = 3;
-            format = " {}%";
+            format = "${largeIcon ""} {}%";
             tooltip = true;
             tooltip-format = "Memory - {used:0.1f}GB used";
             on-click = "kitty --start-as=fullscreen --title btop sh -c 'btop'";
@@ -111,12 +105,12 @@ _: {
 
           "network#speed" = {
             interval = 3;
-            format-wifi = " {bandwidthUpBytes}  {bandwidthDownBytes}";
-            format-ethernet = " {bandwidthUpBytes}  {bandwidthDownBytes}";
+            format-wifi = "${largeIcon ""} {bandwidthUpBytes} ${largeIcon ""} {bandwidthDownBytes}";
+            format-ethernet = "${largeIcon ""} {bandwidthUpBytes} ${largeIcon ""} {bandwidthDownBytes}";
           };
 
           tray = {
-            icon-size = 16;
+            icon-size = 18;
             spacing = 4;
           };
         }
@@ -140,7 +134,7 @@ _: {
           "wlr/taskbar" = {
             all-outputs = true;
             format = "{icon} {title}";
-            icon-size = 16;
+            icon-size = 20;
             icon-theme = "Tela-dark";
             tooltip = false;
             homogeneous = true;
@@ -159,6 +153,25 @@ _: {
 
         window#waybar.topbar > box {
           padding: 0 6px;
+        }
+
+        window#waybar.topbar .modules-left,
+        window#waybar.topbar .modules-center,
+        window#waybar.topbar .modules-right {
+          min-height: 34px;
+        }
+
+        #clock,
+        #custom-hostname,
+        #mpris,
+        #network,
+        #cpu,
+        #memory,
+        #battery,
+        #backlight,
+        #tray {
+          padding: 0 6px;
+          margin: 0;
         }
 
         window#waybar.taskbar {
