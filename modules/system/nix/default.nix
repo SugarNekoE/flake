@@ -37,5 +37,7 @@
       nixpkgs.config.allowUnfree = true;
 
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_18;
+
+      services.gnome.gnome-keyring.enable = true;
     };
 }
