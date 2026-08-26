@@ -15,10 +15,11 @@ let
       name = if builtins.match "^[0-9].*" fileName != null then "_${fileName}" else fileName;
     in
     if name == "default" then baseNameOf (dirOf path) else name;
+  moduleRelativePath = file: lib.removePrefix "${moduleRoot}/" (toString file);
   moduleKind =
     file:
     let
-      relativePath = lib.removePrefix "${moduleRoot}/" (toString file);
+      relativePath = moduleRelativePath file;
     in
     if lib.hasPrefix "roles/" relativePath then
       "role"
@@ -89,6 +90,18 @@ let
       homeModule = nullableModule "Home Manager module contributed by this aspect.";
       home = nullableModule "Selector that keeps only this aspect's Home Manager module.";
       nixos = nullableModule "Selector that keeps only this aspect's NixOS module.";
+      withPackages = lib.mkOption {
+        type = lib.types.nullOr lib.types.raw;
+        default = null;
+        internal = true;
+        description = "Optional package composition helper exposed by an aspect.";
+      };
+      "with" = lib.mkOption {
+        type = lib.types.nullOr lib.types.raw;
+        default = null;
+        internal = true;
+        description = "Quoted alias for an aspect's package composition helper.";
+      };
     };
   };
 
@@ -148,13 +161,21 @@ let
       // lib.optionalAttrs (parsed.nixosModule != null) {
         nixosModule = parsed.nixosModule;
       };
+      extensions =
+        lib.optionalAttrs (parsed.withPackages != null) {
+          inherit (parsed) withPackages;
+        }
+        // lib.optionalAttrs (parsed."with" != null) {
+          "with" = parsed."with";
+        };
     in
     {
       _class = "aspects";
       home = homeOnly;
       nixos = nixosOnly;
     }
-    // modules;
+    // modules
+    // extensions;
 
   selectableAspects = lib.mapAttrs (_name: selectAspect) config.flake.modules.aspects;
 
