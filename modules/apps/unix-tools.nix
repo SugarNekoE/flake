@@ -14,6 +14,7 @@
         fastfetch
         nix-output-monitor
         cachix
+        ripgrep
       ];
 
       programs.ssh = {
