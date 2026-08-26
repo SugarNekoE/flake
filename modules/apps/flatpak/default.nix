@@ -13,10 +13,7 @@ in
 {
   flake-file.inputs.nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
-  flake.modules.aspects.flatpak.config = {
-    inherit withPackages;
-    "with" = withPackages;
-  };
+  aspectHelpers.flatpak = { inherit withPackages; };
 
   nixos =
     { pkgs, ... }:
