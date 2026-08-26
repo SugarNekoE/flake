@@ -3,15 +3,6 @@
   imports = with inputs.self.aspects; [
     codex
     zed
-    (flatpak.withPackages [
-      "cn.lceda.LCEDAPro"
-      "com.apifox.Apifox"
-      "com.mikrotik.WinBox"
-      "com.redis.RedisInsight"
-      "io.podman_desktop.PodmanDesktop"
-      "org.apache.directory.studio"
-      "org.blender.Blender"
-    ])
   ];
   home =
     { pkgs, ... }:
@@ -23,6 +14,11 @@
         jetbrains.gateway
         android-tools
         android-studio
+        winbox
+        redisinsight
+        podman-desktop
+        apache-directory-studio
+        blender
       ];
     };
 }

@@ -15,17 +15,8 @@
     vicinae
     (flatpak.withPackages [
       "com.github.tchx84.Flatseal"
-      "com.obsproject.Studio"
-      "hu.irl.cameractrls"
       "io.github.flattool.Warehouse"
-      "io.github.ilya_zlobintsev.LACT"
-      "io.missioncenter.MissionCenter"
-      "net.agalwood.Motrix"
       "net.davidotek.pupgui2"
-      "org.jellyfin.JellyfinDesktop"
-      "org.localsend.localsend_app"
-      "org.torproject.torbrowser-launcher"
-      "org.videolan.VLC"
     ])
   ];
 
@@ -44,6 +35,15 @@
       home.packages = with pkgs; [
         google-chrome
         splayer
+        obs-studio
+        cameractrls
+        lact
+        mission-center
+        motrix
+        jellyfin-desktop
+        localsend
+        tor-browser
+        vlc
       ];
 
       home.sessionVariables = {
