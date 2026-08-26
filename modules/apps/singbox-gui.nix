@@ -18,61 +18,79 @@
   );
 
   nixos =
-    { lib, ... }:
     {
-      imports = [ inputs.sfd-nix.nixosModules.default ];
+      user,
+      config,
+      ...
+    }:
+    {
+      imports = [
+        inputs.sfd-nix.nixosModules.default
+        ({ lib, ... }: {
+          options.security.polkit.enablePkexecWrapper = lib.mkEnableOption ''
+            the legacy pkexec wrapper expected by sing-box-for-desktop
+          '';
+        })
+      ];
 
-      options.security.polkit.enablePkexecWrapper = lib.mkEnableOption "dummy";
+      users = {
+        groups.sing-box = { };
+        users.${user.username}.extraGroups = [ "sing-box" ];
+      };
 
-      config = {
-        nix.settings = {
-          substituters = [
-            "https://sfd-nix.cachix.org"
-          ];
-          trusted-public-keys = [
-            "sfd-nix.cachix.org-1:SX5EpvFvgFZXgG94/0fX1L+lUWQ90dPq0Ieor7/rDig="
-          ];
-        };
-        programs.sing-box-for-desktop = {
-          enable = true;
-          settings = {
-            startAtLogin = true;
-            tray = {
-              enable = true;
-              keepInBackground = true;
-            };
-            language = "en";
-            appearance = "dark";
-            theme = "blue";
+      sops.secrets."sing-box-profile" = {
+        group = "sing-box";
+        mode = "0440";
+      };
 
-            terminal = {
-              lightTheme = "Alabaster";
-              darkTheme = "Afterglow";
-              fontFamily = "Iosevka";
-              fontSize = 14;
-              alwaysShowSymbolBar = true;
+      nix.settings = {
+        substituters = [
+          "https://sfd-nix.cachix.org"
+        ];
+        trusted-public-keys = [
+          "sfd-nix.cachix.org-1:SX5EpvFvgFZXgG94/0fX1L+lUWQ90dPq0Ieor7/rDig="
+        ];
+      };
 
-              darkCustomTheme = {
-                background = "#101010";
-                foreground = "#eeeeee";
-                cursor = "#eeeeee";
-              };
-            };
+      programs.sing-box-for-desktop = {
+        enable = true;
+        settings = {
+          startAtLogin = true;
+          tray = {
+            enable = true;
+            keepInBackground = true;
+          };
+          language = "en";
+          appearance = "dark";
+          theme = "blue";
 
-            core = {
-              insecureMode = false;
-              disableDeprecatedWarnings = true;
+          terminal = {
+            lightTheme = "Alabaster";
+            darkTheme = "Afterglow";
+            fontFamily = "Iosevka";
+            fontSize = 14;
+            alwaysShowSymbolBar = true;
+
+            darkCustomTheme = {
+              background = "#101010";
+              foreground = "#eeeeee";
+              cursor = "#eeeeee";
             };
           };
 
-          profiles = [
-            {
-              name = "Default";
-              configurationPath = "/run/secrets/sing-box.json";
-            }
-          ];
-          defaultProfile = "Default";
+          core = {
+            insecureMode = false;
+            disableDeprecatedWarnings = true;
+          };
         };
+
+        profiles = [
+          {
+            name = "Default";
+            configurationPath = config.sops.secrets."sing-box-profile".path;
+          }
+        ];
+        defaultProfile = "Default";
       };
     };
 }
