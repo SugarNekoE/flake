@@ -1,10 +1,9 @@
-{
+_: {
   nixos = {
     programs.git.enable = true;
   };
   home =
     {
-      identity,
       pkgs,
       user,
       ...
@@ -20,7 +19,6 @@
           user = {
             name = user.fullName;
             email = user.email;
-            signingKey = identity.gpgKeys.main;
           };
           core = {
             editor = "nvim";
@@ -34,9 +32,6 @@
             process = "git-lfs filter-process";
             required = true;
           };
-          commit.gpgsign = true;
-          tag.gpgsign = true;
-          gpg.program = "gpg";
           init.defaultBranch = "main";
           color.ui = "auto";
           credential.helper = "store";

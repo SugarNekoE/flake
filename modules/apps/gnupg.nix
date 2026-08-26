@@ -1,12 +1,10 @@
-{ inputs, ... }:
-{
-  flake.modules.aspects.gnupg.imports = [ inputs.self.aspects.secrets.home ];
-
+_: {
   home =
     {
       config,
       lib,
       pkgs,
+      identity,
       ...
     }:
     let
@@ -61,6 +59,14 @@
         };
 
         Install.WantedBy = [ "default.target" ];
+      };
+
+      programs.git = {
+        signing = {
+          key = identity.gpgKeys.main;
+          signByDefault = true;
+          signer = lib.getExe pkgs.gnupg;
+        };
       };
     };
 }
