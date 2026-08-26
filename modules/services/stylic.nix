@@ -67,16 +67,8 @@ in
           };
         };
         opacity.terminal = 0.80;
-        targets.fish.enable = true;
       };
     };
 
-  flake.modules.homeManager.stylix = {
-    stylix = {
-      autoEnable = false;
-      targets = {
-        fish.enable = true;
-      };
-    };
-  };
+  flake.modules.homeManager.stylix.stylix.autoEnable = false;
 }

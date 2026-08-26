@@ -3,12 +3,15 @@ _: {
     { pkgs, ... }:
     {
       programs.fish.enable = true;
+      stylix.targets.fish.enable = true;
       users.defaultUserShell = pkgs.fish;
     };
 
   home =
     { pkgs, ... }:
     {
+      stylix.targets.fish.enable = true;
+
       programs.fish = {
         enable = true;
         interactiveShellInit = ''
