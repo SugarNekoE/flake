@@ -81,26 +81,7 @@ _: {
           };
 
           lsp = {
-            hls.initialization_options.haskell.formattingProvider = "fourmolu";
-
-            elm-language-server.initialization_options = {
-              disableElmLSDiagnostics = true;
-              onlyUpdateDiagnosticsOnSave = false;
-              elmReviewDiagnostics = "warning";
-            };
-
-            deno.settings.deno.enable = true;
-
-            kotlin-language-server.settings.compiler.jvm.target = "21";
-
             json-language-server.settings.json.schemas = [
-              {
-                fileMatch = [
-                  "deno.json"
-                  "deno.jsonc"
-                ];
-                url = "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json";
-              }
               {
                 fileMatch = [ "package.json" ];
                 url = "https://www.schemastore.org/package";
