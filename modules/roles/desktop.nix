@@ -19,7 +19,6 @@
       "hu.irl.cameractrls"
       "io.github.flattool.Warehouse"
       "io.github.ilya_zlobintsev.LACT"
-      "io.github.pwr_solaar.solaar"
       "io.missioncenter.MissionCenter"
       "net.agalwood.Motrix"
       "net.davidotek.pupgui2"

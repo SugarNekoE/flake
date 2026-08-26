@@ -1,6 +1,4 @@
 _: {
-  home.wayland.windowManager.sway.config.input."type:touchpad".natural_scroll = "disabled";
-
   nixos = {
     services.logind.settings.Login = {
       HandleLidSwitch = "suspend-then-hibernate";

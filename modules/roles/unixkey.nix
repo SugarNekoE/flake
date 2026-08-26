@@ -3,7 +3,7 @@ _: {
     console.useXkbConfig = true;
     services.xserver.xkb = {
       layout = "us";
-      options = "ctrl:swapcaps";
+      options = "ctrl:nocaps";
     };
   };
 }
