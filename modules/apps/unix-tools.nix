@@ -8,6 +8,10 @@
       imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
       home.packages = with pkgs; [
+        btop
+        htop
+        nil
+        nixd
         devenv
         any-nix-shell
         fastfetch
@@ -34,6 +38,7 @@
       programs.zoxide = {
         enable = true;
         enableFishIntegration = true;
+        options = [ "--cmd cd" ];
       };
 
       programs.nix-index = {

@@ -4,7 +4,6 @@
     _1password
     fcitx5
     fish
-    zoxide
     fonts
     git
     gnupg
@@ -47,8 +46,6 @@
       };
 
       home.packages = with pkgs; [
-        btop
-        htop
         google-chrome
         splayer
       ];

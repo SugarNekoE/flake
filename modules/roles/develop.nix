@@ -17,8 +17,6 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        nil
-        nixd
         lens
         jetbrains.idea
         jetbrains.datagrip
