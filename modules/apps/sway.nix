@@ -37,6 +37,14 @@ _: {
       screenshot = "grimshot copy anything";
     in
     {
+      systemd.user.services.fcitx5-daemon = {
+        Unit = {
+          PartOf = [ "sway-session.target" ];
+          After = [ "sway-session.target" ];
+        };
+        Install.WantedBy = [ "sway-session.target" ];
+      };
+
       wayland.windowManager.sway = {
         enable = true;
         systemd.enable = false; # UWSM managed
