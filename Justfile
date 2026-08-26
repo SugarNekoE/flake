@@ -107,6 +107,13 @@ anywhere hostname target:
     read -r -p "Type $machine to continue: " confirmation
     [[ "$confirmation" == "$machine" ]] || { echo "Cancelled."; exit 1; }
 
+    ssh_password="${SSHPASS:-}"
+    if [[ -z "$ssh_password" ]]; then
+      read -r -s -p "Target SSH password: " ssh_password
+      echo
+    fi
+    [[ -n "$ssh_password" ]] || { echo "The target SSH password cannot be empty." >&2; exit 1; }
+
     if [[ "$uses_luks" == true ]]; then
       echo "LUKS detected; the installer expects its password at $luks_remote_path."
       while true; do
@@ -157,9 +164,10 @@ anywhere hostname target:
       --target-host "$ssh_target"
       --copy-host-keys
       --extra-files "$extra_files_dir"
+      --env-password
     )
     if [[ "$uses_luks" == true ]]; then
       anywhere_args+=(--disk-encryption-keys "$luks_remote_path" "$luks_key_file")
     fi
 
-    nix run github:nix-community/nixos-anywhere -- "${anywhere_args[@]}"
+    SSHPASS="$ssh_password" nix run github:nix-community/nixos-anywhere -- "${anywhere_args[@]}"
