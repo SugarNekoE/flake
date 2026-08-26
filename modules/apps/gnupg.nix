@@ -1,24 +1,49 @@
-_: {
+_:
+let
+  sopsFile = ../secrets/gpg.yaml;
+  hasPrivateKeys = builtins.pathExists sopsFile;
+  secretName = name: "gpg-${name}-private-key";
+  secretPath = name: "/run/secrets/${secretName name}";
+in
+{
+  nixos =
+    {
+      identity,
+      lib,
+      user,
+      ...
+    }:
+    {
+      sops.secrets = lib.mkIf hasPrivateKeys (
+        lib.mapAttrs' (
+          name: _keyPair:
+          lib.nameValuePair (secretName name) {
+            inherit sopsFile;
+            key = "gpg/privateKeys/${name}";
+            owner = user.username;
+            mode = "0400";
+          }
+        ) identity.gpgKeys
+      );
+    };
+
   home =
     {
-      config,
       lib,
       pkgs,
       identity,
       ...
     }:
     let
-      sopsFile = ../secrets/gpg.yaml;
-      hasPrivateKeys = builtins.pathExists sopsFile;
       keyPairs = identity.gpgKeys;
-      secretName = name: "gpg-${name}-private-key";
-      secretPath = name: config.sops.secrets.${secretName name}.path;
       importPrivateKeys = pkgs.writeShellScript "gpg-import-private-keys" (
         ''
           set -eu
         ''
         + lib.concatMapStringsSep "\n" (name: ''
-          ${lib.getExe pkgs.gnupg} --batch --import ${lib.escapeShellArg (secretPath name)}
+          ${lib.getExe pkgs.gawk} 'NR == 1 { print; print ""; next } { print }' \
+            ${lib.escapeShellArg (secretPath name)} \
+            | ${lib.getExe pkgs.gnupg} --batch --import
         '') (builtins.attrNames keyPairs)
       );
     in
@@ -29,25 +54,12 @@ _: {
         enable = true;
         defaultCacheTtl = 1800;
         maxCacheTtl = 7200;
+        pinentry.package = pkgs.pinentry-gnome3;
       };
-
-      sops.secrets = lib.mkIf hasPrivateKeys (
-        lib.mapAttrs' (
-          name: _keyPair:
-          lib.nameValuePair (secretName name) {
-            inherit sopsFile;
-            key = "gpg/privateKeys/${name}";
-            mode = "0400";
-          }
-        ) keyPairs
-      );
 
       systemd.user.services.gpg-import-private-keys = lib.mkIf hasPrivateKeys {
         Unit = {
           Description = "Import SOPS-managed GPG private keys";
-          After = [ "sops-nix.service" ];
-          Requires = [ "sops-nix.service" ];
-          PartOf = [ "sops-nix.service" ];
         };
 
         Service = {
