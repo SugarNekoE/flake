@@ -47,6 +47,8 @@
       };
 
       home.packages = with pkgs; [
+        btop
+        htop
         google-chrome
         splayer
       ];
