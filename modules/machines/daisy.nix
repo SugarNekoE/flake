@@ -32,6 +32,7 @@
     # roles
     base
     desktop
+    laptop
     develop
     office
     social
