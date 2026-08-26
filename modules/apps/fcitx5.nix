@@ -12,6 +12,8 @@ _: {
         patch:
           __include: rime_ice_suggestion:/
 
+          menu/page_size: 8
+
           schema_list:
             - schema: rime_ice
       '';
