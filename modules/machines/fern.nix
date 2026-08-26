@@ -3,13 +3,41 @@
   user = config.userProfiles.sugar;
   system = "x86_64-linux";
   imports = with inputs.self.aspects; [
-    base
-    desktop
+    sugar
+
+    # system
     efi
     xfs
     cifs
     nvidia
-    sugar
+    i18n
+
+    # services
+    audio
+    bluetooth
+    fonts
+    netbird
+    networkmanager
+    openssh
+    podman
+    power
+    # stylic
+    (stylix.withWallpaper {
+      url = "https://assets.sne.moe/Backgrounds/StarNightGirl.jpg";
+      hash = "sha256-M4gQnXnNA7tJzSpf0tFWOyHCjablUXQWWAhdDdApHAA=";
+    })
+
+    # roles
+    base
+    desktop
+    develop
+    games
+    office
+    social
+    work
+
+    # apps
+    gnome
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   hardware =

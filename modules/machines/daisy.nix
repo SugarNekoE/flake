@@ -3,14 +3,50 @@
   user = config.userProfiles.sugar;
   system = "x86_64-linux";
   imports = with inputs.self.aspects; [
-    base
-    sway
-    desktop
+    sugar
+
+    # system
     efi
     igpu
-    sugar
+    i18n
+
+    # services
+    audio
+    bluetooth
+    fonts
+    netbird
+    networkmanager
+    openssh
+    podman
+    power
+    (stylix.withWallpaper {
+      url = "https://assets.sne.moe/Backgrounds/Frieren.jpg";
+      hash = "sha256-/W5n8M8vVqwr0bQPJK+mVCzBzpQk9AcBdb8iPyWszPY=";
+    })
+
+    # roles
+    base
+    desktop
+    develop
+    office
+    social
+    work
+
+    # apps
+    sway
+    waybar
+    ly
+    sdrpp
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-luks;
+  homeModule = {
+    wayland.windowManager.sway.config.output = {
+      "eDP-1" = {
+        mode = "1920x1200@60Hz";
+        scale = "1.25";
+      };
+    };
+  };
   hardware =
     {
       config,
@@ -18,7 +54,6 @@
       modulesPath,
       ...
     }:
-
     {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
