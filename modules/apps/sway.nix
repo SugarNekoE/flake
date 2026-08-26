@@ -126,7 +126,10 @@ _: {
             border = 2;
             commands = [
               {
-                criteria.app_id = "^lxqt-policykit-agent$";
+                criteria = {
+                  app_id = "^$";
+                  title = "^Authentication Required$";
+                };
                 command = "floating enable, resize set width 520 px height 260 px, move position center";
               }
             ];
