@@ -17,6 +17,11 @@ let
         description = "Email address shared by user-facing modules.";
       };
 
+      hashedPassword = lib.mkOption {
+        type = lib.types.str;
+        description = "Declarative password hash enforced for the system user.";
+      };
+
       git.signingKey = lib.mkOption {
         type = lib.types.str;
         description = "Named identity.gpgKeys entry used for Git commit signing.";
@@ -30,4 +35,6 @@ in
     default = { };
     description = "Reusable user profiles available to Aspect machines.";
   };
+
+  nixos.users.mutableUsers = false;
 }
