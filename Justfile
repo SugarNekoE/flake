@@ -93,6 +93,12 @@ anywhere hostname target:
     fi
 
     nix eval --raw "path:.#nixosConfigurations.$machine.config.system.build.toplevel.drvPath" >/dev/null
+    luks_remote_path=""
+    if luks_remote_path=$(nix eval --raw "path:.#nixosConfigurations.$machine.config.disko.devices.disk.system.content.partitions.root.content.passwordFile" 2>/dev/null); then
+      uses_luks=true
+    else
+      uses_luks=false
+    fi
 
     echo "Target disks:"
     ssh "$ssh_target" 'if [[ $(id -u) -eq 0 ]]; then lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; else sudo -n lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; fi'
@@ -101,28 +107,40 @@ anywhere hostname target:
     read -r -p "Type $machine to continue: " confirmation
     [[ "$confirmation" == "$machine" ]] || { echo "Cancelled."; exit 1; }
 
-    while true; do
-      read -r -s -p "New LUKS password: " luks_password
-      echo
-      read -r -s -p "Confirm LUKS password: " luks_confirmation
-      echo
-      if [[ -n "$luks_password" && "$luks_password" == "$luks_confirmation" ]]; then
-        break
-      fi
-      echo "Passwords did not match or were empty; try again." >&2
-    done
+    if [[ "$uses_luks" == true ]]; then
+      echo "LUKS detected; the installer expects its password at $luks_remote_path."
+      while true; do
+        read -r -s -p "New LUKS password: " luks_password
+        echo
+        read -r -s -p "Confirm LUKS password: " luks_confirmation
+        echo
+        if [[ -n "$luks_password" && "$luks_password" == "$luks_confirmation" ]]; then
+          break
+        fi
+        echo "Passwords did not match or were empty; try again." >&2
+      done
+    else
+      echo "No LUKS password file configured; skipping disk-encryption key setup."
+    fi
 
-    luks_key_file=$(mktemp /tmp/nixos-anywhere-luks.XXXXXX)
+    luks_key_file=""
     extra_files_dir=$(mktemp -d /tmp/nixos-anywhere-extra.XXXXXX)
     cleanup() {
-      [[ "$luks_key_file" == /tmp/nixos-anywhere-luks.* ]] && rm -f -- "$luks_key_file"
-      [[ "$extra_files_dir" == /tmp/nixos-anywhere-extra.* ]] && rm -rf -- "$extra_files_dir"
+      if [[ "$luks_key_file" == /tmp/nixos-anywhere-luks.* ]]; then
+        rm -f -- "$luks_key_file"
+      fi
+      if [[ "$extra_files_dir" == /tmp/nixos-anywhere-extra.* ]]; then
+        rm -rf -- "$extra_files_dir"
+      fi
     }
     trap cleanup EXIT
 
-    chmod 600 "$luks_key_file"
-    printf '%s' "$luks_password" > "$luks_key_file"
-    unset luks_password luks_confirmation
+    if [[ "$uses_luks" == true ]]; then
+      luks_key_file=$(mktemp /tmp/nixos-anywhere-luks.XXXXXX)
+      chmod 600 "$luks_key_file"
+      printf '%s' "$luks_password" > "$luks_key_file"
+      unset luks_password luks_confirmation
+    fi
 
     install -D -m 600 "$age_key" "$extra_files_dir/var/lib/sops-nix/key.txt"
     install -d -m 700 "$extra_files_dir/root/.ssh"
@@ -133,9 +151,14 @@ anywhere hostname target:
     [[ -s "$extra_files_dir/root/.ssh/authorized_keys" ]] || { echo "No SSH public keys found." >&2; exit 1; }
     chmod 600 "$extra_files_dir/root/.ssh/authorized_keys"
 
-    nix run github:nix-community/nixos-anywhere -- \
-      --flake "path:.#$machine" \
-      --target-host "$ssh_target" \
-      --copy-host-keys \
-      --disk-encryption-keys /tmp/disko-luks-password "$luks_key_file" \
+    anywhere_args=(
+      --flake "path:.#$machine"
+      --target-host "$ssh_target"
+      --copy-host-keys
       --extra-files "$extra_files_dir"
+    )
+    if [[ "$uses_luks" == true ]]; then
+      anywhere_args+=(--disk-encryption-keys "$luks_remote_path" "$luks_key_file")
+    fi
+
+    nix run github:nix-community/nixos-anywhere -- "${anywhere_args[@]}"
