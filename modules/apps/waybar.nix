@@ -24,8 +24,6 @@ _: {
           spacing = 20;
           modules-left = [
             "clock"
-            "custom/nixos"
-            "systemd-failed-units"
           ];
           modules-center = [ "mpris" ];
           modules-right = [
@@ -190,7 +188,7 @@ _: {
         }
 
         window#waybar.topbar > box {
-          padding: 0 8px;
+          padding: 0 6px;
         }
 
         window#waybar.taskbar {
@@ -236,12 +234,6 @@ _: {
           color: @base00;
           background: @base08;
           box-shadow: inset 0 -2px @base0A;
-        }
-
-        #custom-nixos {
-          margin-left: -10px;
-          padding-top: 2px;
-          font-size: 8pt;
         }
       '';
     };
