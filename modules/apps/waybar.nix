@@ -27,7 +27,6 @@ _: {
           ];
           modules-center = [ "mpris" ];
           modules-right = [
-            "network"
             "network#speed"
             "cpu"
             "memory"
@@ -90,11 +89,6 @@ _: {
             format-icons.default = "";
           };
 
-          temperature = {
-            thermal-zone = 0;
-            format = " {temperatureC}°C";
-          };
-
           cpu = {
             interval = 3;
             format = " {}%";
@@ -108,41 +102,10 @@ _: {
             on-click = "kitty --start-as=fullscreen --title btop sh -c 'btop'";
           };
 
-          network = {
-            format-wifi = " ";
-            format-ethernet = "󰈀 ";
-            tooltip-format = "{essid} - {ipaddr}/{cidr} via {gwaddr}";
-            format-linked = "󰈀 ";
-            format-disconnected = "";
-          };
-
           "network#speed" = {
             interval = 3;
             format-wifi = " {bandwidthUpBytes}  {bandwidthDownBytes}";
             format-ethernet = " {bandwidthUpBytes}  {bandwidthDownBytes}";
-          };
-
-          bluetooth = {
-            format = "󰂯 {status}";
-            format-disabled = "";
-            format-connected = "󰂯 {num_connections}";
-            tooltip-format = "{device_alias}";
-            tooltip-format-connected = "󰂯 {device_enumerate}";
-            tooltip-format-enumerate-connected = "{device_alias}";
-          };
-
-          mpris = {
-            format = "{status_icon} {dynamic}";
-            dynamic-order = [
-              "title"
-              "artist"
-              "album"
-            ];
-            status-icons = {
-              playing = "";
-              paused = "";
-              stopped = "";
-            };
           };
 
           tray = {
