@@ -1,5 +1,5 @@
 _: {
   identity.sshKeys = {
-    # example = "ssh-ed25519 AAAA...";
+    daisy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKOSbYIOvtjrNmMdViOACfECla6LB8GKYB/mxtfJNVFh";
   };
 }
