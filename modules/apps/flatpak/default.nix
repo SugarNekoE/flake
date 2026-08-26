@@ -1,6 +1,22 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
+let
+  withPackages =
+    packages:
+    {
+      _class = "aspects";
+    }
+    // lib.optionalAttrs (packages != [ ]) {
+      imports = [ inputs.self.modules.aspects.flatpak ];
+      homeModule.services.flatpak.packages = packages;
+    };
+in
 {
   flake-file.inputs.nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+  flake.modules.aspects.flatpak.config = {
+    inherit withPackages;
+    "with" = withPackages;
+  };
 
   nixos =
     { pkgs, ... }:

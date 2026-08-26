@@ -15,15 +15,16 @@
     vicinae
     zed
 
-    # flatpak
-    bazaar
-    telegram
-    localsend
-    mission-center
-    solaar
-    qq
-    wechat
-    wemeet
-    slack
+    (flatpak.withPackages [
+      "io.github.kolunmi.Bazaar"
+      "org.telegram.desktop"
+      "org.localsend.localsend_app"
+      "io.missioncenter.MissionCenter"
+      "io.github.pwr_solaar.solaar"
+      "com.qq.QQ"
+      "com.tencent.WeChat"
+      "com.tencent.wemeet"
+      "com.slack.Slack"
+    ])
   ];
 }
