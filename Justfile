@@ -145,23 +145,9 @@ anywhere hostname target:
     install -D -m 600 "$age_key" "$extra_files_dir/var/lib/sops-nix/key.txt"
     install -d -m 700 "$extra_files_dir/root/.ssh"
     authorized_keys="$extra_files_dir/root/.ssh/authorized_keys"
-    keys_exported=false
-    agent_sockets=()
-    [[ -n "${SSH_AUTH_SOCK:-}" ]] && agent_sockets+=("$SSH_AUTH_SOCK")
-    configured_agent=$(ssh -G "$ssh_target" 2>/dev/null | awk '$1 == "identityagent" { print $2; exit }' || true)
-    [[ -n "$configured_agent" && "$configured_agent" != "none" ]] && agent_sockets+=("$configured_agent")
-    agent_sockets+=("$HOME/.1password/agent.sock")
-
-    for agent_socket in "${agent_sockets[@]}"; do
-      if [[ -S "$agent_socket" ]] && SSH_AUTH_SOCK="$agent_socket" ssh-add -L > "$authorized_keys" 2>/dev/null; then
-        keys_exported=true
-        break
-      fi
-    done
-
-    if [[ "$keys_exported" == false ]]; then
-      echo "SSH agent key listing unavailable; reusing the target account's authorized_keys."
-      ssh "$ssh_target" 'cat "$HOME/.ssh/authorized_keys"' > "$authorized_keys"
+    if ! ssh-add -L > "$authorized_keys"; then
+      echo "The default SSH agent did not expose a public key." >&2
+      exit 1
     fi
     [[ -s "$authorized_keys" ]] || { echo "No SSH public keys found." >&2; exit 1; }
     chmod 600 "$authorized_keys"
