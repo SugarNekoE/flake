@@ -172,7 +172,7 @@ let
   selectableAspects = lib.mapAttrs selectAspect config.flake.modules.aspects;
 
   buildMachine =
-    _name: machine:
+    name: machine:
     let
       sharedArgs = {
         inherit inputs;
@@ -181,22 +181,24 @@ let
       // lib.optionalAttrs (machine.user != null) {
         user = machine.user;
       };
-      machineModules =
-        lib.optional (machine.nixosModule != null) machine.nixosModule
-        ++ lib.optional (machine.hardware != null) machine.hardware
-        ++ lib.optionals (machine.diskoConfig != null) [
-          inputs.disko.nixosModules.disko
-          machine.diskoConfig
-        ]
-        ++ lib.optionals (machine.homeModule != null) [
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              extraSpecialArgs = sharedArgs;
-              sharedModules = [ machine.homeModule ];
-            };
-          }
-        ];
+      machineModules = [
+        { networking.hostName = name; }
+      ]
+      ++ lib.optional (machine.nixosModule != null) machine.nixosModule
+      ++ lib.optional (machine.hardware != null) machine.hardware
+      ++ lib.optionals (machine.diskoConfig != null) [
+        inputs.disko.nixosModules.disko
+        machine.diskoConfig
+      ]
+      ++ lib.optionals (machine.homeModule != null) [
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            extraSpecialArgs = sharedArgs;
+            sharedModules = [ machine.homeModule ];
+          };
+        }
+      ];
     in
     inputs.nixpkgs.lib.nixosSystem {
       inherit (machine) system;
