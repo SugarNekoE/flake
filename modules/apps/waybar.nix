@@ -24,6 +24,7 @@ _: {
           spacing = 20;
           modules-left = [
             "clock"
+            "custom/hostname"
           ];
           modules-center = [ "mpris" ];
           modules-right = [
@@ -39,6 +40,12 @@ _: {
           clock = {
             format = "{:%H:%M}";
             tooltip-format = "{:%Y-%m-%d}";
+          };
+
+          "custom/hostname" = {
+            exec = "hostname";
+            interval = "once";
+            tooltip = false;
           };
 
           systemd-failed-units = {
