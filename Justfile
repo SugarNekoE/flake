@@ -77,3 +77,65 @@ install-encrypted hostname target key_file remote_path="/tmp/disko-luks-password
 # Install with disk encryption and an additional root tree.
 install-encrypted-with-files hostname target key_file files remote_path="/tmp/disko-luks-password":
     nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}" --extra-files "{{ files }}"
+
+# Interactively install a LUKS machine with SOPS and SSH bootstrap files.
+anywhere hostname target:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    machine="{{ hostname }}"
+    ssh_target="{{ target }}"
+    age_key="$HOME/.config/sops/age/keys.txt"
+
+    if [[ ! -f "$age_key" ]]; then
+      echo "Missing SOPS age key: $age_key" >&2
+      exit 1
+    fi
+
+    nix eval --raw "path:.#nixosConfigurations.$machine.config.system.build.toplevel.drvPath" >/dev/null
+
+    echo "Target disks:"
+    ssh "$ssh_target" 'if [[ $(id -u) -eq 0 ]]; then lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; else sudo -n lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; fi'
+    echo
+    echo "WARNING: nixos-anywhere will destroy the disks selected by '$machine'."
+    read -r -p "Type $machine to continue: " confirmation
+    [[ "$confirmation" == "$machine" ]] || { echo "Cancelled."; exit 1; }
+
+    while true; do
+      read -r -s -p "New LUKS password: " luks_password
+      echo
+      read -r -s -p "Confirm LUKS password: " luks_confirmation
+      echo
+      if [[ -n "$luks_password" && "$luks_password" == "$luks_confirmation" ]]; then
+        break
+      fi
+      echo "Passwords did not match or were empty; try again." >&2
+    done
+
+    luks_key_file=$(mktemp /tmp/nixos-anywhere-luks.XXXXXX)
+    extra_files_dir=$(mktemp -d /tmp/nixos-anywhere-extra.XXXXXX)
+    cleanup() {
+      [[ "$luks_key_file" == /tmp/nixos-anywhere-luks.* ]] && rm -f -- "$luks_key_file"
+      [[ "$extra_files_dir" == /tmp/nixos-anywhere-extra.* ]] && rm -rf -- "$extra_files_dir"
+    }
+    trap cleanup EXIT
+
+    chmod 600 "$luks_key_file"
+    printf '%s' "$luks_password" > "$luks_key_file"
+    unset luks_password luks_confirmation
+
+    install -D -m 600 "$age_key" "$extra_files_dir/var/lib/sops-nix/key.txt"
+    install -d -m 700 "$extra_files_dir/root/.ssh"
+    if ! ssh-add -L > "$extra_files_dir/root/.ssh/authorized_keys"; then
+      echo "The SSH agent did not expose a public key; check the 1Password SSH agent." >&2
+      exit 1
+    fi
+    [[ -s "$extra_files_dir/root/.ssh/authorized_keys" ]] || { echo "No SSH public keys found." >&2; exit 1; }
+    chmod 600 "$extra_files_dir/root/.ssh/authorized_keys"
+
+    nix run github:nix-community/nixos-anywhere -- \
+      --flake "path:.#$machine" \
+      --target-host "$ssh_target" \
+      --copy-host-keys \
+      --disk-encryption-keys /tmp/disko-luks-password "$luks_key_file" \
+      --extra-files "$extra_files_dir"
