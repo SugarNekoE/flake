@@ -69,3 +69,11 @@ install hostname target:
 # Install with an additional root tree copied into the target installation.
 install-with-files hostname target files:
     nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --extra-files "{{ files }}"
+
+# Install with a local disk-encryption key copied into the installer environment.
+install-encrypted hostname target key_file remote_path="/tmp/disko-luks-password":
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}"
+
+# Install with disk encryption and an additional root tree.
+install-encrypted-with-files hostname target key_file files remote_path="/tmp/disko-luks-password":
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}" --extra-files "{{ files }}"
