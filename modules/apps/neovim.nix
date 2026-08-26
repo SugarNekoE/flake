@@ -5,6 +5,8 @@
   nixos = {
     imports = [ inputs.nixvim.nixosModules.nixvim ];
 
+    stylix.targets.nixvim.enable = true;
+
     programs.nixvim = {
       enable = true;
       vimAlias = true;
@@ -14,6 +16,8 @@
 
   home = {
     imports = [ inputs.nixvim.homeModules.nixvim ];
+
+    stylix.targets.nixvim.enable = true;
 
     home.sessionVariables = {
       EDITOR = "nvim";
@@ -138,11 +142,6 @@
             };
 
             filetype.extension.mdx = "markdown.mdx";
-
-            colorschemes.tokyonight = {
-              enable = true;
-              settings.style = "moon";
-            };
 
             diagnostic.settings = {
               underline = true;
