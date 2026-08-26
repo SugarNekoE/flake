@@ -23,7 +23,7 @@ in
 
   aspectHelpers.stylix = { inherit withWallpaper; };
 
-  flake.modules.nixos.stylix =
+  nixos =
     { pkgs, ... }:
     {
       imports = [ inputs.stylix.nixosModules.stylix ];
@@ -71,5 +71,5 @@ in
       };
     };
 
-  flake.modules.homeManager.stylix.stylix.autoEnable = false;
+  home.stylix.autoEnable = false;
 }
