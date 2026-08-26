@@ -455,18 +455,15 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1787305858,
-        "narHash": "sha256-IxabTv0+vrHxWceCvIDOGKedms6MdkIgsMqkAugNoN8=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "63a410de48ab4442e5bf62ee5b4ce71bdf7478b0",
-        "type": "github"
+        "lastModified": 1787498568,
+        "narHash": "sha256-FoOSoBG7tEvOlGRTpWnVdY506Ner4y7r7UYO3OGgmE8=",
+        "rev": "56c02bc00adcf003215cc4bd996d6efaf4cff188",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1060451.56c02bc00adc/nixexprs.tar.xz"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
     "nixpkgs_7": {
@@ -544,6 +541,7 @@
         "nixvim": "nixvim",
         "sfd-nix": "sfd-nix",
         "sops-nix": "sops-nix",
+        "stasis": "stasis",
         "stylix": "stylix"
       }
     },
@@ -552,11 +550,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1787586343,
-        "narHash": "sha256-xjZPqCxTVaknO+REWhri3n3mKXwms3nyzLMGQ5gVZRM=",
+        "lastModified": 1787761526,
+        "narHash": "sha256-E+8lzNJW21GuVM+qJnIrNiviTCy1fqZ6zfIwax6rRI4=",
         "ref": "refs/heads/main",
-        "rev": "75df9932568d746b096e4f702e1184beb3e46cc9",
-        "revCount": 14,
+        "rev": "4725366486651fe075fb1f6007573797a59b1249",
+        "revCount": 17,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/sfd-nix"
       },
@@ -580,6 +578,29 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "stasis": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786798494,
+        "narHash": "sha256-kNgoBdJBBa8+aOshVc9LXtikwv1ar5ldI85uOOdlJ2M=",
+        "owner": "saltnpepper97",
+        "repo": "stasis",
+        "rev": "f17d1a09e0e43e16af4412599a9e96a7266f82aa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "saltnpepper97",
+        "repo": "stasis",
         "type": "github"
       }
     },
