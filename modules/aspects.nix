@@ -7,14 +7,15 @@
 let
   adapterFile = toString ./aspects.nix;
   moduleRoot = toString ./.;
+  normalizeModuleName = name: if builtins.match "^[0-9].*" name != null then "_${name}" else name;
   moduleName =
     file:
     let
       path = toString file;
       fileName = lib.removeSuffix ".nix" (baseNameOf path);
-      name = if builtins.match "^[0-9].*" fileName != null then "_${fileName}" else fileName;
+      name = if fileName == "default" then baseNameOf (dirOf path) else fileName;
     in
-    if name == "default" then baseNameOf (dirOf path) else name;
+    normalizeModuleName name;
   moduleRelativePath = file: lib.removePrefix "${moduleRoot}/" (toString file);
   moduleKind =
     file:
@@ -28,10 +29,18 @@ let
     else
       "module";
   moduleFiles = builtins.filter (file: toString file != adapterFile) (inputs.import-tree.leafs ./.);
-  sourceModuleNames = map moduleName moduleFiles;
-  duplicateSourceNames = lib.filter (
-    name: builtins.length (lib.filter (candidate: candidate == name) sourceModuleNames) > 1
-  ) (lib.unique sourceModuleNames);
+  machineModuleFiles = builtins.filter (file: moduleKind file == "machine") moduleFiles;
+  aspectModuleFiles = builtins.filter (file: moduleKind file != "machine") moduleFiles;
+  duplicateNames =
+    files:
+    let
+      names = map moduleName files;
+    in
+    lib.filter (name: builtins.length (lib.filter (candidate: candidate == name) names) > 1) (
+      lib.unique names
+    );
+  duplicateMachineNames = duplicateNames machineModuleFiles;
+  duplicateAspectNames = duplicateNames aspectModuleFiles;
 
   adaptModule =
     file: moduleArgs:
@@ -90,18 +99,6 @@ let
       homeModule = nullableModule "Home Manager module contributed by this aspect.";
       home = nullableModule "Selector that keeps only this aspect's Home Manager module.";
       nixos = nullableModule "Selector that keeps only this aspect's NixOS module.";
-      withPackages = lib.mkOption {
-        type = lib.types.nullOr lib.types.raw;
-        default = null;
-        internal = true;
-        description = "Optional package composition helper exposed by an aspect.";
-      };
-      "with" = lib.mkOption {
-        type = lib.types.nullOr lib.types.raw;
-        default = null;
-        internal = true;
-        description = "Quoted alias for an aspect's package composition helper.";
-      };
     };
   };
 
@@ -135,11 +132,12 @@ let
   });
 
   selectAspect =
-    aspect:
+    name: aspect:
     let
       parsed =
         (lib.evalModules {
           class = "aspects";
+          specialArgs = { inherit inputs; };
           modules = [
             aspectType
             aspect
@@ -161,13 +159,7 @@ let
       // lib.optionalAttrs (parsed.nixosModule != null) {
         nixosModule = parsed.nixosModule;
       };
-      extensions =
-        lib.optionalAttrs (parsed.withPackages != null) {
-          inherit (parsed) withPackages;
-        }
-        // lib.optionalAttrs (parsed."with" != null) {
-          "with" = parsed."with";
-        };
+      helpers = config.aspectHelpers.${name} or { };
     in
     {
       _class = "aspects";
@@ -175,9 +167,9 @@ let
       nixos = nixosOnly;
     }
     // modules
-    // extensions;
+    // helpers;
 
-  selectableAspects = lib.mapAttrs (_name: selectAspect) config.flake.modules.aspects;
+  selectableAspects = lib.mapAttrs selectAspect config.flake.modules.aspects;
 
   buildMachine =
     _name: machine:
@@ -212,10 +204,12 @@ let
       modules = machineModules;
     };
   validatedModuleFiles =
-    if duplicateSourceNames == [ ] then
-      moduleFiles
+    if duplicateAspectNames != [ ] then
+      throw "duplicate aspect module names are not allowed: ${lib.concatStringsSep ", " duplicateAspectNames}"
+    else if duplicateMachineNames != [ ] then
+      throw "duplicate machine names are not allowed: ${lib.concatStringsSep ", " duplicateMachineNames}"
     else
-      throw "duplicate aspect module names are not allowed: ${lib.concatStringsSep ", " duplicateSourceNames}";
+      moduleFiles;
 in
 {
   imports = map adaptModule validatedModuleFiles;
@@ -232,6 +226,13 @@ in
     );
     default = { };
     description = "Machines materialized as NixOS configurations.";
+  };
+
+  options.aspectHelpers = lib.mkOption {
+    type = lib.types.lazyAttrsOf (lib.types.attrsOf lib.types.raw);
+    default = { };
+    internal = true;
+    description = "Helpers attached to selectable aspects without participating in module merges.";
   };
 
   config = {
