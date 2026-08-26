@@ -8,11 +8,9 @@
       imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
       home.packages = with pkgs; [
-        htop
         nil
         nixd
         devenv
-        any-nix-shell
         fastfetch
         nix-output-monitor
         cachix
@@ -24,6 +22,8 @@
       };
 
       programs.direnv.enable = true;
+
+      programs.htop.enable = true;
 
       programs.btop.enable = true;
 
