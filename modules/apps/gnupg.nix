@@ -33,10 +33,10 @@ _: {
 
       sops.secrets = lib.mkIf hasPrivateKeys (
         lib.mapAttrs' (
-          name: keyPair:
+          name: _keyPair:
           lib.nameValuePair (secretName name) {
             inherit sopsFile;
-            key = keyPair.privateKey;
+            key = "gpg/privateKeys/${name}";
             mode = "0400";
           }
         ) keyPairs

@@ -15,16 +15,11 @@
               type = lib.types.str;
               description = "GPG fingerprint or long key ID used for signing.";
             };
-
-            privateKey = lib.mkOption {
-              type = lib.types.str;
-              description = "Key path of the armored private key in the SOPS document.";
-            };
           };
         }
       );
       default = { };
-      description = "Globally named GPG key pairs.";
+      description = "Globally named GPG identities.";
     };
   };
 }
