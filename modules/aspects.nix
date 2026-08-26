@@ -10,7 +10,8 @@ let
     file:
     let
       path = toString file;
-      name = lib.removeSuffix ".nix" (baseNameOf path);
+      fileName = lib.removeSuffix ".nix" (baseNameOf path);
+      name = if builtins.match "^[0-9].*" fileName != null then "_${fileName}" else fileName;
     in
     if name == "default" then baseNameOf (dirOf path) else name;
   moduleFiles = builtins.filter (file: toString file != adapterFile) (inputs.import-tree.leafs ./.);
