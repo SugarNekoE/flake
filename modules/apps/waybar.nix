@@ -31,7 +31,6 @@ _: {
           modules-right = [
             "network"
             "network#speed"
-            "temperature"
             "cpu"
             "memory"
             "battery"
@@ -112,13 +111,11 @@ _: {
           };
 
           network = {
-            format-wifi = " {essid}@{signalStrength}%";
-            format-ethernet = "󰈀 {ipaddr}/{cidr}";
-            tooltip-format = "{essid} - {ifname} via {gwaddr} ";
-            format-linked = "󰈀 {ifname} (No IP)";
+            format-wifi = " ";
+            format-ethernet = "󰈀 ";
+            tooltip-format = "{essid} - {ipaddr}/{cidr} via {gwaddr}";
+            format-linked = "󰈀 ";
             format-disconnected = "";
-            format-alt = "{ifname}:{essid} {ipaddr}/{cidr}";
-            on-click-right = "nmgui";
           };
 
           "network#speed" = {
@@ -154,12 +151,6 @@ _: {
             icon-size = 16;
             spacing = 4;
           };
-
-          "custom/nixos" = {
-            exec = "cat /run/current-system/nixos-version";
-            interval = "once";
-            format = "with Noa Virellia · NixOS {text}";
-          };
         }
         {
           name = "taskbar";
@@ -189,7 +180,6 @@ _: {
             justify = "left";
             on-click = "activate";
             on-click-middle = "close";
-            rewrite."Firefox Web Browser" = "Firefox";
           };
         }
       ];
