@@ -34,16 +34,12 @@
   home =
     { pkgs, ... }:
     {
-      gtk = {
-        enable = true;
-        colorScheme = "dark";
+      stylix.targets = {
+        gtk.enable = true;
+        qt.enable = true;
       };
 
-      qt = {
-        enable = true;
-        platformTheme.name = "adwaita";
-        style.name = "adwaita-dark";
-      };
+      gtk.colorScheme = "dark";
 
       home.packages = with pkgs; [
         google-chrome
