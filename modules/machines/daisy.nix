@@ -34,6 +34,7 @@
     develop
     office
     social
+    unixkey
     work
 
     # apps

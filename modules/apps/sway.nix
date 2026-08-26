@@ -24,6 +24,7 @@ _: {
   flake.modules.homeManager.sway =
     {
       lib,
+      nixosConfig,
       pkgs,
       ...
     }:
@@ -57,7 +58,10 @@ _: {
           gaps.smartBorders = "on";
           input."*" = {
             natural_scroll = "enabled";
-            xkb_options = "ctrl:nocaps";
+          };
+          input."type:keyboard" = {
+            xkb_layout = nixosConfig.services.xserver.xkb.layout;
+            xkb_options = nixosConfig.services.xserver.xkb.options;
           };
           workspaceAutoBackAndForth = true;
           window = {
