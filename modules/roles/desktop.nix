@@ -1,11 +1,21 @@
 { inputs, ... }:
 {
   flake.modules.aspects.desktop.imports = with inputs.self.aspects; [
-    secrets.home
-    gnupg
+    _1password
+    codex
+    fcitx5
+    fish
     git
+    gnupg
+    kitty
+    neovim
+    singbox-gui
+    starship
+    unix-tools
+    vicinae
     zed
-    slack
+
+    # flatpak
     bazaar
     telegram
     localsend
@@ -14,6 +24,6 @@
     qq
     wechat
     wemeet
-    singbox-gui
+    slack
   ];
 }
