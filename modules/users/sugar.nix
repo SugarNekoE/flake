@@ -31,6 +31,8 @@
       };
 
       home-manager = {
+        backupFileExtension = "backup";
+        overwriteBackup = true;
         useGlobalPkgs = true;
         useUserPackages = true;
         users.${user.username} = { };
