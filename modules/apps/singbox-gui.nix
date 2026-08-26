@@ -1,6 +1,5 @@
 {
   inputs,
-  lib,
   ...
 }:
 let
@@ -43,19 +42,37 @@ in
 
   aspectHelpers.singbox-gui = { inherit withProfile; };
 
-  flake-file.prune-lock.program = lib.mkForce (
-    pkgs:
-    pkgs.writeShellApplication {
-      name = "nix-auto-follow";
-      runtimeInputs = [ inputs.nix-auto-follow.packages.${pkgs.stdenv.hostPlatform.system}.default ];
-      text = ''
-        auto-follow --ignore sfd-nix "$1" > "$2"
-      '';
-    }
-  );
-
   nixos =
-    { user, ... }:
+    { config, user, ... }:
+    let
+      colors = config.lib.stylix.colors.withHashtag;
+      catppuccinTerminal = {
+        background = colors.base00;
+        foreground = colors.base05;
+        cursor = colors.base06;
+        cursorAccent = colors.base00;
+        selectionBackground = colors.base02;
+        selectionForeground = colors.base06;
+
+        black = colors.base00;
+        red = colors.base08;
+        green = colors.base0B;
+        yellow = colors.base0A;
+        blue = colors.base0D;
+        magenta = colors.base0E;
+        cyan = colors.base0C;
+        white = colors.base05;
+
+        brightBlack = colors.base03;
+        brightRed = colors.base0F;
+        brightGreen = colors.base0B;
+        brightYellow = colors.base0A;
+        brightBlue = colors.base07;
+        brightMagenta = colors.base0E;
+        brightCyan = colors.base0C;
+        brightWhite = colors.base06;
+      };
+    in
     {
       imports = [
         inputs.sfd-nix.nixosModules.default
@@ -93,20 +110,15 @@ in
           };
           language = "en";
           appearance = "dark";
-          theme = "blue";
+          theme = colors.base0D;
 
           terminal = {
             lightTheme = "Alabaster";
-            darkTheme = "Afterglow";
+            darkTheme = "";
             fontFamily = "JetBrains Mono";
             fontSize = 14;
             alwaysShowSymbolBar = true;
-
-            darkCustomTheme = {
-              background = "#101010";
-              foreground = "#eeeeee";
-              cursor = "#eeeeee";
-            };
+            darkCustomTheme = catppuccinTerminal;
           };
 
           core = {

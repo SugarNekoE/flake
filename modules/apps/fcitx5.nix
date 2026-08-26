@@ -1,6 +1,10 @@
 _: {
   home =
-    { pkgs, ... }:
+    {
+      config,
+      pkgs,
+      ...
+    }:
     {
       stylix.targets.fcitx5.enable = true;
 
@@ -19,12 +23,17 @@ _: {
           waylandFrontend = true;
           addons = with pkgs; [
             qt6Packages.fcitx5-configtool
-            fcitx5-fluent
             (fcitx5-rime.override {
               rimeDataPkgs = [ rime-ice ];
             })
           ];
         };
       };
+
+      systemd.user.services.fcitx5-daemon.Unit.X-Restart-Triggers = [
+        config.xdg.dataFile."fcitx5/themes/stylix/theme.conf".source
+        config.xdg.dataFile."fcitx5/themes/stylix/panel.svg".source
+        config.xdg.dataFile."fcitx5/themes/stylix/highlight.svg".source
+      ];
     };
 }
