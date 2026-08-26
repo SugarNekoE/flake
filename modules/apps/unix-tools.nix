@@ -8,7 +8,6 @@
       imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
       home.packages = with pkgs; [
-        btop
         htop
         nil
         nixd
@@ -25,6 +24,10 @@
       };
 
       programs.direnv.enable = true;
+
+      programs.btop.enable = true;
+
+      stylix.targets.btop.enable = true;
 
       programs.nix-index-database.comma.enable = true;
 
