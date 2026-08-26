@@ -67,7 +67,7 @@
           terminal = {
             lightTheme = "Alabaster";
             darkTheme = "Afterglow";
-            fontFamily = "Iosevka";
+            fontFamily = "JetBrains Mono";
             fontSize = 14;
             alwaysShowSymbolBar = true;
 

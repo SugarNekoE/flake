@@ -1,9 +1,7 @@
 _: {
   home =
-    { pkgs, ... }:
+    { ... }:
     {
-      home.packages = with pkgs; [ nerd-fonts.noto ];
-
       programs.starship = {
         enable = true;
         enableFishIntegration = true;

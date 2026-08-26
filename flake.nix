@@ -27,5 +27,9 @@
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
     sfd-nix.url = "git+https://forge.asnk.io/sugar/sfd-nix";
     sops-nix.url = "github:Mic92/sops-nix";
+    stylix = {
+      url = "github:nix-community/stylix/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

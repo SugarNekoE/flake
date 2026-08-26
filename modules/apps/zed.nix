@@ -2,12 +2,6 @@ _: {
   home =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
-        noto-fonts-cjk-sans
-        noto-fonts-color-emoji
-      ];
-
       programs.zed-editor = {
         enable = true;
         package = pkgs.zed-editor;
@@ -44,11 +38,16 @@ _: {
 
           ui_font_size = 16;
           ui_font_family = "Noto Sans CJK SC";
-          ui_font_fallbacks = [ "Noto Color Emoji" ];
+          ui_font_fallbacks = [
+            "Noto Sans"
+            "Noto Color Emoji"
+          ];
           buffer_font_size = 16;
-          buffer_font_family = "JetBrainsMono Nerd Font Mono";
+          buffer_font_family = "JetBrains Mono";
           buffer_font_fallbacks = [
-            "Noto Sans CJK SC"
+            "Noto Sans Mono CJK SC"
+            "Noto Sans Mono"
+            "NotoSansM Nerd Font Mono"
             "Noto Color Emoji"
           ];
 
