@@ -18,6 +18,7 @@
     networkmanager
     podman
     power
+    plymouth
     (openssh.withKnownHosts { })
     (singbox-gui.withProfile {
       name = "SNEPX";
