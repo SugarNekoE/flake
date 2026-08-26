@@ -2,8 +2,32 @@
 {
   flake-file.inputs.nixvim.url = "github:nix-community/nixvim/nixos-26.05";
 
+  nixos = {
+    imports = [ inputs.nixvim.nixosModules.nixvim ];
+
+    programs.nixvim = {
+      enable = true;
+      vimAlias = true;
+      defaultEditor = true;
+    };
+  };
+
   home = {
     imports = [ inputs.nixvim.homeModules.nixvim ];
+
+    home.sessionVariables = {
+      EDITOR = "nvim";
+      IHP_EDITOR = "nvim";
+      SUDO_EDITOR = "nvim";
+    };
+
+    programs.fish = {
+      shellAliases = {
+        "v" = "nvim";
+        "vi" = "nvim";
+        "vim" = "nvim";
+      };
+    };
 
     programs.nixvim = {
       enable = true;
