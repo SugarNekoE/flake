@@ -18,6 +18,8 @@ _: {
         };
       };
 
+      services.displayManager.defaultSession = "sway-uwsm";
+
       systemd.user.targets."nixos-fake-graphical-session".enable = false;
     };
 
@@ -35,9 +37,23 @@ _: {
       filemanager = "dolphin";
       browser = "google-chrome-stable";
       screenshot = "grimshot copy anything";
+      lock = "${lib.getExe pkgs.swaylock} --daemonize";
+      lockSession = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
     in
     {
       stylix.targets.sway.enable = true;
+      stylix.targets.swaylock.enable = true;
+
+      programs.swaylock.enable = true;
+
+      services.swayidle = {
+        enable = true;
+        systemdTargets = [ "graphical-session.target" ];
+        events = {
+          lock = lock;
+          before-sleep = lockSession;
+        };
+      };
 
       systemd.user.services.fcitx5-daemon = {
         Unit = {
@@ -51,6 +67,7 @@ _: {
         enable = true;
         systemd.enable = false; # UWSM managed
         package = pkgs.unstable.swayfx;
+        extraConfigEarly = "include /etc/sway/config.d/*";
         # SwayFX requires a DRM renderer even for its config check, which is unavailable in the build sandbox.
         checkConfig = false;
         wrapperFeatures.gtk = true;
@@ -83,6 +100,7 @@ _: {
           keybindings = lib.mkOptionDefault {
             "${modifier}+b" = "exec ${browser}";
             "${modifier}+e" = "exec ${filemanager}";
+            "${modifier}+l" = "exec ${lockSession}";
             "${modifier}+Shift+s" = "exec ${screenshot}";
             "${modifier}+Return" = "exec ${terminal}";
             "${modifier}+d" = "exec ${menu}";

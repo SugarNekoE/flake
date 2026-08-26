@@ -15,8 +15,9 @@ _: {
       settings = [
         {
           name = "topbar";
-          layer = "top";
+          layer = "overlay";
           position = "top";
+          margin-top = 0;
           exclusive = true;
           passthrough = false;
           height = 30;
@@ -199,7 +200,7 @@ _: {
         }
 
         window#waybar.topbar > box {
-          padding: 4px 8px;
+          padding: 0 8px;
         }
 
         window#waybar.taskbar {
