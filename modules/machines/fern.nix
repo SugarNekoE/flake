@@ -54,6 +54,12 @@
     davinci
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
+  nixos =
+    { identity, user, ... }:
+    {
+      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
+      networking.firewall.enable = true;
+    };
   hardware =
     {
       config,

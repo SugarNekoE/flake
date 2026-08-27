@@ -57,6 +57,7 @@
     { identity, user, ... }:
     {
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
+      networking.firewall.enable = true;
     };
   home = {
     wayland.windowManager.sway.config.output = {
