@@ -1,5 +1,7 @@
 _: {
-  nixos.hardware.logitech.wireless.enable = true;
+  nixos = {
+    hardware.logitech.wireless.enable = true;
+  };
 
   home =
     {
