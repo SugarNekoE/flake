@@ -201,6 +201,12 @@
 
         configFile = {
           breezerc.Common.RoundedCorners = false;
+          kded_device_automounterrc.General = {
+            AutomountEnabled = true;
+            AutomountOnLogin = true;
+            AutomountOnPlugin = true;
+            AutomountUnknownDevices = true;
+          };
           kdeglobals.KDE.AnimationDurationFactor = 0.5;
         };
       };
