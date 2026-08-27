@@ -1,14 +1,4 @@
-{ inputs, ... }:
-let
-  withKnownHosts = knownHosts: {
-    _class = "aspects";
-    imports = [ inputs.self.modules.aspects.openssh ];
-    nixosModule.programs.ssh.knownHosts = knownHosts;
-  };
-in
-{
-  aspectHelpers.openssh = { inherit withKnownHosts; };
-
+_: {
   nixos = _: {
     services.openssh = {
       enable = true;

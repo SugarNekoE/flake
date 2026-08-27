@@ -23,12 +23,7 @@
     power
     plymouth
     polkit.nixos
-    (openssh.withKnownHosts {
-      fern = {
-        hostNames = [ "fern" ];
-        publicKey = config.identity.sshKeys.fern;
-      };
-    })
+    openssh
     (singbox-gui.withProfile {
       name = "SNEPX";
       sopsFile = ../secrets/sing-box/home.json;

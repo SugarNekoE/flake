@@ -22,7 +22,7 @@
     power
     plymouth
     polkit
-    (openssh.withKnownHosts { })
+    openssh
     (singbox-gui.withProfile {
       name = "SNEPX";
       sopsFile = ../secrets/sing-box/remote.json;
