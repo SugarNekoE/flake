@@ -224,7 +224,7 @@ _: {
         "--locked XF86AudioStop" = "exec ${swayosdClient} --playerctl stop";
         "XF86Display" = "exec wdisplays";
         "--locked --no-repeat XF86PerformanceMode" = "exec ${lib.getExe cyclePowerProfile}";
-        "--locked --no-repeat XF86Battery" = "exec ${lib.getExe cyclePowerProfile}";
+        "--locked --no-repeat --to-code XF86Battery" = "exec ${lib.getExe cyclePowerProfile}";
         "XF86TouchpadToggle" = "exec ${lib.getExe toggleTouchpad}";
         "XF86WLAN" = "exec ${lib.getExe toggleAirplaneMode}";
         "XF86RFKill" = "exec ${lib.getExe toggleAirplaneMode}";
