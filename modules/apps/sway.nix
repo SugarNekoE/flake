@@ -12,6 +12,11 @@ _: {
 
       services.accounts-daemon.enable = true;
 
+      programs.thunar = {
+        enable = true;
+        plugins = [ pkgs.thunar-volman ];
+      };
+
       programs.uwsm = {
         enable = true;
         waylandCompositors = {
@@ -222,7 +227,6 @@ _: {
       home.packages = with pkgs; [
         wl-clipboard
         sway-contrib.grimshot
-        thunar
         xfce4-exo
         xfce4-settings
         autotiling
@@ -234,6 +238,16 @@ _: {
         [Helpers]
         TerminalEmulator=kitty
       '';
+
+      xfconf.settings = {
+        thunar = {
+          "misc-volume-management" = true;
+        };
+        thunar-volman = {
+          "automount-drives/enabled" = true;
+          "automount-media/enabled" = true;
+        };
+      };
 
       xdg.configFile."uwsm/env".text = ''
         export XDG_SESSION_TYPE=wayland

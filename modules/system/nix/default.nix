@@ -40,6 +40,7 @@
 
       boot.loader.systemd-boot.configurationLimit = 10;
 
+      services.gvfs.enable = true;
       services.gnome.gnome-keyring.enable = true;
     };
 }
