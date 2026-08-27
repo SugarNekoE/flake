@@ -20,6 +20,7 @@
       "net.agalwood.Motrix"
       "org.jellyfin.JellyfinDesktop"
       "org.localsend.localsend_app"
+      "io.gitlab.adhami3310.Impression"
     ])
   ];
 

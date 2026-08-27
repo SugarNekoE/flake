@@ -11,7 +11,9 @@ let
   ];
 in
 {
-  nixos.imports = [ inputs.self.modules.nixos.flatpak ];
+  nixos = {
+    imports = [ inputs.self.modules.nixos.flatpak ];
+  };
 
   home = {
     imports = [ inputs.self.modules.homeManager.flatpak ];
