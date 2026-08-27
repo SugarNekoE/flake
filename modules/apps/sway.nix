@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+_: {
   nixos =
     {
       pkgs,
@@ -79,8 +78,6 @@
       };
     in
     {
-      imports = [ inputs.self.modules.homeManager.stasis ];
-
       stylix.targets.sway.enable = true;
       stylix.targets.swaylock.enable = true;
       stylix.targets.mako.enable = true;

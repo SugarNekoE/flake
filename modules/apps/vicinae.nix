@@ -3,6 +3,7 @@ _: {
     {
       config,
       lib,
+      nixosConfig,
       pkgs,
       ...
     }:
@@ -11,7 +12,9 @@ _: {
 
       programs.vicinae = {
         enable = true;
-        settings.providers.applications.preferences.launchPrefix = "uwsm-app --";
+        settings = lib.mkIf nixosConfig.programs.uwsm.enable {
+          providers.applications.preferences.launchPrefix = "uwsm-app --";
+        };
         systemd = {
           enable = true;
           autoStart = true;

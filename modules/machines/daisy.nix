@@ -44,6 +44,7 @@
     # apps
     logitech
     sway
+    stasis
     waybar
     ly
     sdrpp
