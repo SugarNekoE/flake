@@ -17,6 +17,9 @@
       "com.github.tchx84.Flatseal"
       "io.github.flattool.Warehouse"
       "net.davidotek.pupgui2"
+      "net.agalwood.Motrix"
+      "org.jellyfin.JellyfinDesktop"
+      "org.localsend.localsend_app"
     ])
   ];
 
@@ -39,9 +42,6 @@
         cameractrls
         lact
         mission-center
-        motrix
-        jellyfin-desktop
-        localsend
         tor-browser
         vlc
         bilibili
