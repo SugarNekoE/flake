@@ -188,10 +188,10 @@ _: {
         Unit = {
           Description = "Show ThinkPad power profile changes";
           After = [
-            "sway-session.target"
+            "graphical-session.target"
             "swayosd.service"
           ];
-          PartOf = [ "sway-session.target" ];
+          PartOf = [ "graphical-session.target" ];
         };
 
         Service = {
@@ -200,7 +200,7 @@ _: {
           RestartSec = "2s";
         };
 
-        Install.WantedBy = [ "sway-session.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
       };
 
       wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault {

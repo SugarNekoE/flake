@@ -26,7 +26,6 @@ _: {
       services.displayManager.defaultSession = "sway-uwsm";
 
       systemd.user.targets."nixos-fake-graphical-session".enable = false;
-      systemd.user.targets.sway-session.wants = [ "xdg-desktop-autostart.target" ];
     };
 
   flake.modules.homeManager.sway =
@@ -74,14 +73,6 @@ _: {
           timestr = "%H:%M";
         };
       };
-      systemd.user.services.fcitx5-daemon = {
-        Unit = {
-          PartOf = [ "sway-session.target" ];
-          After = [ "sway-session.target" ];
-        };
-        Install.WantedBy = [ "sway-session.target" ];
-      };
-
       wayland.windowManager.sway = {
         enable = true;
         systemd.enable = false; # UWSM managed

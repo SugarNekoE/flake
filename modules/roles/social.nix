@@ -2,7 +2,7 @@
   imports = with inputs.self.aspects; [
     (flatpak.withPackages [
       "com.teamspeak.TeamSpeak3"
-      "com.QQ.qq"
+      "com.qq.QQ"
       "com.tencent.WeChat"
     ])
   ];

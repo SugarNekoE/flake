@@ -29,10 +29,22 @@ _: {
               rimeDataPkgs = [ rime-ice ];
             })
           ];
+          settings.inputMethod = {
+            GroupOrder."0" = "Default";
+            "Groups/0" = {
+              Name = "Default";
+              "Default Layout" = "us";
+              DefaultIM = "rime";
+            };
+            "Groups/0/Items/0".Name = "keyboard-us";
+            "Groups/0/Items/1".Name = "rime";
+          };
         };
       };
 
       systemd.user.services.fcitx5-daemon.Unit.X-Restart-Triggers = [
+        config.xdg.configFile.fcitx5.source
+        config.xdg.dataFile."fcitx5/rime/default.custom.yaml".source
         config.xdg.dataFile."fcitx5/themes/stylix/theme.conf".source
         config.xdg.dataFile."fcitx5/themes/stylix/panel.svg".source
         config.xdg.dataFile."fcitx5/themes/stylix/highlight.svg".source

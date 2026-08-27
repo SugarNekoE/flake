@@ -4,7 +4,7 @@
     codex
     zed
     (flatpak.withPackages [
-      "com.redisinsight.RedisInsight"
+      "com.redis.RedisInsight"
     ])
   ];
   home =
