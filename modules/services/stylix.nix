@@ -32,7 +32,30 @@ in
         enable = true;
         autoEnable = false;
         polarity = "dark";
-        base16Scheme = "${inputs.stylix.inputs.tinted-schemes}/base16/catppuccin-macchiato.yaml";
+        base16Scheme = {
+          system = "base16";
+          name = "Monokai Pro";
+          author = "Monokai";
+          variant = "dark";
+          palette = {
+            base00 = "#2D2A2E";
+            base01 = "#403E41";
+            base02 = "#5B595C";
+            base03 = "#727072";
+            base04 = "#939293";
+            base05 = "#FCFCFA";
+            base06 = "#FCFCFA";
+            base07 = "#FCFCFA";
+            base08 = "#FF6188";
+            base09 = "#FC9867";
+            base0A = "#FFD866";
+            base0B = "#A9DC76";
+            base0C = "#78DCE8";
+            base0D = "#78DCE8";
+            base0E = "#AB9DF2";
+            base0F = "#FC9867";
+          };
+        };
         cursor = {
           name = "macOS";
           package = pkgs.apple-cursor;

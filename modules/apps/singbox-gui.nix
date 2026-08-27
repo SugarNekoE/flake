@@ -46,7 +46,7 @@ in
     { config, user, ... }:
     let
       colors = config.lib.stylix.colors.withHashtag;
-      catppuccinTerminal = {
+      stylixTerminal = {
         background = colors.base00;
         foreground = colors.base05;
         cursor = colors.base06;
@@ -118,7 +118,7 @@ in
             fontFamily = "JetBrains Mono";
             fontSize = 14;
             alwaysShowSymbolBar = true;
-            darkCustomTheme = catppuccinTerminal;
+            darkCustomTheme = stylixTerminal;
           };
 
           core = {
