@@ -12,7 +12,7 @@
     {
       home.packages = with pkgs; [
         discord
-        telegram-desktop
+        unstable.telegram-desktop
         fractal
       ];
     };
