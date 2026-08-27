@@ -38,6 +38,16 @@
 
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_18;
 
+      boot.supportedFilesystems = [
+        "btrfs"
+        "exfat"
+        "ext4"
+        "f2fs"
+        "ntfs"
+        "vfat"
+        "xfs"
+      ];
+
       boot.loader.systemd-boot.configurationLimit = 10;
 
       services.gvfs.enable = true;
