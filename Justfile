@@ -62,6 +62,14 @@ switch hostname:
 boot hostname:
     nh os boot "path:.#{{ hostname }}"
 
+# Build, copy, and activate a machine configuration over SSH.
+deploy hostname target:
+    nh os switch --target-host "{{ target }}" "path:.#{{ hostname }}"
+
+# Build and copy a machine configuration over SSH, activating it on the next boot.
+deploy-boot hostname target:
+    nh os boot --target-host "{{ target }}" "path:.#{{ hostname }}"
+
 # Destructively install a machine over SSH while preserving its SSH host keys.
 install hostname target:
     nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys
