@@ -35,7 +35,7 @@ _: {
         settings = {
           user = {
             name = user.fullName;
-            email = user.email;
+            inherit (user) email;
           };
           core = {
             editor = "nvim";

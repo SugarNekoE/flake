@@ -151,20 +151,19 @@ let
           ];
         }).config;
       modules = lib.filterAttrs (_field: module: module != null) {
-        nixosModule = parsed.nixosModule;
-        homeModule = parsed.homeModule;
+        inherit (parsed) nixosModule homeModule;
       };
       homeOnly = {
         _class = "aspects";
       }
       // lib.optionalAttrs (parsed.homeModule != null) {
-        homeModule = parsed.homeModule;
+        inherit (parsed) homeModule;
       };
       nixosOnly = {
         _class = "aspects";
       }
       // lib.optionalAttrs (parsed.nixosModule != null) {
-        nixosModule = parsed.nixosModule;
+        inherit (parsed) nixosModule;
       };
       helpers = config.aspectHelpers.${name} or { };
     in
@@ -183,10 +182,10 @@ let
     let
       sharedArgs = {
         inherit inputs;
-        identity = config.identity;
+        inherit (config) identity;
       }
       // lib.optionalAttrs (machine.user != null) {
-        user = machine.user;
+        inherit (machine) user;
       };
       machineModules = [
         { networking.hostName = name; }

@@ -21,7 +21,7 @@
       users.users.${user.username} = {
         isNormalUser = true;
         description = user.fullName;
-        hashedPassword = user.hashedPassword;
+        inherit (user) hashedPassword;
         extraGroups = [
           "wheel"
           "video"
@@ -43,7 +43,7 @@
     { user, ... }:
     {
       home = {
-        username = user.username;
+        inherit (user) username;
         homeDirectory = "/home/${user.username}";
         sessionVariables = {
           LANG = "en_US.UTF-8";

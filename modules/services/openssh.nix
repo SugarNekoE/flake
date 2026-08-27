@@ -9,16 +9,14 @@ in
 {
   aspectHelpers.openssh = { inherit withKnownHosts; };
 
-  nixos =
-    { ... }:
-    {
-      services.openssh = {
-        enable = true;
-        settings = {
-          PasswordAuthentication = false;
-          KbdInteractiveAuthentication = false;
-          PermitRootLogin = "prohibit-password";
-        };
+  nixos = _: {
+    services.openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "prohibit-password";
       };
     };
+  };
 }
