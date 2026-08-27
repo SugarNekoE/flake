@@ -160,7 +160,7 @@ _: {
         runtimeInputs = with pkgs; [
           jq
           swayosd
-          unstable.swayfx
+          sway
         ];
         text = ''
           current="$(swaymsg -t get_inputs | jq -r '[.[] | select(.type == "touchpad")][0].libinput.send_events')"
