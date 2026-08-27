@@ -63,6 +63,7 @@
           size = 24;
         };
 
+        targets.qt.enable = lib.mkForce false;
         targets.kde = {
           enable = true;
           useWallpaper = true;
@@ -131,7 +132,7 @@
         panels = [
           {
             location = "bottom";
-            height = 30;
+            height = 38;
             floating = false;
             opacity = "opaque";
             hiding = "none";
