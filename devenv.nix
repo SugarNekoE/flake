@@ -1,9 +1,9 @@
 { pkgs, ... }:
 
 {
-  packages = with pkgs;[
+  packages = with pkgs; [
+    nil
     nixd
-    nixfmt
     just
     nh
     sops
@@ -19,6 +19,8 @@
       convco = {
         enable = true;
       };
+      nixfmt.enable = true;
+      statix.enable = true;
     };
   };
 }
