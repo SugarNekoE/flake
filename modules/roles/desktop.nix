@@ -45,6 +45,7 @@
         localsend
         tor-browser
         vlc
+        bilibili
       ];
 
       home.sessionVariables = {
