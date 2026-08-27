@@ -86,6 +86,14 @@ _: {
     {
       stylix.targets.sway.enable = true;
       stylix.targets.mako.enable = true;
+      services.swayidle = {
+        enable = true;
+        systemdTargets = [ "graphical-session.target" ];
+        events = {
+          lock = lockScreen;
+          before-sleep = lockScreen;
+        };
+      };
       services.stasis = {
         extraPathPackages = [
           config.programs.swaylock.package
@@ -99,7 +107,6 @@ _: {
           default:
             enable_loginctl_integration true
             enable_dbus_inhibit true
-            prepare_sleep_command "swaylock"
             lid_close_action "lid-display-control close"
             lid_open_action "lid-display-control open"
             monitor_media true
