@@ -7,7 +7,7 @@
       "com.tencent.WeChat"
       "com.discordapp.Discord"
       "org.telegram.desktop"
-      "org.gnome.Fractal"
+      "in.cinny.Cinny"
     ])
   ];
 }
