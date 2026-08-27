@@ -58,7 +58,14 @@ let
     else if moduleKind file == "machine" then
       {
         _file = toString file;
-        config.machines.${name} = definition;
+        config.machines.${name} =
+          passthrough
+          // lib.optionalAttrs ((definition.nixos or null) != null) {
+            nixosModule = definition.nixos;
+          }
+          // lib.optionalAttrs ((definition.home or null) != null) {
+            homeModule = definition.home;
+          };
       }
     else if moduleKind file == "role" then
       {
