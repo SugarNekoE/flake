@@ -61,6 +61,7 @@ _: {
           with pkgs.fishPlugins;
           [
             fzf-fish
+            plugin-git
             puffer
           ]
         );
