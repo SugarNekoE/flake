@@ -51,6 +51,7 @@
       programs.zellij = {
         enable = true;
         exitShellOnExit = true;
+        enableFishIntegration = true;
       };
 
       stylix.targets = {
