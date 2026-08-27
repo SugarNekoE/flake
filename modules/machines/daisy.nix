@@ -13,6 +13,7 @@
     # services
     audio
     bluetooth
+    blueman
     fingerprint
     fonts
     networkmanager
