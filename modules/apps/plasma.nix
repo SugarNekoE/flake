@@ -1,10 +1,5 @@
 { inputs, ... }:
 {
-  flake-file.inputs.runcat-kde = {
-    url = "github:fioncat/kde-runcat/v0.4.0";
-    flake = false;
-  };
-
   flake-file.inputs.plasma-manager = {
     url = "github:nix-community/plasma-manager";
     inputs = {
@@ -14,7 +9,7 @@
   };
 
   nixos =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       services = {
         desktopManager.plasma6 = {
@@ -23,10 +18,18 @@
         };
         displayManager = {
           defaultSession = "plasma";
-          plasma-login-manager.enable = true;
+          plasma-login-manager = {
+            enable = true;
+            settings.Greeter.WallpaperPluginId = "org.kde.image";
+          };
         };
         logind.settings.Login.IdleAction = "ignore";
       };
+
+      environment.etc."plasmalogin.conf.d/90-stylix-wallpaper.conf".text = ''
+        [Greeter][Wallpaper][org.kde.image][General]
+        Image=${config.stylix.image}
+      '';
 
       programs.kde-pim.enable = false;
 
@@ -50,31 +53,8 @@
       pkgs,
       ...
     }:
-    let
-      runCat = pkgs.stdenvNoCC.mkDerivation {
-        pname = "runcat-kde-plasmoid";
-        version = "0.4.0";
-        src = inputs.runcat-kde;
-        dontBuild = true;
-        postPatch = ''
-          substituteInPlace package/contents/ui/MetricsProvider.qml \
-            --replace-fail /usr/bin/python3 ${lib.getExe pkgs.python3}
-        '';
-        installPhase = ''
-          runHook preInstall
-
-          destination="$out/share/plasma/plasmoids/com.github.runcatkde.runcat"
-          mkdir -p "$destination"
-          cp -r package/contents package/metadata.json "$destination/"
-
-          runHook postInstall
-        '';
-      };
-    in
     {
       imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
-
-      home.packages = [ runCat ];
 
       stylix = {
         cursor = lib.mkForce {
@@ -172,7 +152,6 @@
               }
               "org.kde.plasma.pager"
               "org.kde.plasma.icontasks"
-              "com.github.runcatkde.runcat"
               {
                 systemTray = {
                   icons.scaleToFit = true;
