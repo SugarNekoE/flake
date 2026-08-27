@@ -38,7 +38,10 @@ let
     };
 in
 {
-  flake-file.inputs.sfd-nix.url = "git+https://forge.asnk.io/sugar/sfd-nix";
+  flake-file.inputs.sfd-nix = {
+    url = "git+https://forge.asnk.io/sugar/sfd-nix";
+    inputs.nixpkgs.follows = "nixpkgs-unstable";
+  };
 
   aspectHelpers.singbox-gui = { inherit withProfile; };
 
