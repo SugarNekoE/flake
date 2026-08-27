@@ -26,7 +26,9 @@
         logind.settings.Login.IdleAction = "ignore";
       };
 
-      environment.etc."plasmalogin.conf.d/90-stylix-wallpaper.conf".text = ''
+      # KConfig nested groups use literal adjacent brackets, which the generic
+      # Nix INI generator escapes. Keep this final drop-in as raw KConfig.
+      environment.etc."plasmalogin.conf.d/zz-stylix-wallpaper.conf".text = ''
         [Greeter][Wallpaper][org.kde.image][General]
         Image=${config.stylix.image}
       '';
