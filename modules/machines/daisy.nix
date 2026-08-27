@@ -20,6 +20,7 @@
     power
     plymouth
     polkit
+    pasystray
     (openssh.withKnownHosts { })
     (singbox-gui.withProfile {
       name = "SNEPX";
