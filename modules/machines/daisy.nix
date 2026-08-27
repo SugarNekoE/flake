@@ -13,6 +13,7 @@
     # services
     audio
     bluetooth
+    fingerprint
     fonts
     networkmanager
     podman
