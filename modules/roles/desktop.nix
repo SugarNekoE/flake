@@ -38,6 +38,7 @@
       home.packages = with pkgs; [
         google-chrome
         splayer
+        mpv
         obs-studio
         cameractrls
         lact
