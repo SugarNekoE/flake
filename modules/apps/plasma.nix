@@ -34,7 +34,6 @@
       programs.kde-pim.enable = false;
 
       environment.plasma6.excludePackages = with pkgs.kdePackages; [
-        aurorae
         discover
         elisa
         khelpcenter
@@ -67,8 +66,8 @@
         targets.kde = {
           enable = true;
           useWallpaper = true;
-          decorations = "org.kde.breeze";
-          decorationTheme = "";
+          decorations = "org.kde.kwin.aurorae";
+          decorationTheme = "kwin4_decoration_qml_plastik";
           widgetStyle = "Breeze";
           applicationStyle = "default";
           plasmaWorkspacePackage = pkgs.kdePackages.plasma-workspace;
