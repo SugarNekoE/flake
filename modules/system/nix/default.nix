@@ -38,6 +38,8 @@
 
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_18;
 
+      boot.loader.systemd-boot.configurationLimit = 10;
+
       services.gnome.gnome-keyring.enable = true;
     };
 }
