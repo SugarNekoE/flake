@@ -55,6 +55,12 @@
     {
       imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
+      home.sessionVariables = {
+        XDG_SESSION_TYPE = "wayland";
+        NIXOS_OZONE_WL = 1;
+        ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+      };
+
       stylix = {
         cursor = lib.mkForce {
           name = "breeze_cursors";
@@ -152,10 +158,21 @@
                 };
               }
               "org.kde.plasma.pager"
-              "org.kde.plasma.icontasks"
+              {
+                iconTasks.launchers = [
+                  "applications:org.kde.dolphin.desktop"
+                  "applications:google-chrome.desktop"
+                  "applications:kitty.desktop"
+                  "applications:org.telegram.desktop.desktop"
+                  "applications:com.tencent.WeChat.desktop"
+                  "applications:com.qq.QQ.desktop"
+                  "applications:com.slack.Slack.desktop"
+                  "applications:bytedance-feishu.desktop"
+                ];
+              }
               {
                 systemTray = {
-                  icons.scaleToFit = true;
+                  icons.scaleToFit = false;
                   items = {
                     extra = [
                       "org.kde.plasma.battery"
