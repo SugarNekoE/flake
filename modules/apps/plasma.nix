@@ -78,6 +78,11 @@
       programs.plasma = {
         enable = true;
 
+        startup.startupScript."1password" = {
+          text = "1password --silent &";
+          runAlways = true;
+        };
+
         workspace.iconTheme = "breeze-dark";
 
         kwin = {
