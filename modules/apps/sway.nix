@@ -168,6 +168,7 @@
         enable = true;
         systemd.enable = false; # UWSM managed
         package = pkgs.unstable.swayfx;
+        xwayland = true;
         extraConfigEarly = "include /etc/sway/config.d/*";
         # SwayFX requires a DRM renderer even for its config check, which is unavailable in the build sandbox.
         checkConfig = false;
@@ -252,9 +253,17 @@
         autotiling
       ];
 
+      home.sessionVariables.NIXOS_OZONE_WL = 1;
+
       xdg.configFile."xfce4/helpers.rc".text = ''
         [Helpers]
         TerminalEmulator=kitty
+      '';
+
+      xdg.configFile."uwsm/env".text = ''
+        export XDG_SESSION_TYPE=wayland
+        export NIXOS_OZONE_WL=1
+        export ELECTRON_OZONE_PLATFORM_HINT=wayland
       '';
 
       home.activation.setThunarAsDefaultFileManager = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
