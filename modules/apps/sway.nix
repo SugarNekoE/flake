@@ -41,7 +41,7 @@
       menu = "${lib.getExe config.programs.vicinae.package} toggle";
       modifier = "Mod4";
       terminal = "kitty";
-      filemanager = "dolphin";
+      filemanager = lib.getExe pkgs.thunar;
       browser = "google-chrome-stable";
       screenshot = "grimshot copy anything";
       screenshotArea = "grimshot --notify savecopy area";
@@ -246,9 +246,13 @@
       home.packages = with pkgs; [
         wl-clipboard
         sway-contrib.grimshot
-        kdePackages.dolphin
+        thunar
         autotiling
       ];
+
+      home.activation.setThunarAsDefaultFileManager = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        ${pkgs.xdg-utils}/bin/xdg-mime default thunar.desktop inode/directory
+      '';
 
       services.gnome-keyring.enable = true;
       services.mako.enable = true;
