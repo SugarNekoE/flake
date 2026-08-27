@@ -50,8 +50,31 @@
       pkgs,
       ...
     }:
+    let
+      runCat = pkgs.stdenvNoCC.mkDerivation {
+        pname = "runcat-kde-plasmoid";
+        version = "0.4.0";
+        src = inputs.runcat-kde;
+        dontBuild = true;
+        postPatch = ''
+          substituteInPlace package/contents/ui/MetricsProvider.qml \
+            --replace-fail /usr/bin/python3 ${lib.getExe pkgs.python3}
+        '';
+        installPhase = ''
+          runHook preInstall
+
+          destination="$out/share/plasma/plasmoids/com.github.runcatkde.runcat"
+          mkdir -p "$destination"
+          cp -r package/contents package/metadata.json "$destination/"
+
+          runHook postInstall
+        '';
+      };
+    in
     {
       imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
+
+      home.packages = [ runCat ];
 
       stylix = {
         cursor = lib.mkForce {
@@ -149,6 +172,7 @@
               }
               "org.kde.plasma.pager"
               "org.kde.plasma.icontasks"
+              "com.github.runcatkde.runcat"
               {
                 systemTray = {
                   icons.scaleToFit = true;
