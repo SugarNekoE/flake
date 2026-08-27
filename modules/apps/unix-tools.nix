@@ -32,6 +32,8 @@
 
       programs.command-not-found.enable = false;
 
+      programs.zellij.enable = true;
+
       programs.fzf = {
         enable = true;
         enableFishIntegration = true;
@@ -45,12 +47,6 @@
 
       programs.nix-index = {
         enable = true;
-        enableFishIntegration = true;
-      };
-
-      programs.zellij = {
-        enable = true;
-        exitShellOnExit = true;
         enableFishIntegration = true;
       };
 
