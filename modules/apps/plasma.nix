@@ -160,12 +160,13 @@
               "org.kde.plasma.pager"
               {
                 iconTasks.launchers = [
+                  "applications:kitty.desktop"
                   "applications:org.kde.dolphin.desktop"
                   "applications:google-chrome.desktop"
-                  "applications:kitty.desktop"
-                  "applications:org.telegram.desktop.desktop"
                   "applications:com.tencent.WeChat.desktop"
                   "applications:com.qq.QQ.desktop"
+                  "applications:org.telegram.desktop.desktop"
+                  "applications:com.discordapp.Discord.desktop"
                   "applications:com.slack.Slack.desktop"
                   "applications:bytedance-feishu.desktop"
                 ];
