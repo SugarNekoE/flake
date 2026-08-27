@@ -57,7 +57,7 @@
   nixos =
     { identity, user, ... }:
     {
-      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
+      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.fern ];
       networking.firewall.enable = false;
     };
   hardware =
