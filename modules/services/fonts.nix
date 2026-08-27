@@ -14,6 +14,8 @@ let
     "NotoSansM Nerd Font Mono"
     "Noto Sans Mono CJK SC"
     "Noto Sans Mono"
+    "Noto Sans Symbols"
+    "Noto Sans Symbols 2"
     "Noto Color Emoji"
   ];
   fallbackFonts = {

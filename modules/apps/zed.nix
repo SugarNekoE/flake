@@ -48,6 +48,8 @@ _: {
             "Noto Sans Mono CJK SC"
             "Noto Sans Mono"
             "NotoSansM Nerd Font Mono"
+            "Noto Sans Symbols"
+            "Noto Sans Symbols 2"
             "Noto Color Emoji"
           ];
 

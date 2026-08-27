@@ -35,13 +35,6 @@ _: {
         };
 
         extraConfig = lib.mkAfter ''
-          symbol_map U+2205,U+2211,U+22EE Noto Sans Math
-          symbol_map U+23F1 Noto Color Emoji
-          symbol_map U+23F5,U+23F8,U+26A0,U+2714 Noto Sans Symbols 2
-          symbol_map U+2800-U+28FF Noto Sans Symbols 2
-          narrow_symbols U+2205,U+2211,U+22EE,U+23F1,U+23F5,U+23F8,U+26A0,U+2714 1
-          narrow_symbols U+2800-U+28FF 1
-
           selection_foreground ${colors.base00}
           selection_background ${colors.base06}
 
