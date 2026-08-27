@@ -32,6 +32,10 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+    runcat-kde = {
+      url = "github:fioncat/kde-runcat/v0.4.0";
+      flake = false;
+    };
     sfd-nix = {
       url = "git+https://forge.asnk.io/sugar/sfd-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

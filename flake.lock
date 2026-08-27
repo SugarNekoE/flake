@@ -550,10 +550,28 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
         "plasma-manager": "plasma-manager",
+        "runcat-kde": "runcat-kde",
         "sfd-nix": "sfd-nix",
         "sops-nix": "sops-nix",
         "stasis": "stasis",
         "stylix": "stylix"
+      }
+    },
+    "runcat-kde": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785987393,
+        "narHash": "sha256-bbBWMDc/pzJQ2Ee0yMYo1waxKrER0Axe+3hiHo83iRA=",
+        "owner": "fioncat",
+        "repo": "kde-runcat",
+        "rev": "aca5a7c380964ac020f16e136c39ea7d8130a5e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fioncat",
+        "ref": "v0.4.0",
+        "repo": "kde-runcat",
+        "type": "github"
       }
     },
     "sfd-nix": {

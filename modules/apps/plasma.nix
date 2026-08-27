@@ -1,5 +1,10 @@
 { inputs, ... }:
 {
+  flake-file.inputs.runcat-kde = {
+    url = "github:fioncat/kde-runcat/v0.4.0";
+    flake = false;
+  };
+
   flake-file.inputs.plasma-manager = {
     url = "github:nix-community/plasma-manager";
     inputs = {
