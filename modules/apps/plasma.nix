@@ -98,10 +98,6 @@
             fallApart.enable = false;
             slideBack.enable = false;
           };
-          virtualDesktops = {
-            number = 4;
-            rows = 1;
-          };
           tiling.padding = 0;
           scripts.polonium.enable = false;
         };
