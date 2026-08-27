@@ -21,6 +21,8 @@
       "org.jellyfin.JellyfinDesktop"
       "org.localsend.localsend_app"
       "io.gitlab.adhami3310.Impression"
+      "org.gnome.Brasero"
+      "org.gnome.NetworkDisplays"
     ])
   ];
 

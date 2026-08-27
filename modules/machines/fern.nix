@@ -45,9 +45,6 @@
     office
     social
     work
-
-    # apps
-    gnome
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   hardware =
