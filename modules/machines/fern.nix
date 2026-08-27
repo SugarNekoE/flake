@@ -18,14 +18,15 @@
     audio
     bluetooth
     fonts
-    networkmanager
+    networkmanager.nixos
     podman
     power
-    polkit
+    plymouth
+    polkit.nixos
     (openssh.withKnownHosts {
-      daisy = {
-        hostNames = [ "daisy" ];
-        publicKey = config.identity.sshKeys.daisy;
+      fern = {
+        hostNames = [ "fern" ];
+        publicKey = config.identity.sshKeys.fern;
       };
     })
     (singbox-gui.withProfile {
@@ -45,6 +46,12 @@
     office
     social
     work
+
+    # apps
+    plasma
+    logitech
+    sdrpp
+    davinci
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   hardware =

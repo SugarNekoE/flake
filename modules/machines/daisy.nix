@@ -12,6 +12,7 @@
 
     # services
     audio
+    pasystray
     bluetooth
     blueman
     fingerprint
@@ -21,7 +22,6 @@
     power
     plymouth
     polkit
-    pasystray
     (openssh.withKnownHosts { })
     (singbox-gui.withProfile {
       name = "SNEPX";
@@ -44,12 +44,12 @@
     work
 
     # apps
-    logitech
+    ly
     sway
     swaylock
-    stasis
     waybar
-    ly
+    stasis
+    logitech
     sdrpp
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-luks;
