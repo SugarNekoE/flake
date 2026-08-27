@@ -191,7 +191,15 @@
                   };
                 };
               }
-              "org.kde.plasma.digitalclock"
+              {
+                digitalClock = {
+                  time.format = "24h";
+                  date = {
+                    enable = true;
+                    format = "isoDate";
+                  };
+                };
+              }
             ];
           }
         ];
