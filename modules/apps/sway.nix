@@ -130,7 +130,7 @@ _: {
           keybindings = lib.mkOptionDefault {
             "${modifier}+b" = "exec ${browser}";
             "${modifier}+e" = "exec ${filemanager}";
-            "${modifier}+grave" = "exec ${lockSession}";
+            "${modifier}+Shift+p" = "exec ${lockSession}";
             "${modifier}+Shift+s" = "exec ${screenshot}";
             "${modifier}+Return" = "exec ${terminal}";
             "${modifier}+d" = "exec ${menu}";
