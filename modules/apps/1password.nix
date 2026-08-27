@@ -18,6 +18,14 @@ _: {
     {
       home.sessionVariables.SSH_AUTH_SOCK = sshAgentSocket;
 
+      xdg.configFile."1Password/ssh/agent.toml".text = ''
+        [[ssh-keys]]
+        vault = "Personal"
+
+        [[ssh-keys]]
+        vault = "Servers"
+      '';
+
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
