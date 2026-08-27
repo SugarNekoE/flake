@@ -132,7 +132,7 @@
         panels = [
           {
             location = "bottom";
-            height = 38;
+            height = 42;
             floating = false;
             opacity = "opaque";
             hiding = "none";
