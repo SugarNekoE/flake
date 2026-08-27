@@ -46,9 +46,15 @@ in
   aspectHelpers.singbox-gui = { inherit withProfile; };
 
   nixos =
-    { config, user, ... }:
+    {
+      config,
+      pkgs,
+      user,
+      ...
+    }:
     let
       colors = config.lib.stylix.colors.withHashtag;
+      appearance = if config.stylix.polarity == "either" then "auto" else config.stylix.polarity;
       stylixTerminal = {
         background = colors.base00;
         foreground = colors.base05;
@@ -74,6 +80,14 @@ in
         brightMagenta = colors.base0E;
         brightCyan = colors.base0C;
         brightWhite = colors.base06;
+      };
+      scaledPackage = pkgs.symlinkJoin {
+        name = "sing-box-for-desktop-scaled";
+        paths = [ inputs.sfd-nix.packages.${pkgs.stdenv.hostPlatform.system}.sing-box-for-desktop ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram "$out/bin/sing-box" --add-flags "--force-device-scale-factor=1.5"
+        '';
       };
     in
     {
@@ -105,6 +119,7 @@ in
 
       programs.sing-box-for-desktop = {
         enable = true;
+        package = scaledPackage;
         settings = {
           startAtLogin = true;
           tray = {
@@ -112,15 +127,16 @@ in
             keepInBackground = true;
           };
           language = "en";
-          appearance = "dark";
+          inherit appearance;
           theme = colors.base0D;
 
           terminal = {
-            lightTheme = "Alabaster";
+            lightTheme = "";
             darkTheme = "";
-            fontFamily = "JetBrains Mono";
-            fontSize = 14;
+            fontFamily = config.stylix.fonts.monospace.name;
+            fontSize = config.stylix.fonts.sizes.terminal;
             alwaysShowSymbolBar = true;
+            lightCustomTheme = stylixTerminal;
             darkCustomTheme = stylixTerminal;
           };
 
