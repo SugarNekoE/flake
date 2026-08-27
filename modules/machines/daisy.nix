@@ -48,7 +48,12 @@
     sdrpp
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-luks;
-  homeModule = {
+  nixos =
+    { identity, user, ... }:
+    {
+      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
+    };
+  home = {
     wayland.windowManager.sway.config.output = {
       "eDP-1" = {
         mode = "1920x1200@60Hz";
