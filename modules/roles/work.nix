@@ -10,7 +10,7 @@
     {
       home.packages = with pkgs; [
         figma-linux
-        wemeet
+        unstable.wemeet
         feishu
       ];
     };
