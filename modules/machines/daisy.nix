@@ -46,6 +46,7 @@
     # apps
     logitech
     sway
+    swaylock
     stasis
     waybar
     ly

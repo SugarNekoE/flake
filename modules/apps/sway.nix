@@ -79,29 +79,7 @@ _: {
     in
     {
       stylix.targets.sway.enable = true;
-      stylix.targets.swaylock.enable = true;
       stylix.targets.mako.enable = true;
-      programs.swaylock = {
-        enable = true;
-        package = pkgs.swaylock-effects;
-        settings = {
-          clock = true;
-          daemonize = true;
-          datestr = "%A, %B %e";
-          effect-blur = "12x4";
-          effect-vignette = "0.2:0.5";
-          fade-in = 0.25;
-          font = nixosConfig.stylix.fonts.sansSerif.name;
-          font-size = 28;
-          ignore-empty-password = true;
-          indicator = true;
-          indicator-idle-visible = true;
-          indicator-radius = 110;
-          indicator-thickness = 8;
-          show-failed-attempts = true;
-          timestr = "%H:%M";
-        };
-      };
       services.stasis = {
         extraPathPackages = [
           config.programs.swaylock.package
