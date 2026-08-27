@@ -207,6 +207,7 @@
             AutomountOnPlugin = true;
             AutomountUnknownDevices = true;
           };
+          kdeglobals.General.TerminalService = "kitty.desktop";
           kdeglobals.KDE.AnimationDurationFactor = 0.5;
         };
       };
