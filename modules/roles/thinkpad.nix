@@ -1,5 +1,9 @@
 _: {
-  nixos.services.acpid.enable = true;
+  nixos = {
+    networking.modemmanager.enable = true;
+    services.acpid.enable = true;
+    systemd.services.ModemManager.wantedBy = [ "multi-user.target" ];
+  };
 
   home =
     {

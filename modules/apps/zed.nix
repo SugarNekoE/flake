@@ -7,7 +7,7 @@ _: {
         package = pkgs.zed-editor;
 
         extensions = [
-          "monokai-pro-ce"
+          "zedokai"
         ];
 
         userSettings = {
@@ -16,8 +16,8 @@ _: {
 
           theme = {
             mode = "system";
-            light = "Monokai Pro (CE)";
-            dark = "Monokai Pro (CE)";
+            light = "Zedokai";
+            dark = "Zedokai";
           };
 
           agent = {
