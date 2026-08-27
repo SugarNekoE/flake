@@ -18,6 +18,17 @@ _: {
             - schema: rime_ice
       '';
 
+      xdg.dataFile."fcitx5/rime/rime_ice.custom.yaml" = {
+        text = ''
+          patch:
+            menu/page_size: 8
+        '';
+        onChange = ''
+          ${pkgs.coreutils}/bin/rm -f \
+            "${config.xdg.dataHome}/fcitx5/rime/build/rime_ice.schema.yaml"
+        '';
+      };
+
       i18n.inputMethod = {
         enable = true;
         type = "fcitx5";
@@ -45,6 +56,7 @@ _: {
       systemd.user.services.fcitx5-daemon.Unit.X-Restart-Triggers = [
         config.xdg.configFile.fcitx5.source
         config.xdg.dataFile."fcitx5/rime/default.custom.yaml".source
+        config.xdg.dataFile."fcitx5/rime/rime_ice.custom.yaml".source
         config.xdg.dataFile."fcitx5/themes/stylix/theme.conf".source
         config.xdg.dataFile."fcitx5/themes/stylix/panel.svg".source
         config.xdg.dataFile."fcitx5/themes/stylix/highlight.svg".source
