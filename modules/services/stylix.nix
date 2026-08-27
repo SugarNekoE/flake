@@ -56,8 +56,8 @@ in
             package = pkgs.noto-fonts-cjk-sans;
           };
           monospace = {
-            name = "JetBrainsMono Nerd Font Mono";
-            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "NotoSansM Nerd Font Mono";
+            package = pkgs.nerd-fonts.noto;
           };
           emoji = {
             name = "Noto Color Emoji";

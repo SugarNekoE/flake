@@ -11,9 +11,9 @@ let
     "Noto Color Emoji"
   ];
   monospaceFonts = [
-    "JetBrainsMono Nerd Font Mono"
-    "JetBrains Mono"
-    "Noto Sans CJK SC"
+    "NotoSansM Nerd Font Mono"
+    "Noto Sans Mono CJK SC"
+    "Noto Sans Mono"
     "Noto Color Emoji"
   ];
   fallbackFonts = {
@@ -35,7 +35,7 @@ in
           noto-fonts-cjk-serif
           noto-fonts-color-emoji
           jetbrains-mono
-          nerd-fonts.jetbrains-mono
+          nerd-fonts.noto
         ];
 
         enableGhostscriptFonts = false;
