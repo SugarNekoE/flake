@@ -18,8 +18,8 @@ _: {
       programs.kitty = {
         enable = true;
         font = {
-          name = lib.mkForce "NotoSansM Nerd Font Mono";
-          package = lib.mkForce pkgs.nerd-fonts.noto;
+          name = lib.mkForce "JetBrainsMono Nerd Font Mono";
+          package = lib.mkForce pkgs.nerd-fonts.jetbrains-mono;
         };
         settings = {
           font_size = 12;

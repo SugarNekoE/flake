@@ -45,9 +45,8 @@ _: {
           buffer_font_size = 16;
           buffer_font_family = "JetBrains Mono";
           buffer_font_fallbacks = [
-            "Noto Sans Mono CJK SC"
-            "Noto Sans Mono"
-            "NotoSansM Nerd Font Mono"
+            "JetBrainsMono Nerd Font Mono"
+            "Noto Sans CJK SC"
             "Noto Color Emoji"
           ];
 
