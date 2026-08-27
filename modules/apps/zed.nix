@@ -7,8 +7,7 @@ _: {
         package = pkgs.zed-editor;
 
         extensions = [
-          "catppuccin"
-          "catppuccin-icons"
+          "monokai-pro-ce"
         ];
 
         userSettings = {
@@ -17,8 +16,8 @@ _: {
 
           theme = {
             mode = "system";
-            light = "Catppuccin Macchiato";
-            dark = "Catppuccin Macchiato";
+            light = "Monokai Pro (CE)";
+            dark = "Monokai Pro (CE)";
           };
 
           agent = {
@@ -32,7 +31,7 @@ _: {
           git_panel.dock = "left";
           project_panel.dock = "left";
 
-          icon_theme = "Catppuccin Macchiato";
+          icon_theme = "Zed (Default)";
           vim_mode = true;
           restore_on_startup = "empty_tab";
 
