@@ -58,7 +58,7 @@
     { identity, user, ... }:
     {
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
-      networking.firewall.enable = true;
+      networking.firewall.enable = false;
     };
   hardware =
     {
