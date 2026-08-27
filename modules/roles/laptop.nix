@@ -2,8 +2,8 @@ _: {
   nixos = {
     services.logind.settings.Login = {
       HandleLidSwitch = "suspend-then-hibernate";
-      HandleLidSwitchExternalPower = "lock";
-      HandleLidSwitchDocked = "lock";
+      HandleLidSwitchExternalPower = "ignore";
+      HandleLidSwitchDocked = "ignore";
     };
 
     systemd.sleep.settings.Sleep = {

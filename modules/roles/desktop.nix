@@ -11,7 +11,6 @@
     netbird-app
     neovim
     starship
-    stasis
     unix-tools
     vicinae
     (flatpak.withPackages [

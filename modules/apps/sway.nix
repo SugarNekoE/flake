@@ -1,4 +1,5 @@
-_: {
+{ inputs, ... }:
+{
   nixos =
     {
       pkgs,
@@ -7,7 +8,7 @@ _: {
     {
       programs.sway = {
         enable = true;
-        package = pkgs.sway;
+        package = pkgs.unstable.swayfx;
       };
 
       services.accounts-daemon.enable = true;
@@ -46,9 +47,40 @@ _: {
       screenshotArea = "grimshot --notify savecopy area";
       screenshotScreen = "grimshot --notify savecopy screen";
       screenshotWindow = "grimshot --notify savecopy active";
-      lockSession = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
+      lockScreen = lib.getExe config.programs.swaylock.package;
+      lidDisplayControl = pkgs.writeShellApplication {
+        name = "lid-display-control";
+        runtimeInputs = [ pkgs.unstable.swayfx ];
+        text = ''
+          action="''${1:?expected close or open}"
+
+          if [[ "$action" == "close" ]]; then
+            on_ac_power=false
+            for supply in /sys/class/power_supply/*; do
+              if [[ -r "$supply/type" && -r "$supply/online" ]] \
+                && [[ "$(<"$supply/type")" == "Mains" ]] \
+                && [[ "$(<"$supply/online")" == "1" ]]; then
+                on_ac_power=true
+                break
+              fi
+            done
+
+            [[ "$on_ac_power" == true ]] || exit 0
+            power_state="off"
+          elif [[ "$action" == "open" ]]; then
+            power_state="on"
+          else
+            echo "unknown lid action: $action" >&2
+            exit 2
+          fi
+
+          swaymsg "output * power $power_state"
+        '';
+      };
     in
     {
+      imports = [ inputs.self.modules.homeManager.stasis ];
+
       stylix.targets.sway.enable = true;
       stylix.targets.swaylock.enable = true;
       stylix.targets.mako.enable = true;
@@ -72,6 +104,65 @@ _: {
           show-failed-attempts = true;
           timestr = "%H:%M";
         };
+      };
+      services.stasis = {
+        extraPathPackages = [
+          config.programs.swaylock.package
+          lidDisplayControl
+          pkgs.unstable.swayfx
+        ];
+        extraConfig = ''
+          @author "sugar"
+          @description "Sway idle management"
+
+          default:
+            enable_loginctl_integration true
+            enable_dbus_inhibit true
+            prepare_sleep_command "swaylock"
+            lid_close_action "lid-display-control close"
+            lid_open_action "lid-display-control open"
+            monitor_media true
+            ignore_remote_media true
+            notify_on_unpause true
+
+            lock_screen:
+              timeout 1800
+              command "swaylock"
+            end
+
+            display_off:
+              timeout 300
+              command "swaymsg 'output * power off'"
+              resume_command "swaymsg 'output * power on'"
+            end
+
+            ac:
+              lock_screen:
+                timeout 1800
+                command "swaylock"
+              end
+
+              display_off:
+                timeout 300
+                command "swaymsg 'output * power off'"
+                resume_command "swaymsg 'output * power on'"
+              end
+            end
+
+            battery:
+              lock_screen:
+                timeout 1800
+                command "swaylock"
+              end
+
+              display_off:
+                timeout 300
+                command "swaymsg 'output * power off'"
+                resume_command "swaymsg 'output * power on'"
+              end
+            end
+          end
+        '';
       };
       wayland.windowManager.sway = {
         enable = true;
@@ -130,7 +221,7 @@ _: {
           keybindings = lib.mkOptionDefault {
             "${modifier}+b" = "exec ${browser}";
             "${modifier}+e" = "exec ${filemanager}";
-            "${modifier}+Shift+p" = "exec ${lockSession}";
+            "${modifier}+Escape" = "exec ${lockScreen}";
             "${modifier}+Shift+s" = "exec ${screenshot}";
             "${modifier}+Return" = "exec ${terminal}";
             "${modifier}+d" = "exec ${menu}";
