@@ -70,8 +70,10 @@ _: {
       wayland.windowManager.sway = {
         enable = true;
         systemd.enable = false; # UWSM managed
-        package = pkgs.sway;
+        package = pkgs.unstable.swayfx;
         extraConfigEarly = "include /etc/sway/config.d/*";
+        # SwayFX requires a DRM renderer even for its config check, which is unavailable in the build sandbox.
+        checkConfig = false;
         wrapperFeatures.gtk = true;
         config = {
           defaultWorkspace = "workspace number 1";
@@ -138,6 +140,8 @@ _: {
           bindgesture swipe:3:right workspace prev
           bindgesture swipe:3:left workspace next
           seat * hide_cursor when-typing enable
+          blur enable
+          default_dim_inactive 0.2
           exec uwsm finalize
         '';
       };

@@ -24,7 +24,7 @@
         environmentFile = null;
         extraPathPackages = [
           config.programs.swaylock.package
-          pkgs.sway
+          pkgs.unstable.swayfx
         ];
         extraConfig = ''
           @author "sugar"
