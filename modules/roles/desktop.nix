@@ -40,6 +40,7 @@
         google-chrome
         splayer
         mpv
+        ffmpeg
         obs-studio
         cameractrls
         lact
