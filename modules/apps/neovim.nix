@@ -5,19 +5,19 @@
   nixos = {
     imports = [ inputs.nixvim.nixosModules.nixvim ];
 
-    stylix.targets.nixvim.enable = true;
-
     programs.nixvim = {
       enable = true;
       vimAlias = true;
       defaultEditor = true;
+      colorschemes."monokai-pro" = {
+        enable = true;
+        settings.filter = "pro";
+      };
     };
   };
 
   home = {
     imports = [ inputs.nixvim.homeModules.nixvim ];
-
-    stylix.targets.nixvim.enable = true;
 
     home.sessionVariables = {
       EDITOR = "nvim";
@@ -38,6 +38,10 @@
       vimAlias = true;
       defaultEditor = true;
       nixpkgs.source = inputs.nixpkgs;
+      colorschemes."monokai-pro" = {
+        enable = true;
+        settings.filter = "pro";
+      };
 
       imports = [
         (
