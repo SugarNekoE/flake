@@ -66,8 +66,8 @@
         targets.kde = {
           enable = true;
           useWallpaper = true;
-          decorations = "org.kde.kwin.aurorae";
-          decorationTheme = "kwin4_decoration_qml_plastik";
+          decorations = "org.kde.breeze";
+          decorationTheme = "";
           widgetStyle = "Breeze";
           applicationStyle = "default";
           plasmaWorkspacePackage = pkgs.kdePackages.plasma-workspace;
