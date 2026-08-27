@@ -247,8 +247,15 @@
         wl-clipboard
         sway-contrib.grimshot
         thunar
+        xfce4-exo
+        xfce4-settings
         autotiling
       ];
+
+      xdg.configFile."xfce4/helpers.rc".text = ''
+        [Helpers]
+        TerminalEmulator=kitty
+      '';
 
       home.activation.setThunarAsDefaultFileManager = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.xdg-utils}/bin/xdg-mime default thunar.desktop inode/directory
