@@ -55,12 +55,25 @@ in
         "gtk-4.0/gtk.css" = config.xdg.configFile."gtk-4.0/gtk.css".source;
         "gtk-4.0/settings.ini" = config.xdg.configFile."gtk-4.0/settings.ini".source;
       };
+      stylixDataFiles = {
+        "fcitx5/themes/stylix/highlight.svg" =
+          config.xdg.dataFile."fcitx5/themes/stylix/highlight.svg".source;
+        "fcitx5/themes/stylix/panel.svg" = config.xdg.dataFile."fcitx5/themes/stylix/panel.svg".source;
+        "fcitx5/themes/stylix/theme.conf" = config.xdg.dataFile."fcitx5/themes/stylix/theme.conf".source;
+      };
       copyStylixConfig = lib.concatStringsSep "\n" (
         lib.mapAttrsToList (relativePath: source: ''
           $DRY_RUN_CMD ${pkgs.coreutils}/bin/install -Dm644 \
             ${lib.escapeShellArg (toString source)} \
             "$app_config/${relativePath}"
         '') stylixConfigFiles
+      );
+      copyStylixData = lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (relativePath: source: ''
+          $DRY_RUN_CMD ${pkgs.coreutils}/bin/install -Dm644 \
+            ${lib.escapeShellArg (toString source)} \
+            "$app_data/${relativePath}"
+        '') stylixDataFiles
       );
     in
     {
@@ -69,7 +82,9 @@ in
       home.activation.flatpakStylix = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         for app_id in ${lib.concatMapStringsSep " " lib.escapeShellArg applicationIds}; do
           app_config=${lib.escapeShellArg config.home.homeDirectory}/.var/app/"$app_id"/config
+          app_data=${lib.escapeShellArg config.home.homeDirectory}/.var/app/"$app_id"/data
           ${copyStylixConfig}
+          ${copyStylixData}
         done
       '';
 
