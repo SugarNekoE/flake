@@ -8,6 +8,20 @@ _: {
     {
       stylix.targets.fcitx5.enable = true;
 
+      home.sessionVariables = {
+        GTK_IM_MODULE = "fcitx";
+        QT_IM_MODULE = "fcitx";
+        QT_IM_MODULES = "wayland;fcitx";
+        XMODIFIERS = "@im=fcitx";
+      };
+
+      systemd.user.sessionVariables = {
+        GTK_IM_MODULE = "fcitx";
+        QT_IM_MODULE = "fcitx";
+        QT_IM_MODULES = "wayland;fcitx";
+        XMODIFIERS = "@im=fcitx";
+      };
+
       xdg.dataFile."fcitx5/rime/default.custom.yaml".text = ''
         patch:
           __include: rime_ice_suggestion:/
