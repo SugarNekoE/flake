@@ -8,6 +8,7 @@
       imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
       home.packages = with pkgs; [
+        gh
         nil
         nixd
         devenv
