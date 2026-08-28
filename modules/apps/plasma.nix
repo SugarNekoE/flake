@@ -167,7 +167,7 @@
                   "applications:com.qq.QQ.desktop"
                   "applications:org.telegram.desktop.desktop"
                   "applications:com.discordapp.Discord.desktop"
-                  "applications:com.slack.Slack.desktop"
+                  "applications:slack.desktop"
                   "applications:bytedance-feishu.desktop"
                 ];
               }
