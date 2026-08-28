@@ -521,6 +521,50 @@
                 }
                 [
                   {
+                    key = "<C-S-f>";
+                    action = projectAction ''require("fzf-lua").live_grep({ cwd = root })'';
+                    options.desc = "Search Project";
+                  }
+                  {
+                    key = "<C-h>";
+                    action = "<cmd>bprevious<cr>";
+                    options.desc = "Previous Buffer";
+                  }
+                  {
+                    key = "<C-l>";
+                    action = "<cmd>bnext<cr>";
+                    options.desc = "Next Buffer";
+                  }
+                  {
+                    key = "<C-S-h>";
+                    action = "<C-w>h";
+                    options.desc = "Focus Pane Left";
+                  }
+                  {
+                    key = "<C-S-l>";
+                    action = "<C-w>l";
+                    options.desc = "Focus Pane Right";
+                  }
+                  {
+                    key = "<C-S-k>";
+                    action = "<C-w>k";
+                    options.desc = "Focus Pane Up";
+                  }
+                  {
+                    key = "<C-S-j>";
+                    action = "<C-w>j";
+                    options.desc = "Focus Pane Down";
+                  }
+                  {
+                    key = "<C-S-t>";
+                    action = luaAction ''
+                      vim.cmd.enew()
+                      vim.cmd.terminal()
+                      vim.cmd.startinsert()
+                    '';
+                    options.desc = "New Center Terminal";
+                  }
+                  {
                     key = "X";
                     action = luaAction "MiniBufremove.delete()";
                     options.desc = "Delete Buffer";
