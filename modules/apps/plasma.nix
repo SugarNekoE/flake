@@ -177,6 +177,7 @@ in
                   "applications:com.discordapp.Discord.desktop"
                   "applications:com.slack.Slack.desktop"
                   "applications:bytedance-feishu.desktop"
+                  "applications:md.obsidian.Obsidian.desktop"
                 ];
               }
               {
