@@ -52,7 +52,10 @@
   nixos =
     { identity, user, ... }:
     {
-      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.fern ];
+      users.users.${user.username}.openssh.authorizedKeys.keys = [
+        identity.sshKeys.fern
+        identity.sshKeys.nvirellia
+      ];
       networking.firewall.enable = false;
       environment.sessionVariables.KWIN_DRM_NO_DIRECT_SCANOUT = "1";
     };
