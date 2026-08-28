@@ -5,8 +5,8 @@ on:
   pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
+env:
+  NIX_CONFIG: "experimental-features = nix-command flakes"
 
 jobs:
   check:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Install Node.js 24
         run: |
-          nix profile install nixpkgs#nodejs_24
+          nix profile add nixpkgs#nodejs_24
           echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
           "$HOME/.nix-profile/bin/node" --version
 
