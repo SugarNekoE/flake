@@ -81,12 +81,14 @@ in
         brightCyan = colors.base0C;
         brightWhite = colors.base06;
       };
-      scaledPackage = pkgs.symlinkJoin {
-        name = "sing-box-for-desktop-scaled";
+      waylandPackage = pkgs.symlinkJoin {
+        name = "sing-box-for-desktop-wayland";
         paths = [ inputs.sfd-nix.packages.${pkgs.stdenv.hostPlatform.system}.sing-box-for-desktop ];
         nativeBuildInputs = [ pkgs.makeWrapper ];
         postBuild = ''
-          wrapProgram "$out/bin/sing-box" --add-flags "--force-device-scale-factor=1.5"
+          wrapProgram "$out/bin/sing-box" \
+            --add-flags "--ozone-platform=wayland" \
+            --add-flags "--enable-features=UseOzonePlatform"
         '';
       };
     in
@@ -119,7 +121,7 @@ in
 
       programs.sing-box-for-desktop = {
         enable = true;
-        package = scaledPackage;
+        package = waylandPackage;
         settings = {
           startAtLogin = true;
           tray = {
