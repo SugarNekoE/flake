@@ -52,6 +52,15 @@
   nixos =
     { identity, user, ... }:
     {
+      security.polkit.extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if (action.id == "org.freedesktop.udisks2.filesystem-mount-system" &&
+              subject.user == "${user.username}" && subject.local && subject.active) {
+            return polkit.Result.YES;
+          }
+        });
+      '';
+
       users.users.${user.username}.openssh.authorizedKeys.keys = [
         identity.sshKeys.fern
         identity.sshKeys.nvirellia
