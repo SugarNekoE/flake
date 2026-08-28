@@ -306,22 +306,25 @@
                     follow_current_file.enabled = true;
                     use_libuv_file_watcher = true;
                   };
-                  window.mappings = {
-                    l = "open";
-                    h = "close_node";
-                    "<space>" = "none";
-                    Y = {
-                      "__unkeyed-1" = lib.nixvim.mkRaw ''
-                        function(state)
-                          local path = state.tree:get_node():get_id()
-                          vim.fn.setreg("+", path, "c")
-                        end
-                      '';
-                      desc = "Copy Path to Clipboard";
-                    };
-                    P = {
-                      "__unkeyed-1" = "toggle_preview";
-                      config.use_float = false;
+                  window = {
+                    width = 30;
+                    mappings = {
+                      l = "open";
+                      h = "close_node";
+                      "<space>" = "none";
+                      Y = {
+                        "__unkeyed-1" = lib.nixvim.mkRaw ''
+                          function(state)
+                            local path = state.tree:get_node():get_id()
+                            vim.fn.setreg("+", path, "c")
+                          end
+                        '';
+                        desc = "Copy Path to Clipboard";
+                      };
+                      P = {
+                        "__unkeyed-1" = "toggle_preview";
+                        config.use_float = false;
+                      };
                     };
                   };
                   default_component_configs = {
