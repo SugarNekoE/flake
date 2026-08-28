@@ -35,6 +35,8 @@ _: {
 
       systemd.tmpfiles.rules = [
         "z /var/lib/netbird/*.json 0660 netbird netbird - -"
+        "d /var/lib/netbird/${user.username} 2770 ${user.username} netbird - -"
+        "z /var/lib/netbird/${user.username}/*.json 0660 ${user.username} netbird - -"
       ];
     };
 
