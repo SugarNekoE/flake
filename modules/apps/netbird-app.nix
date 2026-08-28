@@ -12,10 +12,7 @@ _: {
 
       services.netbird = {
         package = pkgs.unstable.netbird;
-        ui = {
-          enable = true;
-          package = pkgs.unstable.netbird-ui;
-        };
+        ui.enable = false;
 
         clients.default = {
           name = "netbird";
@@ -31,4 +28,8 @@ _: {
         config.services.netbird.clients.default.user.group
       ];
     };
+
+  home = { pkgs, ... }: {
+    home.packages = [ pkgs.unstable.netbird-ui ];
+  };
 }
