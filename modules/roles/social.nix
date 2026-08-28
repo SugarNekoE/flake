@@ -5,7 +5,7 @@
       "com.teamspeak.TeamSpeak3"
       "com.discordapp.Discord"
       "org.telegram.desktop"
-      "in.cinny.Cinny"
+      "org.gnome.Fractal"
     ])
   ];
 
