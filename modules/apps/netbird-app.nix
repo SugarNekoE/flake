@@ -34,24 +34,11 @@ _: {
     };
 
   home =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
     let
       uiPackage = pkgs.unstable.netbird-ui;
-      ui = lib.getExe uiPackage;
     in
     {
       home.packages = [ uiPackage ];
-
-      xdg.desktopEntries.netbird = {
-        name = "NetBird";
-        genericName = "Mesh VPN";
-        comment = "Connect to NetBird";
-        exec = "${lib.getExe' pkgs.coreutils "env"} WEBKIT_DISABLE_DMABUF_RENDERER=1 ${ui} --daemon-addr=unix:///run/netbird/sock";
-        icon = "${uiPackage}/share/icons/hicolor/256x256/apps/netbird.png";
-        terminal = false;
-        categories = [ "Network" ];
-        startupNotify = false;
-        settings.StartupWMClass = "org.wails.netbird";
-      };
     };
 }
