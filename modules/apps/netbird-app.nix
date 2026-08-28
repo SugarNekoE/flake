@@ -46,7 +46,7 @@ _: {
         name = "NetBird";
         genericName = "Mesh VPN";
         comment = "Connect to NetBird";
-        exec = "${lib.getExe' pkgs.coreutils "env"} WEBKIT_DISABLE_DMABUF_RENDERER=1 ${ui} --daemon-addr=unix:///run/netbird/sock";
+        exec = "${lib.getExe' pkgs.coreutils "env"} GDK_BACKEND=x11 WEBKIT_DISABLE_DMABUF_RENDERER=1 ${ui} --daemon-addr=unix:///run/netbird/sock";
         icon = "${uiPackage}/share/icons/hicolor/256x256/apps/netbird.png";
         terminal = false;
         categories = [ "Network" ];
