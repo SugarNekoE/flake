@@ -21,6 +21,14 @@ _: {
           name = lib.mkForce "NotoSansM Nerd Font Mono";
           package = lib.mkForce pkgs.nerd-fonts.noto;
         };
+        keybindings = {
+          "ctrl+shift+f" = "send_key ctrl+shift+f";
+          "ctrl+shift+h" = "send_key ctrl+shift+h";
+          "ctrl+shift+j" = "send_key ctrl+shift+j";
+          "ctrl+shift+k" = "send_key ctrl+shift+k";
+          "ctrl+shift+l" = "send_key ctrl+shift+l";
+          "ctrl+shift+t" = "send_key ctrl+shift+t";
+        };
         settings = {
           font_size = 12;
 
