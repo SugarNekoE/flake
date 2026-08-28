@@ -1,6 +1,7 @@
 _: {
   nixos =
     {
+      lib,
       pkgs,
       ...
     }:
@@ -30,6 +31,11 @@ _: {
       };
 
       services.displayManager.defaultSession = "sway-uwsm";
+
+      xdg.portal.wlr.settings.screencast = {
+        chooser_type = "dmenu";
+        chooser_cmd = "${lib.getExe pkgs.wmenu} -p 'Select a source to share:'";
+      };
 
       systemd.user.targets."nixos-fake-graphical-session".enable = false;
     };
