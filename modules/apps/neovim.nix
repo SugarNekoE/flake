@@ -9,6 +9,7 @@
       enable = true;
       vimAlias = true;
       defaultEditor = true;
+      nixpkgs.source = inputs.nixpkgs;
       colorschemes."monokai-pro" = {
         enable = true;
         settings.filter = "pro";
