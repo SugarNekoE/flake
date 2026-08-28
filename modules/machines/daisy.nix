@@ -54,10 +54,17 @@
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-luks;
   nixos =
-    { identity, user, ... }:
+    {
+      identity,
+      lib,
+      user,
+      ...
+    }:
     {
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
       networking.firewall.enable = false;
+
+      programs.sing-box-for-desktop.settings.startAtLogin = lib.mkForce false;
 
       services.pipewire.wireplumber.extraConfig."51-daisy-dmic-format" = {
         "monitor.alsa.rules" = [
@@ -74,14 +81,54 @@
         ];
       };
     };
-  home = {
-    wayland.windowManager.sway.config.output = {
-      "eDP-1" = {
-        mode = "1920x1200@60Hz";
-        scale = "1.35";
+  home =
+    { pkgs, ... }:
+    let
+      startSingBox = pkgs.writeShellApplication {
+        name = "start-sing-box-after-tray";
+        runtimeInputs = [
+          pkgs.coreutils
+          pkgs.gnugrep
+          pkgs.systemd
+        ];
+        text = ''
+          until busctl --user get-property \
+            org.kde.StatusNotifierWatcher \
+            /StatusNotifierWatcher \
+            org.kde.StatusNotifierWatcher \
+            IsStatusNotifierHostRegistered 2>/dev/null | grep -q 'true$'; do
+            sleep 0.2
+          done
+
+          exec /run/current-system/sw/bin/sing-box --start-at-login
+        '';
+      };
+    in
+    {
+      systemd.user.services.sing-box-for-desktop = {
+        Unit = {
+          Description = "sing-box desktop tray";
+          After = [
+            "graphical-session.target"
+            "waybar.service"
+          ];
+          PartOf = [ "graphical-session.target" ];
+        };
+        Service = {
+          ExecStart = "${startSingBox}/bin/start-sing-box-after-tray";
+          Restart = "on-failure";
+          RestartSec = "2s";
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+
+      wayland.windowManager.sway.config.output = {
+        "eDP-1" = {
+          mode = "1920x1200@60Hz";
+          scale = "1.35";
+        };
       };
     };
-  };
   hardware =
     {
       config,
