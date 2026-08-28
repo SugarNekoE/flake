@@ -53,7 +53,8 @@ review ceremony.
 ## Git Conventions
 
 - Commit messages follow Conventional Commits: `type(scope): subject`.
+- Use `git commit -s` so the `Signed-off-by:` trailer is present.
 - Use a lowercase imperative subject with no trailing period and a concise,
-  meaningful scope such as `sway`, `plasma`, `flatpak`, `netbird`, `system`, or
-  `agents`.
-- Do not add `Signed-off-by` or `Co-authored-by` trailers unless the user asks.
+  meaningful scope such as `app`, `ui`, `tracking`, `carrier`, `auth`, `db`,
+  `agents`, or `tooling`.
+- Never add a `Co-authored-by:` trailer.
