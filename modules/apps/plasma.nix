@@ -98,8 +98,8 @@ in
         workspace.iconTheme = "breeze-dark";
 
         kwin = {
-          edgeBarrier = 100;
-          cornerBarrier = true;
+          edgeBarrier = 0;
+          cornerBarrier = false;
           effects = {
             blur.enable = false;
             translucency.enable = false;

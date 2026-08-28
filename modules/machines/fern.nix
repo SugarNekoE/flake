@@ -127,8 +127,8 @@
             "gid=100"
           ];
         };
-        "/mnt/lolihoust" = {
-          remote = "//10.0.0.23/lolihoust";
+        "/mnt/lolihouse" = {
+          remote = "//10.0.0.23/lolihouse";
           credentialsFile = cifsCredentialsFile;
           extraOptions = [
             "uid=1000"
