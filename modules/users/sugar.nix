@@ -55,6 +55,7 @@
       xdg.userDirs = {
         enable = true;
         createDirectories = true;
+        projects = null;
       };
 
       programs.home-manager.enable = true;
