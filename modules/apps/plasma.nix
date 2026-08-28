@@ -192,6 +192,7 @@ in
                       "org.kde.plasma.bluetooth"
                       "org.kde.plasma.networkmanagement"
                       "org.kde.plasma.volume"
+                      "org.kde.plasma.clipboard"
                     ];
                     shown = [
                       "org.kde.plasma.battery"
@@ -199,6 +200,7 @@ in
                       "org.kde.plasma.bluetooth"
                       "org.kde.plasma.networkmanagement"
                       "org.kde.plasma.volume"
+                      "org.kde.plasma.clipboard"
                     ];
                   };
                 };
