@@ -22,8 +22,6 @@
         enableDefaultConfig = false;
       };
 
-      programs.direnv.enable = true;
-
       programs.htop.enable = true;
 
       programs.btop.enable = true;
@@ -33,6 +31,11 @@
       programs.command-not-found.enable = false;
 
       programs.zellij.enable = true;
+
+      programs.direnv = {
+        enable = true;
+        enableFishIntegration = true;
+      };
 
       programs.fzf = {
         enable = true;
