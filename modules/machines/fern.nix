@@ -11,7 +11,7 @@
     i18n
     xfs
     (cifs.withCredentials {
-      sopsFile = ../secrets/cifs/home-cifs.yaml;
+      sopsFile = ../secrets/cifs/home.yaml;
     })
 
     # services
