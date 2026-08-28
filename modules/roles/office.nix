@@ -6,17 +6,11 @@
       "org.libreoffice.LibreOffice"
       "org.mozilla.thunderbird_esr"
       "com.baidu.NetDisk"
+      "md.obsidian.Obsidian"
+      "com.todoist.Todoist"
+      "net.xmind.XMind"
+      "org.gimp.GIMP"
+      "org.kde.krita"
     ])
   ];
-  home =
-    { pkgs, ... }:
-    {
-      home.packages = with pkgs; [
-        obsidian
-        todoist
-        xmind
-        gimp
-        krita
-      ];
-    };
 }

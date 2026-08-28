@@ -23,6 +23,9 @@
       "io.gitlab.adhami3310.Impression"
       "org.gnome.Brasero"
       "org.gnome.NetworkDisplays"
+      "io.missioncenter.MissionCenter"
+      "io.github.ilya_zlobintsev.LACT"
+      "hu.irl.cameractrls"
     ])
   ];
 
@@ -39,17 +42,13 @@
       gtk.colorScheme = "dark";
 
       home.packages = with pkgs; [
-        google-chrome
-        splayer
         mpv
         ffmpeg
-        obs-studio
-        cameractrls
-        lact
-        mission-center
+        google-chrome
         tor-browser
+        splayer
+        obs-studio
         vlc
-        bilibili
       ];
     };
 }
