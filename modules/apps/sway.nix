@@ -5,6 +5,7 @@ let
     NIXOS_OZONE_WL = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     QT_IM_MODULE = "fcitx";
+    QT_IM_MODULES = "wayland;fcitx";
     XMODIFIERS = "@im=fcitx";
   };
 in
@@ -303,6 +304,7 @@ in
         export NIXOS_OZONE_WL=1
         export ELECTRON_OZONE_PLATFORM_HINT=wayland
         export QT_IM_MODULE=fcitx
+        export QT_IM_MODULES='wayland;fcitx'
         export XMODIFIERS=@im=fcitx
       '';
 
