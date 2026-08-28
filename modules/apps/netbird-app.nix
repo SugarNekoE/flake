@@ -39,7 +39,7 @@ in
           fi
 
           for profile in ${lib.escapeShellArgs (builtins.attrNames profiles)}; do
-            if ! grep -qE "^''${profile}[[:space:]]" <<<"$profiles"; then
+            if ! grep -qE "^[^[:space:]]+[[:space:]]+''${profile}([[:space:]]|$)" <<<"$profiles"; then
               ${client} profile add "$profile"
             fi
           done
@@ -95,7 +95,7 @@ in
         name = "NetBird";
         genericName = "Mesh VPN";
         comment = "Connect to and switch between NetBird profiles";
-        exec = "${lib.getExe' pkgs.coreutils "env"} WEBKIT_DISABLE_DMABUF_RENDERER=1 ${ui}";
+        exec = "${lib.getExe' pkgs.coreutils "env"} WEBKIT_DISABLE_DMABUF_RENDERER=1 ${ui} --daemon-addr=unix:///run/netbird/sock";
         inherit icon;
         terminal = false;
         categories = [ "Network" ];

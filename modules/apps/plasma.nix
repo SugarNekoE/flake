@@ -1,4 +1,11 @@
 { inputs, ... }:
+let
+  waylandSessionVariables = {
+    XDG_SESSION_TYPE = "wayland";
+    NIXOS_OZONE_WL = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+  };
+in
 {
   flake-file.inputs.plasma-manager = {
     url = "github:nix-community/plasma-manager";
@@ -11,6 +18,8 @@
   nixos =
     { config, pkgs, ... }:
     {
+      environment.sessionVariables = waylandSessionVariables;
+
       services = {
         desktopManager.plasma6 = {
           enable = true;
@@ -55,11 +64,7 @@
     {
       imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
-      home.sessionVariables = {
-        XDG_SESSION_TYPE = "wayland";
-        NIXOS_OZONE_WL = 1;
-        ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-      };
+      home.sessionVariables = waylandSessionVariables;
 
       stylix = {
         cursor = lib.mkForce {

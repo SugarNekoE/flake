@@ -1,4 +1,12 @@
-_: {
+_:
+let
+  waylandSessionVariables = {
+    XDG_SESSION_TYPE = "wayland";
+    NIXOS_OZONE_WL = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+  };
+in
+{
   nixos =
     {
       lib,
@@ -6,6 +14,8 @@ _: {
       ...
     }:
     {
+      environment.sessionVariables = waylandSessionVariables;
+
       programs.sway = {
         enable = true;
         package = pkgs.unstable.swayfx;
@@ -42,7 +52,7 @@ _: {
       systemd.user.targets."nixos-fake-graphical-session".enable = false;
     };
 
-  flake.modules.homeManager.sway =
+  home =
     {
       config,
       lib,
@@ -249,7 +259,7 @@ _: {
         autotiling
       ];
 
-      home.sessionVariables.NIXOS_OZONE_WL = 1;
+      home.sessionVariables = waylandSessionVariables;
 
       xdg.configFile."xfce4/helpers.rc".text = ''
         [Helpers]
