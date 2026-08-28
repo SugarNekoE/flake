@@ -56,11 +56,14 @@ in
       services.displayManager.defaultSession = "sway-uwsm";
       services.displayManager.ly.settings.waylandsessions = "${uwsmSwaySession}/share/wayland-sessions";
 
-      xdg.portal.wlr.settings.screencast = {
-        chooser_type = "dmenu";
-        chooser_cmd = "${lib.getExe pkgs.wmenu} -i -l 12 -p 'Share a screen or window:'";
-        force_mod_linear = true;
-        max_fps = 30;
+      xdg.portal = {
+        config.sway."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+        wlr.settings.screencast = {
+          chooser_type = "dmenu";
+          chooser_cmd = "${lib.getExe pkgs.wmenu} -i -l 12 -p 'Share a screen or window:'";
+          force_mod_linear = true;
+          max_fps = 30;
+        };
       };
 
       systemd.user.targets."nixos-fake-graphical-session".enable = false;
