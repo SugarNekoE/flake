@@ -32,10 +32,7 @@ in
         extraPortals = with pkgs; [
           xdg-desktop-portal-gtk
         ];
-        config.common = {
-          default = [ "gtk" ];
-          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-        };
+        config.common.default = [ "gtk" ];
       };
     };
 
@@ -50,6 +47,7 @@ in
       packageId = package: if builtins.isString package then package else package.appId;
       applicationIds = lib.unique (map packageId config.services.flatpak.packages);
       stylixConfigFiles = {
+        "fcitx5/conf/classicui.conf" = "${config.xdg.configFile.fcitx5.source}/conf/classicui.conf";
         "gtk-3.0/gtk.css" = config.xdg.configFile."gtk-3.0/gtk.css".source;
         "gtk-3.0/settings.ini" = config.xdg.configFile."gtk-3.0/settings.ini".source;
         "gtk-4.0/gtk.css" = config.xdg.configFile."gtk-4.0/gtk.css".source;
