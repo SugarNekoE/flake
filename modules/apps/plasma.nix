@@ -42,6 +42,8 @@ in
 
       programs.kde-pim.enable = false;
 
+      xdg.portal.config.kde."org.freedesktop.impl.portal.Secret" = [ "kwallet" ];
+
       environment.plasma6.excludePackages = with pkgs.kdePackages; [
         discover
         elisa
