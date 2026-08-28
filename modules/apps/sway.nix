@@ -4,6 +4,8 @@ let
     XDG_SESSION_TYPE = "wayland";
     NIXOS_OZONE_WL = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    QT_IM_MODULE = "fcitx";
+    XMODIFIERS = "@im=fcitx";
   };
 in
 {
@@ -298,6 +300,8 @@ in
         export XDG_SESSION_TYPE=wayland
         export NIXOS_OZONE_WL=1
         export ELECTRON_OZONE_PLATFORM_HINT=wayland
+        export QT_IM_MODULE=fcitx
+        export XMODIFIERS=@im=fcitx
       '';
 
       home.activation.setThunarAsDefaultFileManager = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

@@ -2,37 +2,35 @@ _: {
   home =
     {
       config,
+      lib,
       pkgs,
       ...
     }:
     {
       stylix.targets.fcitx5.enable = true;
 
-      home.sessionVariables = {
-        GTK_IM_MODULE = "fcitx";
-        QT_IM_MODULE = "fcitx";
-        QT_IM_MODULES = "wayland;fcitx";
-        XMODIFIERS = "@im=fcitx";
+      systemd.user.sessionVariables.XMODIFIERS = "@im=fcitx";
+
+      home.packages = with pkgs; [
+        setxkbmap
+        xprop
+      ];
+
+      xdg.dataFile."fcitx5/rime/default.custom.yaml" = {
+        force = true;
+        text = ''
+          patch:
+            __include: rime_ice_suggestion:/
+
+            menu/page_size: 8
+
+            schema_list:
+              - schema: rime_ice
+        '';
       };
-
-      systemd.user.sessionVariables = {
-        GTK_IM_MODULE = "fcitx";
-        QT_IM_MODULE = "fcitx";
-        QT_IM_MODULES = "wayland;fcitx";
-        XMODIFIERS = "@im=fcitx";
-      };
-
-      xdg.dataFile."fcitx5/rime/default.custom.yaml".text = ''
-        patch:
-          __include: rime_ice_suggestion:/
-
-          menu/page_size: 8
-
-          schema_list:
-            - schema: rime_ice
-      '';
 
       xdg.dataFile."fcitx5/rime/rime_ice.custom.yaml" = {
+        force = true;
         text = ''
           patch:
             menu/page_size: 8
@@ -42,6 +40,25 @@ _: {
             "${config.xdg.dataHome}/fcitx5/rime/build/rime_ice.schema.yaml"
         '';
       };
+
+      home.activation.makeRimeConfigMutable = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+        $DRY_RUN_CMD ${pkgs.coreutils}/bin/cp --remove-destination \
+          "${config.xdg.dataFile."fcitx5/rime/default.custom.yaml".source}" \
+          "${config.xdg.dataHome}/fcitx5/rime/default.custom.yaml"
+        $DRY_RUN_CMD ${pkgs.coreutils}/bin/cp --remove-destination \
+          "${config.xdg.dataFile."fcitx5/rime/rime_ice.custom.yaml".source}" \
+          "${config.xdg.dataHome}/fcitx5/rime/rime_ice.custom.yaml"
+        $DRY_RUN_CMD ${pkgs.coreutils}/bin/chmod u+w \
+          "${config.xdg.dataHome}/fcitx5/rime/default.custom.yaml" \
+          "${config.xdg.dataHome}/fcitx5/rime/rime_ice.custom.yaml"
+
+        if [[ -d "${config.xdg.dataHome}/fcitx5/rime/sync" ]]; then
+          $DRY_RUN_CMD ${pkgs.findutils}/bin/find \
+            "${config.xdg.dataHome}/fcitx5/rime/sync" \
+            -type f -name '*.custom.yaml' \
+            -exec ${pkgs.coreutils}/bin/chmod u+w {} +
+        fi
+      '';
 
       i18n.inputMethod = {
         enable = true;
