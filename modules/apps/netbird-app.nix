@@ -22,27 +22,31 @@ in
     }:
     let
       client = lib.getExe pkgs.unstable.netbird;
-      ensureProfiles = pkgs.writeShellApplication {
-        name = "netbird-ensure-profiles";
-        runtimeInputs = [ pkgs.gnugrep ];
+      cleanRootProfiles = pkgs.writeShellApplication {
+        name = "netbird-clean-root-profiles";
+        runtimeInputs = [ pkgs.gawk ];
         text = ''
           for _attempt in {1..30}; do
-            if profiles="$(${client} profile list 2>/dev/null)"; then
+            if profile_list="$(${client} profile list --show-id 2>/dev/null)"; then
               break
             fi
             sleep 1
           done
 
-          if [[ -z "''${profiles:-}" ]]; then
-            echo "unable to read NetBird profiles" >&2
+          if [[ -z "''${profile_list:-}" ]]; then
+            echo "unable to read root NetBird profiles" >&2
             exit 1
           fi
 
-          for profile in ${lib.escapeShellArgs (builtins.attrNames profiles)}; do
-            if ! grep -qE "^[^[:space:]]+[[:space:]]+''${profile}([[:space:]]|$)" <<<"$profiles"; then
-              ${client} profile add "$profile"
+          default_seen=
+          while read -r id name; do
+            [[ -n "$id" && -n "$name" ]] || continue
+            if [[ "$name" == default && -z "$default_seen" ]]; then
+              default_seen=1
+            else
+              ${client} profile remove "$id"
             fi
-          done
+          done < <(awk 'NR > 1 { print $1, $2 }' <<<"$profile_list")
         '';
       };
     in
@@ -68,14 +72,13 @@ in
       ];
 
       systemd.services.netbird-profiles = {
-        description = "Ensure configured NetBird profiles exist";
+        description = "Remove obsolete root NetBird profiles";
         after = [ "netbird.service" ];
         requires = [ "netbird.service" ];
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = lib.getExe ensureProfiles;
-          RemainAfterExit = true;
+          ExecStart = lib.getExe cleanRootProfiles;
         };
       };
     };
@@ -87,9 +90,62 @@ in
       uiPackage = pkgs.unstable.netbird-ui;
       ui = lib.getExe uiPackage;
       icon = "${uiPackage}/share/icons/hicolor/256x256/apps/netbird.png";
+      profileNames = builtins.attrNames profiles;
+      reconcileProfiles = pkgs.writeShellApplication {
+        name = "netbird-reconcile-profiles";
+        runtimeInputs = [ pkgs.gawk ];
+        text = ''
+          for _attempt in {1..30}; do
+            if profile_list="$(${client} profile list --show-id 2>/dev/null)"; then
+              break
+            fi
+            sleep 1
+          done
+
+          if [[ -z "''${profile_list:-}" ]]; then
+            echo "unable to read NetBird profiles" >&2
+            exit 1
+          fi
+
+          declare -A seen=([default]=1)
+          while read -r id name; do
+            [[ -n "$id" && -n "$name" ]] || continue
+
+            case "$name" in
+              default)
+                ;;
+              ${lib.concatMapStringsSep "|" lib.escapeShellArg profileNames})
+                if [[ -n "''${seen[$name]:-}" ]]; then
+                  ${client} profile remove "$id"
+                else
+                  seen["$name"]=1
+                fi
+                ;;
+              *)
+                ${client} profile remove "$id"
+                ;;
+            esac
+          done < <(awk 'NR > 1 { print $1, $2 }' <<<"$profile_list")
+
+          for name in ${lib.escapeShellArgs profileNames}; do
+            if [[ -z "''${seen[$name]:-}" ]]; then
+              ${client} profile add "$name"
+            fi
+          done
+        '';
+      };
     in
     {
       home.packages = [ uiPackage ];
+
+      systemd.user.services.netbird-profiles = {
+        Unit.Description = "Reconcile configured NetBird profiles";
+        Install.WantedBy = [ "default.target" ];
+        Service = {
+          Type = "oneshot";
+          ExecStart = lib.getExe reconcileProfiles;
+        };
+      };
 
       xdg.desktopEntries.netbird = {
         name = "NetBird";
