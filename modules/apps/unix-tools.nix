@@ -2,6 +2,8 @@
 {
   flake-file.inputs.nix-index-database.url = "github:nix-community/nix-index-database";
 
+  nixos.stylix.targets.grub.enable = true;
+
   home =
     { pkgs, ... }:
     {
@@ -32,6 +34,8 @@
       programs.command-not-found.enable = false;
 
       programs.zellij.enable = true;
+
+      programs.bat.enable = true;
 
       programs.direnv = {
         enable = true;
@@ -69,6 +73,8 @@
         btop.enable = true;
         zellij.enable = true;
         yazi.enable = true;
+        fzf.enable = true;
+        bat.enable = true;
       };
     };
 }

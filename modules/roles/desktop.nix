@@ -41,6 +41,8 @@
 
       gtk.colorScheme = "dark";
 
+      stylix.targets.mpv.enable = true;
+
       home.packages = with pkgs; [
         mpv
         ffmpeg

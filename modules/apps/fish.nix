@@ -57,6 +57,7 @@ _: {
           "tree" = "ls -T";
           "zed" = "zeditor";
           "z" = "cd";
+          "cat" = "bat";
         };
         plugins = map (x: { inherit (x) name src; }) (
           with pkgs.fishPlugins;
