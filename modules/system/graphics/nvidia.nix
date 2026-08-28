@@ -14,7 +14,7 @@
           modesetting.enable = true;
           powerManagement.enable = true;
           nvidiaSettings = true;
-          package = config.boot.kernelPackages.nvidiaPackages.beta;
+          package = (pkgs.unstable.linuxPackagesFor config.boot.kernelPackages.kernel).nvidiaPackages.latest;
         };
       };
       services.xserver.videoDrivers = [ "nvidia" ];
