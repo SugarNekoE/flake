@@ -65,6 +65,7 @@ in
       imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
       home.sessionVariables = waylandSessionVariables;
+      systemd.user.sessionVariables = waylandSessionVariables;
 
       stylix = {
         cursor = lib.mkForce {

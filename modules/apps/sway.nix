@@ -260,6 +260,7 @@ in
       ];
 
       home.sessionVariables = waylandSessionVariables;
+      systemd.user.sessionVariables = waylandSessionVariables;
 
       xdg.configFile."xfce4/helpers.rc".text = ''
         [Helpers]
