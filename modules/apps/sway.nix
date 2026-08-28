@@ -79,6 +79,7 @@ _: {
             done
 
             [[ "$on_ac_power" == true ]] || exit 0
+            ${lockScreen} --daemonize
             power_state="off"
           elif [[ "$action" == "open" ]]; then
             power_state="on"
