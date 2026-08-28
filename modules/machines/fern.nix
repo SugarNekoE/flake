@@ -54,6 +54,7 @@
     {
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.fern ];
       networking.firewall.enable = false;
+      environment.sessionVariables.KWIN_DRM_NO_DIRECT_SCANOUT = "1";
     };
   hardware =
     {
