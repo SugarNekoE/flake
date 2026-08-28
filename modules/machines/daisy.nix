@@ -58,6 +58,21 @@
     {
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
       networking.firewall.enable = false;
+
+      services.pipewire.wireplumber.extraConfig."51-daisy-dmic-format" = {
+        "monitor.alsa.rules" = [
+          {
+            matches = [
+              { "node.name" = "~alsa_input.*HiFi__Mic1__source"; }
+            ];
+            actions.update-props = {
+              "audio.format" = "S32LE";
+              "audio.rate" = 48000;
+              "audio.channels" = 2;
+            };
+          }
+        ];
+      };
     };
   home = {
     wayland.windowManager.sway.config.output = {
