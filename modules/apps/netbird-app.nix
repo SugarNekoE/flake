@@ -26,7 +26,7 @@ in
         name = "netbird-ensure-profiles";
         runtimeInputs = [ pkgs.gnugrep ];
         text = ''
-          for attempt in {1..30}; do
+          for _attempt in {1..30}; do
             if profiles="$(${client} profile list 2>/dev/null)"; then
               break
             fi
@@ -39,7 +39,7 @@ in
           fi
 
           for profile in ${lib.escapeShellArgs (builtins.attrNames profiles)}; do
-            if ! grep -qE "^$profile[[:space:]]" <<<"$profiles"; then
+            if ! grep -qE "^''${profile}[[:space:]]" <<<"$profiles"; then
               ${client} profile add "$profile"
             fi
           done
