@@ -15,41 +15,10 @@ in
   nixos =
     {
       config,
-      lib,
       pkgs,
       user,
       ...
     }:
-    let
-      client = lib.getExe pkgs.unstable.netbird;
-      cleanRootProfiles = pkgs.writeShellApplication {
-        name = "netbird-clean-root-profiles";
-        runtimeInputs = [ pkgs.gawk ];
-        text = ''
-          for _attempt in {1..30}; do
-            if profile_list="$(${client} profile list --show-id 2>/dev/null)"; then
-              break
-            fi
-            sleep 1
-          done
-
-          if [[ -z "''${profile_list:-}" ]]; then
-            echo "unable to read root NetBird profiles" >&2
-            exit 1
-          fi
-
-          default_seen=
-          while read -r id name; do
-            [[ -n "$id" && -n "$name" ]] || continue
-            if [[ "$name" == default && -z "$default_seen" ]]; then
-              default_seen=1
-            else
-              ${client} profile remove "$id"
-            fi
-          done < <(awk 'NR > 1 { print $1, $2 }' <<<"$profile_list")
-        '';
-      };
-    in
     {
       services.resolved.enable = true;
 
@@ -70,17 +39,6 @@ in
       users.users.${user.username}.extraGroups = [
         config.services.netbird.clients.default.user.group
       ];
-
-      systemd.services.netbird-profiles = {
-        description = "Remove obsolete root NetBird profiles";
-        after = [ "netbird.service" ];
-        requires = [ "netbird.service" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = lib.getExe cleanRootProfiles;
-        };
-      };
     };
 
   home =
@@ -91,6 +49,17 @@ in
       ui = lib.getExe uiPackage;
       icon = "${uiPackage}/share/icons/hicolor/256x256/apps/netbird.png";
       profileNames = builtins.attrNames profiles;
+      interactiveClient = pkgs.writeShellApplication {
+        name = "netbird-interactive";
+        runtimeInputs = [ pkgs.polkit ];
+        text = ''
+          if [[ -w /run/netbird/sock ]]; then
+            exec ${client} "$@"
+          fi
+
+          exec pkexec ${client} "$@"
+        '';
+      };
       reconcileProfiles = pkgs.writeShellApplication {
         name = "netbird-reconcile-profiles";
         runtimeInputs = [ pkgs.gawk ];
@@ -107,25 +76,32 @@ in
             exit 1
           fi
 
-          declare -A seen=([default]=1)
-          while read -r id name; do
+          declare -A seen=()
+          while read -r id name active; do
             [[ -n "$id" && -n "$name" ]] || continue
 
+            if [[ "$id" == default ]]; then
+              seen["$name"]=1
+              continue
+            fi
+
             case "$name" in
-              default)
-                ;;
               ${lib.concatMapStringsSep "|" lib.escapeShellArg profileNames})
                 if [[ -n "''${seen[$name]:-}" ]]; then
-                  ${client} profile remove "$id"
+                  if [[ -z "$active" ]]; then
+                    ${client} profile remove "$id"
+                  fi
                 else
                   seen["$name"]=1
                 fi
                 ;;
               *)
-                ${client} profile remove "$id"
+                if [[ -z "$active" ]]; then
+                  ${client} profile remove "$id"
+                fi
                 ;;
             esac
-          done < <(awk 'NR > 1 { print $1, $2 }' <<<"$profile_list")
+          done < <(awk 'NR > 1 { print $1, $2, $3 }' <<<"$profile_list")
 
           for name in ${lib.escapeShellArgs profileNames}; do
             if [[ -z "''${seen[$name]:-}" ]]; then
@@ -162,7 +138,7 @@ in
         };
         actions = lib.mapAttrs (name: profile: {
           name = "Set up or switch to ${profile.displayName}";
-          exec = "${client} up --profile ${name} --management-url ${profile.managementUrl}";
+          exec = "${lib.getExe interactiveClient} up --profile ${name} --management-url ${profile.managementUrl}";
           inherit icon;
         }) profiles;
       };
