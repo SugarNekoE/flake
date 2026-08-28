@@ -27,6 +27,11 @@ _: {
       users.users.${user.username}.extraGroups = [
         config.services.netbird.clients.default.user.group
       ];
+
+      systemd.services.netbird.serviceConfig = {
+        StateDirectoryMode = lib.mkForce "2770";
+        UMask = "0007";
+      };
     };
 
   home = { pkgs, ... }: {
