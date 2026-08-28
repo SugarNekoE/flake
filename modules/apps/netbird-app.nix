@@ -36,7 +36,13 @@ _: {
   home =
     { lib, pkgs, ... }:
     let
-      uiPackage = pkgs.unstable.netbird-ui;
+      uiPackage = pkgs.unstable.netbird-ui.overrideAttrs (oldAttrs: {
+        tags = (oldAttrs.tags or [ ]) ++ [ "gtk3" ];
+        buildInputs = (oldAttrs.buildInputs or [ ]) ++ [
+          pkgs.gtk3
+          pkgs.webkitgtk_4_1
+        ];
+      });
       launcher = pkgs.writeShellScript "netbird-ui-launcher" ''
         if [[ "''${XDG_CURRENT_DESKTOP:-}" == *KDE* ]]; then
           export GDK_BACKEND=wayland
