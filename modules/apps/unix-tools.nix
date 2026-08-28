@@ -54,9 +54,21 @@
         enableFishIntegration = true;
       };
 
+      programs.eza = {
+        enable = true;
+        enableFishIntegration = true;
+        git = true;
+      };
+
+      programs.yazi = {
+        enable = true;
+        enableFishIntegration = true;
+      };
+
       stylix.targets = {
         btop.enable = true;
         zellij.enable = true;
+        yazi.enable = true;
       };
     };
 }

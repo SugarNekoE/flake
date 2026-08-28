@@ -17,6 +17,7 @@ _: {
 
       programs.kitty = {
         enable = true;
+        shellIntegration.enableFishIntegration = true;
         font = {
           name = lib.mkForce "NotoSansM Nerd Font Mono";
           package = lib.mkForce pkgs.nerd-fonts.noto;
