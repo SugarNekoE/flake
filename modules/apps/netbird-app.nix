@@ -29,15 +29,8 @@ _: {
       ];
 
       systemd.services.netbird.serviceConfig = {
-        StateDirectoryMode = lib.mkForce "2770";
-        UMask = "0007";
+        StateDirectoryMode = lib.mkForce "0777";
       };
-
-      systemd.tmpfiles.rules = [
-        "z /var/lib/netbird/*.json 0660 netbird netbird - -"
-        "d /var/lib/netbird/${user.username} 2770 ${user.username} netbird - -"
-        "z /var/lib/netbird/${user.username}/*.json 0660 ${user.username} netbird - -"
-      ];
     };
 
   home = { pkgs, ... }: {
