@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   imports = with inputs.self.aspects; [
-    codex
+    agents
     zed
     (flatpak.withPackages [
       "com.redis.RedisInsight"
