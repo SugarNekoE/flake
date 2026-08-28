@@ -32,6 +32,10 @@ _: {
         StateDirectoryMode = lib.mkForce "2770";
         UMask = "0007";
       };
+
+      systemd.tmpfiles.rules = [
+        "z /var/lib/netbird/*.json 0660 netbird netbird - -"
+      ];
     };
 
   home = { pkgs, ... }: {
