@@ -19,7 +19,7 @@ _: {
           "background"
         ];
         themeBrightnessMode = brightness;
-        customThemeColor = colors.base0D;
+        customThemeColor = colors.base08;
         themeColorType = "CUSTOM";
         launcherFontFamily = font;
         logFontFamily = config.stylix.fonts.monospace.name;
@@ -65,8 +65,7 @@ _: {
     {
       options.programs.hmcl.wallpaper = lib.mkOption {
         type = lib.types.nullOr (lib.types.strMatching "https?://.+");
-        default = null;
-        example = "https://assets.sne.moe/Backgrounds/HMCL.jpg";
+        default = "https://assets.sne.moe/Backgrounds/HMCL.jpg";
       };
 
       config.home.packages = [ hmcl ];
