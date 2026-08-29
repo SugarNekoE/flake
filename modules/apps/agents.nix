@@ -3,7 +3,7 @@ let
   piSettings = {
     defaultProvider = "openai-codex";
     defaultModel = "gpt-5.6-sol";
-    theme = "monokai";
+    theme = "Monokai Pro (CE)";
   };
 
   piNpmPackages = {
