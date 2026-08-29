@@ -11,7 +11,7 @@ let
     "Noto Color Emoji"
   ];
   monospaceFonts = [
-    "NotoSansM Nerd Font Mono"
+    "NotoMono Nerd Font"
     "Noto Sans Mono CJK SC"
     "Noto Sans Mono"
     "Noto Sans Symbols"
@@ -36,7 +36,6 @@ in
           noto-fonts-cjk-sans
           noto-fonts-cjk-serif
           noto-fonts-color-emoji
-          jetbrains-mono
           nerd-fonts.noto
         ];
 

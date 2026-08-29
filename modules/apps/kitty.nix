@@ -19,7 +19,7 @@ _: {
         enable = true;
         shellIntegration.enableFishIntegration = true;
         font = {
-          name = lib.mkForce "NotoSansM Nerd Font Mono";
+          name = lib.mkForce "NotoMono Nerd Font";
           package = lib.mkForce pkgs.nerd-fonts.noto;
         };
         keybindings = {

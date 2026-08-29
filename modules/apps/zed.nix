@@ -42,10 +42,10 @@ _: {
           ];
 
           buffer_font_size = 16;
-          buffer_font_family = "Noto Sans Mono CJK SC";
+          buffer_font_family = "NotoMono Nerd Font";
           buffer_font_fallbacks = [
+            "Noto Sans Mono CJK SC"
             "Noto Sans Mono"
-            "NotoSansM Nerd Font Mono"
             "Noto Sans Symbols"
             "Noto Sans Symbols 2"
             "Noto Color Emoji"
@@ -68,10 +68,10 @@ _: {
           scrollbar.show = "always";
 
           terminal = {
-            font_family = "Noto Sans Mono CJK SC";
+            font_family = "NotoMono Nerd Font";
             font_fallbacks = [
+              "Noto Sans Mono CJK SC"
               "Noto Sans Mono"
-              "NotoSansM Nerd Font Mono"
               "Noto Sans Symbols"
               "Noto Sans Symbols 2"
               "Noto Color Emoji"

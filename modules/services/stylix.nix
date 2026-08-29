@@ -79,7 +79,7 @@ in
             package = pkgs.noto-fonts-cjk-sans;
           };
           monospace = {
-            name = "NotoSansM Nerd Font Mono";
+            name = "NotoMono Nerd Font";
             package = pkgs.nerd-fonts.noto;
           };
           emoji = {
