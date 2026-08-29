@@ -13,7 +13,8 @@ let
     "npm:pi-simplify@0.2.3" = "sha256-FQp23F/HtfZulJm4KhXxH/505pfpCNiQeMabmu09zLg=";
     "npm:pi-web-access@0.25.0" = "sha256-2bLEFPgtf7Z2zwB0FM8QnajtclT7MLh/EUXT6YKpqWM=";
     "npm:pi-subagents@0.58.0" = "sha256-RWSRVZ8piZhwBJFstt2d7CLCdMBvMrY8d7a/UhcJLyw=";
-    "npm:pi-btw@0.4.1" = "sha256-ZsoIfaLyV4aqus1LtdN92+0cMLY1vcH/rfhXyvBVNbU=";
+    "npm:pi-btw@0.4.1" = "sha256-PJKMskXImX2dsyDdjP56DPRRvrPIUpBFl04APGdEE5c=";
+    "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
     "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
     "npm:@narumitw/pi-usage@0.54.0" = "sha256-7wFMNCnVi6ynJyjcNxoqfTAK+j5xD/PPhSdCD5Fns8Q=";
     "npm:@krfantasy/pi-monokai-pro@0.1.0" = "sha256-7ti+iHnkpKmqQ0rbJHcyU9YC82Cni3kvKmYL0kfCEf4=";
