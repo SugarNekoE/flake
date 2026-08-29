@@ -375,6 +375,7 @@
                   cmake = [ "cmakelint" ];
                   markdown = [ "markdownlint-cli2" ];
                   "markdown.mdx" = [ "markdownlint-cli2" ];
+                  nix = [ "statix" ];
                 };
               };
 
@@ -437,7 +438,10 @@
 
             lsp = {
               servers = {
-                nixd.enable = true;
+                nixd = {
+                  enable = true;
+                  config.settings.formatting.command = [ "nixfmt" ];
+                };
                 neocmake.enable = true;
                 marksman.enable = true;
                 taplo.enable = true;
