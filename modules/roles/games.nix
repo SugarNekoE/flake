@@ -8,7 +8,11 @@
       "net.lutris.Lutris"
       "moe.launcher.the-honkers-railway-launcher"
       "sh.ppy.osu"
-      "org.prismlauncher.PrismLauncher"
     ])
   ];
+  home = { pkgs, ... }: {
+    home.packages = with pkgs; [
+      hmcl
+    ];
+  };
 }

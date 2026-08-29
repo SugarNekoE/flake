@@ -166,6 +166,7 @@
             extraPackages = with pkgs; [
               fd
               git
+              nodejs
               ripgrep
             ];
 
@@ -396,14 +397,21 @@
                   gitattributes
                   gitcommit
                   gitignore
+                  go
+                  gomod
+                  gosum
+                  gowork
                   json
                   json5
+                  javascript
                   lua
                   markdown
                   markdown_inline
                   nix
                   query
                   toml
+                  tsx
+                  typescript
                   vim
                   vimdoc
                   yaml
@@ -419,6 +427,10 @@
                     yaml = [ "yamlfmt" ];
                     json = [ "prettier" ];
                     jsonc = [ "prettier" ];
+                    javascript = [ "prettier" ];
+                    javascriptreact = [ "prettier" ];
+                    typescript = [ "prettier" ];
+                    typescriptreact = [ "prettier" ];
                     markdown = [
                       "prettier"
                       "markdownlint-cli2"
@@ -445,6 +457,9 @@
                 neocmake.enable = true;
                 marksman.enable = true;
                 taplo.enable = true;
+                gopls.enable = true;
+                ts_ls.enable = true;
+                eslint.enable = true;
                 jsonls = {
                   enable = true;
                   config.settings.json = {
