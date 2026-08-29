@@ -69,8 +69,11 @@ _: {
           scrollbar.show = "always";
 
           terminal = {
-            font_family = "Noto Sans Symbols";
+            font_family = "Noto Sans Mono CJK SC";
             font_fallbacks = [
+              "Noto Sans Mono"
+              "NotoSansM Nerd Font Mono"
+              "Noto Sans Symbols"
               "Noto Sans Symbols 2"
               "Noto Color Emoji"
             ];
