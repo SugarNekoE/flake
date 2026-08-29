@@ -39,12 +39,11 @@ _: {
           ui_font_family = "Noto Sans CJK SC";
           ui_font_fallbacks = [
             "Noto Sans"
-            "Noto Color Emoji"
           ];
+
           buffer_font_size = 16;
-          buffer_font_family = "JetBrains Mono";
+          buffer_font_family = "Noto Sans Mono CJK SC";
           buffer_font_fallbacks = [
-            "Noto Sans Mono CJK SC"
             "Noto Sans Mono"
             "NotoSansM Nerd Font Mono"
             "Noto Sans Symbols"
