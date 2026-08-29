@@ -1,6 +1,7 @@
 { inputs, ... }:
 {
   imports = with inputs.self.aspects; [
+    hmcl
     (flatpak.withPackages [
       "com.valvesoftware.Steam"
       "com.vysp3r.ProtonPlus"
@@ -10,16 +11,4 @@
       "sh.ppy.osu"
     ])
   ];
-  home =
-    { pkgs, ... }:
-    let
-      hmcl = pkgs.hmcl.overrideAttrs (oldAttrs: {
-        postFixup = oldAttrs.postFixup + ''
-          wrapProgram $out/bin/hmcl --set HMCL_FONT "Noto Sans CJK SC"
-        '';
-      });
-    in
-    {
-      home.packages = [ hmcl ];
-    };
 }
