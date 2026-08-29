@@ -8,11 +8,13 @@ let
 
   piNpmPackages = {
     "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
-    "npm:@narumitw/pi-goal@0.54.3" = "sha256-1P7I+bvcWgynbZ+kkam9sIRgWMGTdFO4K/o/hqbzWaM=";
+    "npm:pi-codex-goal@0.2.0" = "sha256-IG5efgXfPWgpmHKdmQ+4zBF5b5bF/3d0+Vs5v93ouGM=";
     "npm:pi-mcp-adapter@2.29.0" = "sha256-OrdOu1g0OeyrcdjOSNTcj1Alv2xNTOAECZPwQBZOgL8=";
     "npm:pi-web-access@0.25.0" = "sha256-2bLEFPgtf7Z2zwB0FM8QnajtclT7MLh/EUXT6YKpqWM=";
+    "npm:pi-web-ui@0.48.0" = "sha256-RoSRsWFLcVet6/g1vt+xQP1hXUWh1C15gKlFm0mqiww=";
     "npm:pi-subagents@0.58.0" = "sha256-RWSRVZ8piZhwBJFstt2d7CLCdMBvMrY8d7a/UhcJLyw=";
     "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
+    "npm:pi-btw@0.4.1" = "sha256-ZsoIfaLyV4aqus1LtdN92+0cMLY1vcH/rfhXyvBVNbU=";
     "npm:@narumitw/pi-usage@0.54.0" = "sha256-7wFMNCnVi6ynJyjcNxoqfTAK+j5xD/PPhSdCD5Fns8Q=";
     "npm:@krfantasy/pi-monokai-pro@0.1.0" = "sha256-7ti+iHnkpKmqQ0rbJHcyU9YC82Cni3kvKmYL0kfCEf4=";
   };
@@ -49,11 +51,13 @@ let
         printf %s ${lib.escapeShellArg packageJson} > $out/package.json
       '';
       npmFlags = [ "--legacy-peer-deps" ];
+      npmDepsFetcherVersion = if package.name == "pi-web-ui" then 2 else 1;
       nodeModulesLinkTarget = if lib.hasPrefix "@" package.name then "../.." else "..";
     in
     pkgs.buildNpmPackage {
       inherit pname npmFlags;
       inherit (package) version;
+      inherit npmDepsFetcherVersion;
       src = packageSrc;
       npmDeps = pkgs.fetchNpmDeps {
         name = "${pname}-${package.version}-npm-deps";
@@ -65,7 +69,24 @@ let
           export npm_config_cache=$TMPDIR/npm-cache
           mkdir -p "$HOME"
           npm install --package-lock-only --ignore-scripts ${lib.escapeShellArgs npmFlags}
+          node -e '
+            const fs = require("fs");
+            const { execFileSync } = require("child_process");
+            const lock = JSON.parse(fs.readFileSync("package-lock.json", "utf8"));
+            for (const [path, package] of Object.entries(lock.packages)) {
+              if (path && package.resolved && !package.integrity) {
+                const name = path.split("node_modules/").at(-1);
+                package.integrity = execFileSync(
+                  "npm",
+                  ["view", `''${name}@''${package.version}`, "dist.integrity"],
+                  { encoding: "utf8" },
+                ).trim();
+              }
+            }
+            fs.writeFileSync("package-lock.json", JSON.stringify(lock));
+          '
         '';
+        fetcherVersion = npmDepsFetcherVersion;
         inherit hash;
       };
       dontNpmBuild = true;
