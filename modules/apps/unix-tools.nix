@@ -25,7 +25,6 @@
         devenv
         cachix
         ripgrep
-        lazygit
         fastfetch
         nix-output-monitor
       ];
@@ -36,6 +35,8 @@
       };
 
       programs.htop.enable = true;
+
+      programs.lazygit.enable = true;
 
       programs.btop.enable = true;
 
@@ -80,11 +81,12 @@
       };
 
       stylix.targets = {
-        btop.enable = true;
-        zellij.enable = true;
-        yazi.enable = true;
         fzf.enable = true;
         bat.enable = true;
+        btop.enable = true;
+        yazi.enable = true;
+        zellij.enable = true;
+        lazygit.enable = true;
       };
     };
 }
