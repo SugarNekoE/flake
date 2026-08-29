@@ -60,6 +60,8 @@ _: {
           "cat" = "bat";
           "du" = "dust";
           "dig" = "doggo";
+          "df" = "duf";
+          "ps" = "procs";
         };
         plugins = map (x: { inherit (x) name src; }) (
           with pkgs.fishPlugins;

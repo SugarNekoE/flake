@@ -15,16 +15,19 @@
         sd
         nil
         mtr
+        duf
         nixd
         tldr
         dust
         gping
         doggo
+        procs
         devenv
-        fastfetch
-        nix-output-monitor
         cachix
         ripgrep
+        lazygit
+        fastfetch
+        nix-output-monitor
       ];
 
       programs.ssh = {
