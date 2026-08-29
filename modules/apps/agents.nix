@@ -7,13 +7,12 @@ let
   };
 
   piNpmPackages = {
-    "npm:pi-codex-goal@0.2.0" = "sha256-IG5efgXfPWgpmHKdmQ+4zBF5b5bF/3d0+Vs5v93ouGM=";
     "npm:pi-diff-review@0.1.26" = "sha256-Auq5iZpQwEzF2/LR5WnDvrsWmh+noD6Rbn+d+fG47UQ=";
+    "npm:pi-goal-x@0.30.5" = "sha256-XdI4xhUDmhL3t1oS1Nh4Db9j9h8xQPM6neTKb+ryVXI=";
     "npm:pi-mcp-adapter@2.29.0" = "sha256-OrdOu1g0OeyrcdjOSNTcj1Alv2xNTOAECZPwQBZOgL8=";
     "npm:pi-simplify@0.2.3" = "sha256-FQp23F/HtfZulJm4KhXxH/505pfpCNiQeMabmu09zLg=";
     "npm:pi-web-access@0.25.0" = "sha256-2bLEFPgtf7Z2zwB0FM8QnajtclT7MLh/EUXT6YKpqWM=";
     "npm:pi-subagents@0.58.0" = "sha256-RWSRVZ8piZhwBJFstt2d7CLCdMBvMrY8d7a/UhcJLyw=";
-    "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
     "npm:pi-btw@0.4.1" = "sha256-ZsoIfaLyV4aqus1LtdN92+0cMLY1vcH/rfhXyvBVNbU=";
     "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
     "npm:@narumitw/pi-usage@0.54.0" = "sha256-7wFMNCnVi6ynJyjcNxoqfTAK+j5xD/PPhSdCD5Fns8Q=";
