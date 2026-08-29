@@ -68,7 +68,14 @@ _: {
 
           scrollbar.show = "always";
 
-          terminal.shell.program = "${pkgs.fish}/bin/fish";
+          terminal = {
+            font_family = "Noto Sans Symbols";
+            font_fallbacks = [
+              "Noto Sans Symbols 2"
+              "Noto Color Emoji"
+            ];
+            shell.program = "${pkgs.fish}/bin/fish";
+          };
 
           languages.Zig = {
             format_on_save = "on";
