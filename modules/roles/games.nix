@@ -10,9 +10,16 @@
       "sh.ppy.osu"
     ])
   ];
-  home = { pkgs, ... }: {
-    home.packages = with pkgs; [
-      hmcl
-    ];
-  };
+  home =
+    { pkgs, ... }:
+    let
+      hmcl = pkgs.hmcl.overrideAttrs (oldAttrs: {
+        postFixup = oldAttrs.postFixup + ''
+          wrapProgram $out/bin/hmcl --set HMCL_FONT "Noto Sans CJK SC"
+        '';
+      });
+    in
+    {
+      home.packages = [ hmcl ];
+    };
 }
