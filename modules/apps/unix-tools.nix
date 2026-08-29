@@ -12,8 +12,14 @@
       home.packages = with pkgs; [
         gh
         fd
+        sd
         nil
+        mtr
         nixd
+        tldr
+        dust
+        gping
+        doggo
         devenv
         fastfetch
         nix-output-monitor

@@ -58,6 +58,8 @@ _: {
           "zed" = "zeditor";
           "z" = "cd";
           "cat" = "bat";
+          "du" = "dust";
+          "dig" = "doggo";
         };
         plugins = map (x: { inherit (x) name src; }) (
           with pkgs.fishPlugins;
