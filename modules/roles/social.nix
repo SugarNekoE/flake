@@ -2,6 +2,7 @@
 {
   imports = with inputs.self.aspects; [
     (flatpak.withPackages [
+      "io.github.martinrotter.rssguard"
       "com.teamspeak.TeamSpeak3"
       "com.discordapp.Discord"
       "org.telegram.desktop"
