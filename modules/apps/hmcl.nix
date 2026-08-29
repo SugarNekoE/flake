@@ -19,7 +19,7 @@ _: {
           "background"
         ];
         themeBrightnessMode = brightness;
-        customThemeColor = colors.base08;
+        customThemeColor = colors.base00;
         themeColorType = "CUSTOM";
         launcherFontFamily = font;
         logFontFamily = config.stylix.fonts.monospace.name;

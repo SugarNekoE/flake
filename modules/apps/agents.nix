@@ -1,8 +1,97 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
+let
+  piSettings = {
+    defaultProvider = "openai-codex";
+    defaultModel = "gpt-5.6-sol";
+    theme = "monokai";
+  };
+
+  piNpmPackages = {
+    "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
+    "npm:@narumitw/pi-goal@0.54.3" = "sha256-1P7I+bvcWgynbZ+kkam9sIRgWMGTdFO4K/o/hqbzWaM=";
+    "npm:pi-mcp-adapter@2.29.0" = "sha256-OrdOu1g0OeyrcdjOSNTcj1Alv2xNTOAECZPwQBZOgL8=";
+    "npm:pi-web-access@0.25.0" = "sha256-2bLEFPgtf7Z2zwB0FM8QnajtclT7MLh/EUXT6YKpqWM=";
+    "npm:pi-subagents@0.58.0" = "sha256-RWSRVZ8piZhwBJFstt2d7CLCdMBvMrY8d7a/UhcJLyw=";
+    "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
+    "npm:@narumitw/pi-usage@0.54.0" = "sha256-7wFMNCnVi6ynJyjcNxoqfTAK+j5xD/PPhSdCD5Fns8Q=";
+    "npm:@krfantasy/pi-monokai-pro@0.1.0" = "sha256-7ti+iHnkpKmqQ0rbJHcyU9YC82Cni3kvKmYL0kfCEf4=";
+  };
+
+  parseNpmSpec =
+    source:
+    let
+      npmSpec = lib.removePrefix "npm:" source;
+      slashParts = lib.splitString "/" npmSpec;
+      scoped = lib.hasPrefix "@" npmSpec;
+      scope = builtins.elemAt slashParts 0;
+      unscopedSpec = if scoped then builtins.concatStringsSep "/" (builtins.tail slashParts) else npmSpec;
+      versionParts = lib.splitString "@" unscopedSpec;
+      name = builtins.elemAt versionParts 0;
+    in
+    {
+      name = if scoped then "${scope}/${name}" else name;
+      version = if builtins.length versionParts > 1 then builtins.elemAt versionParts 1 else "latest";
+    };
+
+  mkPiNpmPackage =
+    pkgs: source: hash:
+    let
+      package = parseNpmSpec source;
+      pname = "pi-npm-package-${lib.strings.sanitizeDerivationName package.name}";
+      packageJson = builtins.toJSON {
+        name = pname;
+        version = "0.0.0";
+        private = true;
+        dependencies.${package.name} = package.version;
+      };
+      packageSrc = pkgs.runCommand "${pname}-src" { } ''
+        mkdir -p $out
+        printf %s ${lib.escapeShellArg packageJson} > $out/package.json
+      '';
+      npmFlags = [ "--legacy-peer-deps" ];
+      nodeModulesLinkTarget = if lib.hasPrefix "@" package.name then "../.." else "..";
+    in
+    pkgs.buildNpmPackage {
+      inherit pname npmFlags;
+      inherit (package) version;
+      src = packageSrc;
+      npmDeps = pkgs.fetchNpmDeps {
+        name = "${pname}-${package.version}-npm-deps";
+        src = packageSrc;
+        nativeBuildInputs = [ pkgs.nodejs ];
+        NODE_EXTRA_CA_CERTS = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+        postPatch = ''
+          export HOME=$TMPDIR/home
+          export npm_config_cache=$TMPDIR/npm-cache
+          mkdir -p "$HOME"
+          npm install --package-lock-only --ignore-scripts ${lib.escapeShellArgs npmFlags}
+        '';
+        inherit hash;
+      };
+      dontNpmBuild = true;
+      postPatch = ''
+        cp "$npmDeps/package-lock.json" package-lock.json
+      '';
+      installPhase = ''
+        runHook preInstall
+        test -d ${lib.escapeShellArg "node_modules/${package.name}"}
+        mkdir -p "$out"
+        cp -R node_modules "$out/node_modules"
+        if [ ! -e "$out/node_modules/${package.name}/node_modules" ]; then
+          ln -s ${lib.escapeShellArg nodeModulesLinkTarget} "$out/node_modules/${package.name}/node_modules"
+        fi
+        ln -s ${lib.escapeShellArg "node_modules/${package.name}"} "$out/package"
+        runHook postInstall
+      '';
+    };
+in
 {
   flake-file.inputs.llm-agents = {
     url = "github:numtide/llm-agents.nix";
-    inputs.nixpkgs.follows = "nixpkgs-unstable";
+    inputs = {
+      flake-parts.follows = "flake-parts";
+      nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   nixos = {
@@ -11,10 +100,21 @@
 
   home =
     { pkgs, ... }:
+    let
+      jsonFormat = pkgs.formats.json { };
+      packagePaths = lib.mapAttrsToList (
+        source: hash: "${mkPiNpmPackage pkgs source hash}/package"
+      ) piNpmPackages;
+      settingsFile = jsonFormat.generate "pi-settings.json" (piSettings // { packages = packagePaths; });
+    in
     {
-      home.packages = [
-        pkgs.llm-agents.chatgpt
-        pkgs.llm-agents.codex
-      ];
+      home = {
+        packages = with pkgs.llm-agents; [
+          chatgpt
+          codex
+          pi
+        ];
+        file.".pi/agent/settings.json".source = settingsFile;
+      };
     };
 }
