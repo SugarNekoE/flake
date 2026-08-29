@@ -10,7 +10,6 @@
       imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
       home.packages = with pkgs; [
-        gh
         fd
         sd
         nil
@@ -29,42 +28,32 @@
         nix-output-monitor
       ];
 
+      programs.bat.enable = true;
+
+      programs.htop.enable = true;
+
+      programs.btop.enable = true;
+
+      programs.zellij.enable = true;
+
+      programs.command-not-found.enable = false;
+
+      programs.nix-index-database.comma.enable = true;
+
+      programs.gh = {
+        enable = true;
+        gitCredentialHelper.enable = true;
+        settings = {
+          git_protocol = "ssh";
+        };
+      };
+
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
       };
 
-      programs.htop.enable = true;
-
-      programs.lazygit.enable = true;
-
-      programs.btop.enable = true;
-
-      programs.nix-index-database.comma.enable = true;
-
-      programs.command-not-found.enable = false;
-
-      programs.zellij.enable = true;
-
-      programs.bat.enable = true;
-
-      programs.direnv = {
-        enable = true;
-        enableFishIntegration = true;
-      };
-
       programs.fzf = {
-        enable = true;
-        enableFishIntegration = true;
-      };
-
-      programs.zoxide = {
-        enable = true;
-        enableFishIntegration = true;
-        options = [ "--cmd cd" ];
-      };
-
-      programs.nix-index = {
         enable = true;
         enableFishIntegration = true;
       };
@@ -76,6 +65,30 @@
       };
 
       programs.yazi = {
+        enable = true;
+        enableFishIntegration = true;
+      };
+
+      programs.direnv = {
+        enable = true;
+        enableFishIntegration = true;
+      };
+
+      programs.zoxide = {
+        enable = true;
+        enableFishIntegration = true;
+        options = [ "--cmd cd" ];
+      };
+
+      programs.lazygit = {
+        enable = true;
+        enableFishIntegration = true;
+        settings = {
+          git.commit.signOff = true;
+        };
+      };
+
+      programs.nix-index = {
         enable = true;
         enableFishIntegration = true;
       };
