@@ -57,6 +57,8 @@ let
     pkgs.buildNpmPackage {
       inherit pname npmFlags;
       inherit (package) version;
+      nativeBuildInputs = lib.optional (package.name == "pi-better-openai") pkgs.autoPatchelfHook;
+      buildInputs = lib.optional (package.name == "pi-better-openai") pkgs.stdenv.cc.cc.lib;
       src = packageSrc;
       npmDeps = pkgs.fetchNpmDeps {
         name = "${pname}-${package.version}-npm-deps";
