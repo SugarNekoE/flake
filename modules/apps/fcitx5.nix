@@ -1,4 +1,33 @@
 _: {
+  nixos =
+    { pkgs, ... }:
+    {
+      systemd.services.fcitx5-resume = {
+        description = "Restart Fcitx 5 after hibernation";
+        after = [
+          "hibernate.target"
+          "suspend-then-hibernate.target"
+        ];
+        wantedBy = [
+          "hibernate.target"
+          "suspend-then-hibernate.target"
+        ];
+        serviceConfig.Type = "oneshot";
+        script = ''
+          for runtimeDir in /run/user/[0-9]*; do
+            [[ -d "$runtimeDir" ]] || continue
+            uid="''${runtimeDir##*/}"
+            user="$(${pkgs.getent}/bin/getent passwd "$uid" | ${pkgs.coreutils}/bin/cut -d: -f1)"
+            [[ -n "$user" ]] || continue
+
+            ${pkgs.systemd}/bin/systemctl \
+              --user --machine="$user@.host" \
+              try-restart fcitx5-daemon.service || true
+          done
+        '';
+      };
+    };
+
   home =
     {
       config,
@@ -15,6 +44,11 @@ _: {
         setxkbmap
         xprop
       ];
+
+      xdg.configFile."autostart/org.fcitx.Fcitx5.desktop".text = ''
+        [Desktop Entry]
+        Hidden=true
+      '';
 
       xdg.dataFile."fcitx5/rime/default.custom.yaml" = {
         force = true;
