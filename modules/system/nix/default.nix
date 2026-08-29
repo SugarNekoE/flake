@@ -36,7 +36,7 @@
 
       nixpkgs.config.allowUnfree = true;
 
-      boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_18;
+      boot.kernelPackages = pkgs.linuxKernel.packages.linux_7_2;
 
       boot.supportedFilesystems = [
         "btrfs"
