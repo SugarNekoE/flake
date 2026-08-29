@@ -11,6 +11,7 @@
 
       home.packages = with pkgs; [
         gh
+        fd
         nil
         nixd
         devenv
