@@ -88,6 +88,7 @@ in
       terminal = "kitty";
       filemanager = lib.getExe pkgs.thunar;
       browser = "google-chrome-stable";
+      clipboardHistory = "${lib.getExe config.programs.vicinae.package} deeplink vicinae://launch/clipboard/history";
       screenshot = "grimshot copy anything";
       screenshotArea = "grimshot --notify savecopy area";
       screenshotScreen = "grimshot --notify savecopy screen";
@@ -253,6 +254,7 @@ in
             "${modifier}+e" = "exec ${filemanager}";
             "${modifier}+Escape" = "exec ${lockScreen}";
             "${modifier}+Shift+s" = "exec ${screenshot}";
+            "${modifier}+Shift+v" = "exec ${clipboardHistory}";
             "${modifier}+Return" = "exec ${terminal}";
             "${modifier}+d" = "exec ${menu}";
             "${modifier}+q" = "kill";
@@ -282,7 +284,24 @@ in
       ];
 
       home.sessionVariables = waylandSessionVariables;
-      systemd.user.sessionVariables = waylandSessionVariables;
+      systemd.user = {
+        services.wl-clip-persist = {
+          Unit = {
+            Description = "Persist the regular Wayland clipboard";
+            After = [ "graphical-session.target" ];
+            PartOf = [ "graphical-session.target" ];
+          };
+
+          Service = {
+            ExecStart = "${lib.getExe pkgs.wl-clip-persist} --clipboard regular";
+            Restart = "on-failure";
+            RestartSec = "2s";
+          };
+
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+        sessionVariables = waylandSessionVariables;
+      };
 
       xdg.configFile."xfce4/helpers.rc".text = ''
         [Helpers]
