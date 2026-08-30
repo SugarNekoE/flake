@@ -12,6 +12,7 @@
       home.packages = with pkgs; [
         fd
         sd
+        jq
         nil
         mtr
         duf
