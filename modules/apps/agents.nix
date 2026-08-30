@@ -144,8 +144,6 @@ in
         packages = [
           piWithExa
           pkgs.bubblewrap
-          pkgs.ripgrep
-          pkgs.socat
         ];
         file.".pi/agent/settings.json".source = settingsFile;
       };

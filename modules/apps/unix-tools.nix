@@ -21,6 +21,7 @@
         gping
         doggo
         procs
+        socat
         devenv
         cachix
         ripgrep
