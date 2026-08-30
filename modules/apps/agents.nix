@@ -132,7 +132,8 @@ in
         name = "pi";
         text = ''
           if [[ -r ${lib.escapeShellArg exaSecretPath} ]]; then
-            export EXA_API_KEY="$(< ${lib.escapeShellArg exaSecretPath})"
+            EXA_API_KEY="$(< ${lib.escapeShellArg exaSecretPath})"
+            export EXA_API_KEY
           fi
           exec ${pkgs.llm-agents.pi}/bin/pi "$@"
         '';
