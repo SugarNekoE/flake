@@ -286,7 +286,8 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-Esjvi8FQdvemqS9YktbYw7oo7PBKxzFLgGOA9mnrsCU=",
+        "lastModified": 1788083270,
+        "narHash": "sha256-PE2Jz7EUxWiUwGsibR0zSTo6lVKNU2jZiqDsY3OHv3E=",
         "path": "/mnt/data/Projects/kernel-dev",
         "type": "path"
       },
