@@ -124,9 +124,6 @@ in
         ]
         ++ (with pkgs.llm-agents; [
           pi
-          codex
-          chatgpt
-          claude-code
         ]);
         file.".pi/agent/settings.json".source = settingsFile;
       };
