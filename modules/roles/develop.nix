@@ -2,6 +2,7 @@
 {
   imports = with inputs.self.aspects; [
     agents
+    kernel-b4
     zed
     (flatpak.withPackages [
       "com.redis.RedisInsight"
