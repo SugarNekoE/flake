@@ -1,5 +1,9 @@
 { inputs, lib, ... }:
 let
+  exaSecretPath = "/run/secrets/exa-key";
+  exaSopsFile = ../secrets/exa-key.yaml;
+  hasExaKey = builtins.pathExists exaSopsFile;
+
   piSettings = {
     defaultProvider = "openai-codex";
     defaultModel = "gpt-5.6-sol";
@@ -102,9 +106,19 @@ in
     };
   };
 
-  nixos = {
-    nixpkgs.overlays = [ inputs.llm-agents.overlays.shared-nixpkgs ];
-  };
+  nixos =
+    { user, ... }:
+    {
+      nixpkgs.overlays = [ inputs.llm-agents.overlays.shared-nixpkgs ];
+
+      sops.secrets.exa-key = lib.mkIf hasExaKey {
+        sopsFile = exaSopsFile;
+        format = "yaml";
+        key = "exa-key";
+        owner = user.username;
+        mode = "0400";
+      };
+    };
 
   home =
     { pkgs, ... }:
@@ -114,17 +128,24 @@ in
         source: hash: "${mkPiNpmPackage pkgs source hash}/package"
       ) piNpmPackages;
       settingsFile = jsonFormat.generate "pi-settings.json" (piSettings // { packages = packagePaths; });
+      piWithExa = pkgs.writeShellApplication {
+        name = "pi";
+        text = ''
+          if [[ -r ${lib.escapeShellArg exaSecretPath} ]]; then
+            export EXA_API_KEY="$(< ${lib.escapeShellArg exaSecretPath})"
+          fi
+          exec ${pkgs.llm-agents.pi}/bin/pi "$@"
+        '';
+      };
     in
     {
       home = {
         packages = [
+          piWithExa
           pkgs.bubblewrap
           pkgs.ripgrep
           pkgs.socat
-        ]
-        ++ (with pkgs.llm-agents; [
-          pi
-        ]);
+        ];
         file.".pi/agent/settings.json".source = settingsFile;
       };
     };
