@@ -279,6 +279,22 @@
         "type": "github"
       }
     },
+    "kernel-dev": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-Esjvi8FQdvemqS9YktbYw7oo7PBKxzFLgGOA9mnrsCU=",
+        "path": "/mnt/data/Projects/kernel-dev",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/data/Projects/kernel-dev",
+        "type": "path"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -541,6 +557,7 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
+        "kernel-dev": "kernel-dev",
         "llm-agents": "llm-agents",
         "nix-auto-follow": "nix-auto-follow",
         "nix-flatpak": "nix-flatpak",

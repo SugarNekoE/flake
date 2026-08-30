@@ -12,6 +12,10 @@
     };
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     import-tree.url = "github:vic/import-tree";
+    kernel-dev = {
+      url = "path:/mnt/data/Projects/kernel-dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs = {
