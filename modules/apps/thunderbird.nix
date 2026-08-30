@@ -49,9 +49,12 @@ _: {
             "mail.default_send_format" = 1;
             "mail.identity.default.auto_quote" = true;
             "mail.identity.default.compose_html" = false;
+            "mail.identity.default.is_gnupg_key_id" = false;
+            "mail.identity.default.openpgp_key_id" = "";
             "mail.identity.default.reply_on_top" = 0;
             "mail.identity.default.sig_on_fwd" = true;
             "mail.identity.default.sig_on_reply" = true;
+            "mail.identity.default.sign_mail" = false;
             "mail.openpgp.allow_external_gnupg" = true;
             "mail.openpgp.fetch_pubkeys_from_gnupg" = true;
             "mailnews.send_plaintext_flowed" = false;
