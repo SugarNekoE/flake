@@ -22,6 +22,7 @@
         podman-desktop
         apache-directory-studio
         blender
+        xpipe
       ];
     };
 }
