@@ -89,7 +89,10 @@
         "sd_mod"
       ];
       boot.initrd.kernelModules = [ "dm-snapshot" ];
-      boot.kernelModules = [ "kvm-amd" ];
+      boot.kernelModules = [
+        "kvm-amd"
+        "nct6775"
+      ];
       boot.extraModulePackages = [ ];
 
       disko.devices.disk.system.device = "/dev/disk/by-id/nvme-ZHITAI_TiPlus5000_1TB_ZTA21T0KA2342203FY";
