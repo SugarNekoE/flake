@@ -9,6 +9,7 @@
     efi
     nvidia
     i18n
+    kernel-dev
     xfs
     (cifs.withCredentials {
       sopsFile = ../secrets/cifs/home.yaml;
@@ -52,6 +53,8 @@
   nixos =
     { identity, user, ... }:
     {
+      kernelDev.enable = false;
+
       security.polkit.extraConfig = ''
         polkit.addRule(function(action, subject) {
           if (action.id == "org.freedesktop.udisks2.filesystem-mount-system" &&
