@@ -11,6 +11,8 @@
     ssh-to-age
     nixos-rebuild-ng
     uv
+    package-version-server
+    vscode-json-languageserver
   ];
 
   git-hooks = {
