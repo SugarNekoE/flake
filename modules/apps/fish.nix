@@ -1,8 +1,6 @@
 _:
 let
   suppressStylixPalette = ''
-    # Zed captures its environment through a non-TTY interactive shell. Keep
-    # Stylix from writing OSC palette sequences in that shell before the JSON.
     if not isatty stdout; and test -z "$TMUX"
       set -g __fish_stylix_suppressed_tmux 1
       set -g TMUX __stylix_non_tty
