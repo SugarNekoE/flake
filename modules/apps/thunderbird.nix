@@ -38,7 +38,10 @@ _: {
       };
     in
     {
-      home.packages = [ external-editor-revived-host ];
+      home.packages = [
+        external-editor-revived-host
+        pkgs.gpgme
+      ];
 
       programs.thunderbird = {
         enable = true;
@@ -58,6 +61,7 @@ _: {
             "mail.identity.default.sig_on_reply" = true;
             "mail.identity.default.sign_mail" = true;
             "mail.openpgp.allow_external_gnupg" = true;
+            "mail.openpgp.fetch_pubkeys_from_gnupg" = true;
             "mailnews.send_plaintext_flowed" = false;
             "mailnews.wraplength" = 0;
             "xpinstall.signatures.required" = false;
