@@ -18,6 +18,7 @@ in
     { config, pkgs, ... }:
     {
       environment.sessionVariables = waylandSessionVariables;
+      environment.systemPackages = [ pkgs.kdePackages.kgpg ];
 
       services = {
         desktopManager.plasma6 = {
