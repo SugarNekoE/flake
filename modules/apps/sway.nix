@@ -190,6 +190,11 @@ in
                 command "swaymsg 'output * power off'"
                 resume_command "swaymsg 'output * power on'"
               end
+
+              suspend:
+                timeout 1800
+                command "systemctl suspend"
+              end
             end
           end
         '';
