@@ -21,14 +21,14 @@ _: {
               server = "irc.oftc.net";
               username = "snemeow";
               realname = "Asai Neko";
-              nickname = "sugar";
+              nickname = "asaineko";
               use_tls = true;
             };
             libera = {
               server = "irc.libera.chat";
               username = "snemeow";
               realname = "Asai Neko";
-              nickname = "sugar";
+              nickname = "asaineko";
               use_tls = true;
             };
           };
