@@ -33,14 +33,26 @@ _: {
             size = config.stylix.fonts.sizes.terminal;
           };
 
-          servers.znc = {
-            server = "sugar.znchost.com";
-            username = "snemeow";
-            use_tls = true;
-            sasl.plain = {
-              username = "snemeow";
-              password_file = passwordFile;
-              disconnect_on_failure = true;
+          servers = {
+            libera = {
+              server = "sugar.znchost.com";
+              port = 4000;
+              use_tls = true;
+              sasl.plain = {
+                username = "snemeow/liberachat";
+                password_file = passwordFile;
+                disconnect_on_failure = true;
+              };
+            };
+            oftc = {
+              server = "sugar.znchost.com";
+              port = 4000;
+              use_tls = true;
+              sasl.plain = {
+                username = "snemeow/oftc";
+                password_file = passwordFile;
+                disconnect_on_failure = true;
+              };
             };
           };
         };
