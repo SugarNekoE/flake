@@ -14,6 +14,8 @@ in
       ...
     }:
     {
+      programs.gnupg.dirmngr.enable = true;
+
       sops.secrets = lib.mkIf hasPrivateKeys (
         lib.mapAttrs' (
           name: _keyPair:
