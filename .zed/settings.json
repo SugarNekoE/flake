@@ -1,7 +1,20 @@
 {
   "tab_size": 2,
+  "lsp": {
+    "nil": {
+      "settings": {
+        "nix": {
+          "flake": {
+            "autoArchive": false,
+            "autoEvalInputs": false,
+          },
+        },
+      },
+    },
+  },
   "languages": {
     "Nix": {
+      "language_servers": ["nil", "!nixd"],
       "format_on_save": "on",
       "formatter": {
         "external": {
