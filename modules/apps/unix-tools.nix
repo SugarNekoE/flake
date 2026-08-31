@@ -25,6 +25,7 @@
         socat
         devenv
         cachix
+        openssl
         ripgrep
         fastfetch
         nix-output-monitor
