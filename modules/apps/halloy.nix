@@ -1,8 +1,25 @@
 _: {
+  nixos =
+    { user, ... }:
+    {
+      sops.secrets."znc-irc-password" = {
+        sopsFile = ../secrets/znc-irc.yaml;
+        format = "yaml";
+        key = "password";
+        owner = user.username;
+        mode = "0400";
+      };
+    };
+
   home =
-    { config, ... }:
+    {
+      config,
+      nixosConfig,
+      ...
+    }:
     let
       colors = config.lib.stylix.colors.withHashtag;
+      passwordFile = nixosConfig.sops.secrets."znc-irc-password".path;
     in
     {
       programs.halloy = {
@@ -16,20 +33,14 @@ _: {
             size = config.stylix.fonts.sizes.terminal;
           };
 
-          servers = {
-            oftc = {
-              server = "irc.oftc.net";
+          servers.znc = {
+            server = "sugar.znchost.com";
+            username = "snemeow";
+            use_tls = true;
+            sasl.plain = {
               username = "snemeow";
-              realname = "Asai Neko";
-              nickname = "asaineko";
-              use_tls = true;
-            };
-            libera = {
-              server = "irc.libera.chat";
-              username = "snemeow";
-              realname = "Asai Neko";
-              nickname = "asaineko";
-              use_tls = true;
+              password_file = passwordFile;
+              disconnect_on_failure = true;
             };
           };
         };
