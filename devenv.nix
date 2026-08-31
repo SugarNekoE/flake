@@ -15,6 +15,8 @@
     vscode-json-languageserver
   ];
 
+  env.SOPS_EDITOR = "zeditor --wait";
+
   git-hooks = {
     enable = true;
     hooks = {
