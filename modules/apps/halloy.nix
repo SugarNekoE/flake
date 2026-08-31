@@ -38,21 +38,19 @@ _: {
               server = "sugar.znchost.com";
               port = 4000;
               use_tls = true;
-              sasl.plain = {
-                username = "snemeow/liberachat";
-                password_file = passwordFile;
-                disconnect_on_failure = true;
-              };
+              nickname = "asaineko";
+              realname = "Asai Neko";
+              username = "snemeow/liberachat";
+              password_file = passwordFile;
             };
             oftc = {
               server = "sugar.znchost.com";
               port = 4000;
               use_tls = true;
-              sasl.plain = {
-                username = "snemeow/oftc";
-                password_file = passwordFile;
-                disconnect_on_failure = true;
-              };
+              nickname = "asaineko";
+              realname = "Asai Neko";
+              username = "snemeow/oftc";
+              password_file = passwordFile;
             };
           };
         };
