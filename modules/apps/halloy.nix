@@ -33,6 +33,13 @@ _: {
             size = config.stylix.fonts.sizes.terminal;
           };
 
+          keyboard = {
+            move_left = "ctrl+shift+h";
+            move_down = "ctrl+shift+j";
+            move_up = "ctrl+shift+k";
+            move_right = "ctrl+shift+l";
+          };
+
           servers = {
             libera = {
               server = "sugar.znchost.com";
