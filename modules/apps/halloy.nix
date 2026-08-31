@@ -19,12 +19,16 @@ _: {
           servers = {
             oftc = {
               server = "irc.oftc.net";
-              nickname = "asaineko";
+              username = "snemeow";
+              realname = "Asai Neko";
+              nickname = "sugar";
               use_tls = true;
             };
             libera = {
               server = "irc.libera.chat";
-              nickname = "asaineko";
+              username = "snemeow";
+              realname = "Asai Neko";
+              nickname = "sugar";
               use_tls = true;
             };
           };
