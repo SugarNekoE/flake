@@ -52,6 +52,15 @@ _: {
               username = "snemeow/oftc";
               password_file = passwordFile;
             };
+            hackint = {
+              server = "sugar.znchost.com";
+              port = 4000;
+              use_tls = true;
+              nickname = "asaineko";
+              realname = "Asai Neko";
+              username = "snemeow/hackint";
+              password_file = passwordFile;
+            };
           };
         };
 
