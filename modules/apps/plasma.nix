@@ -179,7 +179,7 @@ in
                   "applications:org.gnome.Fractal.desktop"
                   "applications:com.discordapp.Discord.desktop"
                   "applications:com.slack.Slack.desktop"
-                  "applications:bytedance-feishu.desktop"
+                  "applications:cn.feishu.Feishu.desktop"
                   "applications:thunderbird.desktop"
                   "applications:md.obsidian.Obsidian.desktop"
                 ];
