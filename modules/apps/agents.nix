@@ -44,10 +44,26 @@ let
       version = if builtins.length versionParts > 1 then builtins.elemAt versionParts 1 else "latest";
     };
 
+  mkBwrapSharedNetwork =
+    pkgs:
+    pkgs.writeShellApplication {
+      name = "bwrap";
+      text = ''
+        args=()
+        for arg in "$@"; do
+          if [[ "$arg" != "--unshare-net" ]]; then
+            args+=("$arg")
+          fi
+        done
+        exec ${pkgs.bubblewrap}/bin/bwrap "''${args[@]}"
+      '';
+    };
+
   mkPiNpmPackage =
     pkgs: source: hash:
     let
       package = parseNpmSpec source;
+      bwrapSharedNetwork = mkBwrapSharedNetwork pkgs;
       pname = "pi-npm-package-${lib.strings.sanitizeDerivationName package.name}";
       packageJson = builtins.toJSON {
         name = pname;
@@ -96,6 +112,12 @@ let
         ln -s ${lib.escapeShellArg "node_modules/${package.name}"} "$out/package"
         runHook postInstall
       '';
+      postInstall = lib.optionalString (package.name == "pi-sandbox") ''
+        substituteInPlace "$out/node_modules/pi-sandbox/src/config.ts" \
+          --replace-fail \
+            "  enabled: true," \
+            $'  enabled: true,\n  bwrapPath: "${bwrapSharedNetwork}/bin/bwrap",'
+      '';
     };
 in
 {
@@ -129,22 +151,6 @@ in
         source: hash: "${mkPiNpmPackage pkgs source hash}/package"
       ) piNpmPackages;
       settingsFile = jsonFormat.generate "pi-settings.json" (piSettings // { packages = packagePaths; });
-      # Only pi-sandbox points at this wrapper; the regular bwrap package is unchanged.
-      bwrapSharedNetwork = pkgs.writeShellApplication {
-        name = "bwrap";
-        text = ''
-          args=()
-          for arg in "$@"; do
-            if [[ "$arg" != "--unshare-net" ]]; then
-              args+=("$arg")
-            fi
-          done
-          exec ${pkgs.bubblewrap}/bin/bwrap "''${args[@]}"
-        '';
-      };
-      sandboxFile = jsonFormat.generate "pi-sandbox.json" {
-        bwrapPath = "${bwrapSharedNetwork}/bin/bwrap";
-      };
       piWithExa = pkgs.writeShellApplication {
         name = "pi";
         text = ''
@@ -162,10 +168,7 @@ in
           piWithExa
           pkgs.bubblewrap
         ];
-        file = {
-          ".pi/agent/settings.json".source = settingsFile;
-          ".pi/agent/sandbox.json".source = sandboxFile;
-        };
+        file.".pi/agent/settings.json".source = settingsFile;
       };
     };
 }
