@@ -18,7 +18,6 @@
     # services
     audio
     bluetooth
-    fonts
     networkmanager.nixos
     podman
     power

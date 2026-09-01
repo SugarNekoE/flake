@@ -16,7 +16,6 @@
     bluetooth
     blueman
     fingerprint
-    fonts
     networkmanager
     podman
     power
