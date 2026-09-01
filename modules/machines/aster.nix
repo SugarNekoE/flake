@@ -11,6 +11,7 @@
     server
 
     # services
+    podman
     (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
     })
