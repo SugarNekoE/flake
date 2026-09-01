@@ -39,8 +39,6 @@
 
       programs.btop.enable = true;
 
-      programs.zellij.enable = true;
-
       programs.command-not-found.enable = false;
 
       programs.nix-index-database.comma.enable = true;
@@ -91,6 +89,14 @@
         settings = {
           git.commit.signOff = true;
           services."forge.asnk.io" = "gitea:forge.asnk.io";
+        };
+      };
+
+      programs.zellij = {
+        enable = true;
+        settings = {
+          session_serialization = false;
+          show_startup_tips = false;
         };
       };
 
