@@ -183,7 +183,7 @@ in
                   "applications:cn.feishu.Feishu.desktop"
                   "applications:thunderbird.desktop"
                   "applications:md.obsidian.Obsidian.desktop"
-                  "com.todoist.Todoist.desktop"
+                  "applications:com.todoist.Todoist.desktop"
                 ];
               }
               {
