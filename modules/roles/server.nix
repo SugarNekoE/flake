@@ -39,6 +39,9 @@
 
     users.mutableUsers = false;
 
-    networking.firewall.enable = true;
+    networking.firewall = {
+      enable = true;
+      backend = "firewalld";
+    };
   };
 }
