@@ -281,7 +281,6 @@ in
       };
 
       home.packages = with pkgs; [
-        wl-clipboard
         sway-contrib.grimshot
         xfce4-exo
         xfce4-settings

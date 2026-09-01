@@ -28,6 +28,7 @@
         openssl
         ripgrep
         fastfetch
+        wl-clipboard
         nix-output-monitor
       ];
 
