@@ -2,7 +2,6 @@
 {
   imports = with inputs.self.aspects; [
     agents
-    kernel-b4
     zed
     (flatpak.withPackages [
       "com.redis.RedisInsight"
@@ -12,17 +11,18 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
+        b4
         lens
+        winbox
+        blender
         jetbrains.idea
-        jetbrains.datagrip
-        jetbrains.gateway
+        unstable.xpipe
         android-tools
         android-studio
-        winbox
         podman-desktop
+        jetbrains.datagrip
+        jetbrains.gateway
         apache-directory-studio
-        blender
-        unstable.xpipe
       ];
     };
 }
