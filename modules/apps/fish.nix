@@ -3,7 +3,6 @@ _: {
     { pkgs, ... }:
     {
       programs.fish.enable = true;
-      stylix.targets.fish.enable = true;
       users.defaultUserShell = pkgs.fish;
     };
 
