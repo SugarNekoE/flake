@@ -32,12 +32,8 @@
         };
       };
 
-      environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
-
-      nixpkgs.config.allowUnfree = true;
-
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_7_2;
-
+      boot.loader.systemd-boot.configurationLimit = 10;
       boot.supportedFilesystems = [
         "btrfs"
         "exfat"
@@ -48,6 +44,10 @@
         "xfs"
       ];
 
-      boot.loader.systemd-boot.configurationLimit = 10;
+      nixpkgs.config.allowUnfree = true;
+
+      services.resolved.enable = true;
+
+      environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
     };
 }
