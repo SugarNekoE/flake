@@ -26,7 +26,10 @@
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aster ];
       networking.firewall = {
         allowPing = true;
-        allowedTCPPorts = [ 22 ];
+        allowedTCPPorts = [
+          22
+          9990
+        ];
       };
       system.autoUpgrade = {
         enable = true;
