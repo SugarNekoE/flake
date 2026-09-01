@@ -16,6 +16,7 @@
         nil
         mtr
         duf
+        dig
         nixd
         tldr
         dust
@@ -25,6 +26,7 @@
         socat
         devenv
         cachix
+        killall
         openssl
         ripgrep
         fastfetch
