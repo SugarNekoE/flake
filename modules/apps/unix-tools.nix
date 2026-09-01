@@ -17,6 +17,7 @@
         mtr
         duf
         dig
+        dog
         nixd
         tldr
         dust
