@@ -46,8 +46,10 @@
 
       nixpkgs.config.allowUnfree = true;
 
-      services.resolved.enable = true;
+      networking.nftables.enable = true;
+
       services.firewalld.enable = true;
+      services.resolved.enable = true;
 
       environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
     };
