@@ -12,3 +12,7 @@ devenv.local.yaml
 # Pi local state (keep the shared MCP configuration)
 .pi/*
 !.pi/mcp.json
+
+# env files
+.env
+.env.local
