@@ -580,11 +580,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788051796,
-        "narHash": "sha256-ZMsGcDFY0MDszuIZc58/x/8wXnTaYroCRoYPhqDDHro=",
+        "lastModified": 1788254882,
+        "narHash": "sha256-uhpDlJKzUQY6coeZ5zfO7HCQv7Q2EYrr3e691LtjE5M=",
         "ref": "refs/heads/main",
-        "rev": "193baab5612cb89fe877a9d3708b07b788f4c183",
-        "revCount": 15,
+        "rev": "000ebdcedd072e9d0aa5d0d331ddb1551a777492",
+        "revCount": 19,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/sfd-nix"
       },
