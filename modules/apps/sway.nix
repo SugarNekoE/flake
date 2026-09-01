@@ -10,6 +10,7 @@ let
   };
 in
 {
+
   nixos =
     {
       lib,
@@ -80,6 +81,7 @@ in
       lib,
       nixosConfig,
       pkgs,
+      inputs,
       ...
     }:
     let
@@ -126,6 +128,9 @@ in
       };
     in
     {
+      imports = [
+        inputs.self.modules.homeManager.vicinae
+      ];
       stylix.targets.sway.enable = true;
       stylix.targets.mako.enable = true;
       services.swayidle = {

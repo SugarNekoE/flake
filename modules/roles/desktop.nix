@@ -12,7 +12,6 @@
     neovim
     starship
     unix-tools
-    vicinae
     (flatpak.withPackages [
       "com.github.tchx84.Flatseal"
       "io.github.flattool.Warehouse"
@@ -28,8 +27,6 @@
       "hu.irl.cameractrls"
     ])
   ];
-
-  nixos.programs.dconf.enable = true;
 
   home =
     { pkgs, ... }:
