@@ -1,5 +1,5 @@
 _: {
-  nixos = _: {
+  nixos = {
     services.openssh = {
       enable = true;
       settings = {
