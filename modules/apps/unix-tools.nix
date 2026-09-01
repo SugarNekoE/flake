@@ -90,9 +90,7 @@
         enableFishIntegration = true;
         settings = {
           git.commit.signOff = true;
-          services = [
-            "gitea:forge.asnk.io"
-          ];
+          services."forge.asnk.io" = "gitea:forge.asnk.io";
         };
       };
 
