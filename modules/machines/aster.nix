@@ -41,10 +41,8 @@
     };
   hardware =
     {
-      nixpkgs,
       config,
       lib,
-      pkgs,
       modulesPath,
       ...
     }:
