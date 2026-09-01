@@ -129,6 +129,22 @@ in
         source: hash: "${mkPiNpmPackage pkgs source hash}/package"
       ) piNpmPackages;
       settingsFile = jsonFormat.generate "pi-settings.json" (piSettings // { packages = packagePaths; });
+      # Only pi-sandbox points at this wrapper; the regular bwrap package is unchanged.
+      bwrapSharedNetwork = pkgs.writeShellApplication {
+        name = "bwrap";
+        text = ''
+          args=()
+          for arg in "$@"; do
+            if [[ "$arg" != "--unshare-net" ]]; then
+              args+=("$arg")
+            fi
+          done
+          exec ${pkgs.bubblewrap}/bin/bwrap "''${args[@]}"
+        '';
+      };
+      sandboxFile = jsonFormat.generate "pi-sandbox.json" {
+        bwrapPath = "${bwrapSharedNetwork}/bin/bwrap";
+      };
       piWithExa = pkgs.writeShellApplication {
         name = "pi";
         text = ''
@@ -146,7 +162,10 @@ in
           piWithExa
           pkgs.bubblewrap
         ];
-        file.".pi/agent/settings.json".source = settingsFile;
+        file = {
+          ".pi/agent/settings.json".source = settingsFile;
+          ".pi/agent/sandbox.json".source = sandboxFile;
+        };
       };
     };
 }
