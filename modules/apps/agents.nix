@@ -12,17 +12,17 @@ let
   };
 
   piNpmPackages = {
+    "npm:pi-ask-user@0.14.0" = "sha256-HpdEKc6OjyteonKQ2XF1GwP3WPIUySZjaDzZ3UIYcdg=";
     "npm:pi-diff-review@0.1.26" = "sha256-Auq5iZpQwEzF2/LR5WnDvrsWmh+noD6Rbn+d+fG47UQ=";
-    "npm:pi-goal-x@0.30.5" = "sha256-XdI4xhUDmhL3t1oS1Nh4Db9j9h8xQPM6neTKb+ryVXI=";
     "npm:pi-mcp-adapter@2.29.0" = "sha256-OrdOu1g0OeyrcdjOSNTcj1Alv2xNTOAECZPwQBZOgL8=";
     "npm:pi-simplify@0.2.3" = "sha256-eP18i9BdSXt5p1ssc4k6bhogR3cyg0ZoFExUc/KogzE=";
     "npm:pi-web-access@0.25.0" = "sha256-DYznZFiZ93TN3puBv4ZhavRQkxfGBBkiBWeqrveDOFU=";
-    "npm:pi-subagents@0.58.0" = "sha256-RWSRVZ8piZhwBJFstt2d7CLCdMBvMrY8d7a/UhcJLyw=";
     "npm:pi-btw@0.4.1" = "sha256-PJKMskXImX2dsyDdjP56DPRRvrPIUpBFl04APGdEE5c=";
+    "npm:pi-better-harness@0.1.27" = "sha256-55kKA3AzAmlElIgOjvA/P0bkwgJxoYxXnpDZ5YI51xc=";
+    "npm:pi-better-models@1.0.1" = "sha256-fpOqbdE25bxF6CbJXnt8EMJtOUQiCUwjaEbPFDMvopM=";
     "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
     "npm:pi-studio@0.9.52" = "sha256-W7JBgzpLsFKmP7yZ78DvFvYTE4N8RRZniIdw0vG1bQU=";
     "npm:pi-auto-reviewer@1.1.0" = "sha256-538TiFxvcqfvNLNJWNm+NurAnqKjdlUpTbNJGwOBjUY=";
-    "npm:pi-sandbox@0.6.5" = "sha256-Ysc58WDgKlX6dGnhJw0gQU7vT8sZ3ecuF5ng60tTxwo=";
     "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
     "npm:@narumitw/pi-usage@0.54.0" = "sha256-7wFMNCnVi6ynJyjcNxoqfTAK+j5xD/PPhSdCD5Fns8Q=";
     "npm:@krfantasy/pi-monokai-pro@0.1.0" = "sha256-7ti+iHnkpKmqQ0rbJHcyU9YC82Cni3kvKmYL0kfCEf4=";
@@ -44,26 +44,10 @@ let
       version = if builtins.length versionParts > 1 then builtins.elemAt versionParts 1 else "latest";
     };
 
-  mkBwrapSharedNetwork =
-    pkgs:
-    pkgs.writeShellApplication {
-      name = "bwrap";
-      text = ''
-        args=()
-        for arg in "$@"; do
-          if [[ "$arg" != "--unshare-net" ]]; then
-            args+=("$arg")
-          fi
-        done
-        exec ${pkgs.bubblewrap}/bin/bwrap "''${args[@]}"
-      '';
-    };
-
   mkPiNpmPackage =
     pkgs: source: hash:
     let
       package = parseNpmSpec source;
-      bwrapSharedNetwork = mkBwrapSharedNetwork pkgs;
       pname = "pi-npm-package-${lib.strings.sanitizeDerivationName package.name}";
       packageJson = builtins.toJSON {
         name = pname;
@@ -111,12 +95,6 @@ let
         fi
         ln -s ${lib.escapeShellArg "node_modules/${package.name}"} "$out/package"
         runHook postInstall
-      '';
-      postInstall = lib.optionalString (package.name == "pi-sandbox") ''
-        substituteInPlace "$out/node_modules/pi-sandbox/src/config.ts" \
-          --replace-fail \
-            "  enabled: true," \
-            $'  enabled: true,\n  bwrapPath: "${bwrapSharedNetwork}/bin/bwrap",'
       '';
     };
 in
