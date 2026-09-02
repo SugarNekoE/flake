@@ -39,12 +39,9 @@ _: {
         }
       ];
 
-      home.packages = with pkgs; [
-        git-lfs
-      ];
-
       programs.git = {
         enable = true;
+        lfs.enable = true;
         includes = [
           { path = nixosConfig.sops.templates."git-smtp.ini".path; }
         ];
