@@ -16,3 +16,7 @@ devenv.local.yaml
 # env files
 .env
 .env.local
+
+# build artifacts
+result
+*-result
