@@ -20,6 +20,7 @@
         mtr
         duf
         dig
+        zip
         nixd
         tldr
         dust
@@ -27,6 +28,7 @@
         doggo
         procs
         socat
+        unzip
         devenv
         cachix
         killall
