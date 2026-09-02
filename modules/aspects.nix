@@ -28,7 +28,7 @@ let
       "machine"
     else
       "module";
-  moduleFiles = builtins.filter (file: toString file != adapterFile) (inputs.import-tree.leafs ./.);
+  moduleFiles = builtins.filter (file: toString file != adapterFile) (inputs.import-tree.leaves ./.);
   machineModuleFiles = builtins.filter (file: moduleKind file == "machine") moduleFiles;
   aspectModuleFiles = builtins.filter (file: moduleKind file != "machine") moduleFiles;
   duplicateNames =
