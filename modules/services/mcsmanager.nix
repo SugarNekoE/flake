@@ -7,6 +7,8 @@ in
       backend = "podman";
       containers = {
         mcsmanager-web = {
+          autoStart = true;
+
           image = "docker.io/githubyumao/mcsmanager-web:latest";
 
           ports = [
@@ -21,6 +23,8 @@ in
         };
 
         mcsmanager-daemon = {
+          autoStart = true;
+
           image = "docker.io/githubyumao/mcsmanager-daemon:latest";
 
           ports = [
