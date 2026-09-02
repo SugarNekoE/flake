@@ -24,6 +24,7 @@ let
           enable = true;
           network.enable = true;
           settings = {
+            preserve_hostname = false;
             growpart = {
               mode = "auto";
               devices = [ "/" ];
