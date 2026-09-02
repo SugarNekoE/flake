@@ -7,7 +7,10 @@
 
     sops = {
       useSystemdActivation = true;
-      age.keyFile = "/var/lib/sops-nix/key.txt";
+      age = {
+        keyFile = "/var/lib/sops-nix/key.txt";
+        sshKeyPaths = [ ];
+      };
     };
   };
 }
