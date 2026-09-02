@@ -11,6 +11,7 @@
     server
 
     # services
+    (cloudflared.withSecret ../secrets/cloudflared/koyomi.yaml)
     nekomonogatari-bot
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
