@@ -3,7 +3,7 @@ let
 in
 {
   nixos = { config, ... }: {
-    oci-containers = {
+    virtualisation.oci-containers = {
       backend = "podman";
       containers = {
         mcsmanager-web = {
