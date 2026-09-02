@@ -331,11 +331,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1788359278,
-        "narHash": "sha256-OF3mOnOFFQ48mbKzZ9VtsdEnnh9C50KWa9uL7cQsEqs=",
+        "lastModified": 1788360413,
+        "narHash": "sha256-BBaSq17L08qH0skfvC5pTXfJj/4JR7HFOGZelBMXfhc=",
         "ref": "refs/heads/main",
-        "rev": "91df8c6a717525140b8e7dfa7251a147b384a352",
-        "revCount": 6,
+        "rev": "a98fadeefcead1028b54399a86f1125bd5528156",
+        "revCount": 7,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/nekomonogatari-bot"
       },
@@ -477,11 +477,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1788187754,
-        "narHash": "sha256-v5c4scCRMmrQEh3UDsKtnI9JTehKl0hTSYDMxe2G14k=",
-        "rev": "5dfba6236110080a54247d6460bc2ff5dda939cc",
+        "lastModified": 1788297115,
+        "narHash": "sha256-hpYgDbj2qNnk+GufyhrQ5mBnrLMvOazIaXw1DyO/BK4=",
+        "rev": "a3116115851d68b8952a2a4221cc25a84e56b532",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.8772.5dfba6236110/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.8846.a3116115851d/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
