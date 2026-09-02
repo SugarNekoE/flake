@@ -22,7 +22,7 @@
       ...
     }:
     {
-      packages = with pkgs; [ cloud-utils ];
+      environment.systemPackages = with pkgs; [ cloud-utils ];
 
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aster ];
 
