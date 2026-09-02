@@ -13,26 +13,10 @@ let
       disko = {
         devices.disk.system = {
           device = lib.mkForce "/dev/vda";
-          imageName = lib.mkForce config.networking.hostName;
+          imageName = lib.mkDefault config.networking.hostName;
           imageSize = lib.mkDefault "32G";
         };
         imageBuilder.imageFormat = "qcow2";
-      };
-
-      services = {
-        cloud-init = {
-          enable = true;
-          network.enable = true;
-          settings = {
-            preserve_hostname = false;
-            growpart = {
-              mode = "auto";
-              devices = [ "/" ];
-            };
-            resize_rootfs = true;
-          };
-        };
-        qemuGuest.enable = true;
       };
     };
 
