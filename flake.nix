@@ -13,7 +13,7 @@
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     import-tree.url = "github:vic/import-tree";
     kernel-dev = {
-      url = "path:/mnt/data/Projects/kernel-dev";
+      url = "git+https://forge.asnk.io/sugar/kernel-dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents = {
