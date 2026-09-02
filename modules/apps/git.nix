@@ -72,12 +72,6 @@ _: {
             send-no-patatt-sign = false;
             send-endpoint-web = "https://lkml.kernel.org/_b4_submit";
           };
-          filter.lfs = {
-            clean = "git-lfs clean -- %f";
-            smudge = "git-lfs smudge -- %f";
-            process = "git-lfs filter-process";
-            required = true;
-          };
           init.defaultBranch = "main";
           color.ui = "auto";
           credential.helper = "store";
