@@ -54,6 +54,14 @@ dry-run hostname:
 build hostname:
     nh os build "path:.#{{ hostname }}"
 
+# Build a machine's qcow2 image in the Nix store.
+build-qcow2 hostname:
+    nix build "path:.#qcow2Configurations.{{ hostname }}.config.system.build.diskoImages"
+
+# Build the script that creates a machine's writable qcow2 image.
+build-qcow2-script hostname:
+    nix build "path:.#qcow2Configurations.{{ hostname }}.config.system.build.diskoImagesScript"
+
 # Build and activate a machine locally.
 switch hostname:
     nh os switch "path:.#{{ hostname }}"
