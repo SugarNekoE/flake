@@ -67,6 +67,7 @@
     {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
+        (modulesPath + "/profiles/qemu-guest.nix")
       ];
 
       boot.initrd.availableKernelModules = [
@@ -74,6 +75,17 @@
       ];
 
       disko.devices.disk.system.device = "/dev/vda";
+
+      services = {
+        cloud-init = {
+          enable = true;
+          network.enable = true;
+          settings = {
+            preserve_hostname = false;
+          };
+        };
+        qemuGuest.enable = true;
+      };
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
     };
