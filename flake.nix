@@ -23,6 +23,7 @@
         nixpkgs.follows = "nixpkgs-unstable";
       };
     };
+    nekomonogatari-bot.url = "git+https://forge.asnk.io/sugar/nekomonogatari-bot";
     nix-auto-follow = {
       url = "github:fzakaria/nix-auto-follow";
       inputs.nixpkgs.follows = "nixpkgs";
