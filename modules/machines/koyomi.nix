@@ -1,0 +1,79 @@
+{ inputs, ... }:
+{
+  system = "x86_64-linux";
+  imports = with inputs.self.aspects; [
+    # system
+    efi
+    i18n
+
+    # roles
+    base
+    server
+
+    # services
+    nekomonogatari-bot
+  ];
+  diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
+  nixos =
+    {
+      identity,
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      packages = with pkgs; [ cloud-utils ];
+
+      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aster ];
+
+      networking.firewall.enable = lib.mkForce false;
+
+      system.autoUpgrade = {
+        enable = true;
+        upgrade = true;
+        operation = "switch";
+        flake = "git+https://forge.asnk.io/sugar/flake";
+        dates = "4:00";
+        flags = [
+          "--refresh"
+        ];
+      };
+
+      boot.kernel.sysctl = lib.mkForce {
+        "vm.swappiness" = "0";
+        "kernel.sysrq" = "1";
+        "net.ipv4.neigh.default.gc_stale_time" = "120";
+        "net.ipv4.conf.all.rp_filter" = "0";
+        "net.ipv4.conf.default.rp_filter" = "0";
+        "net.ipv4.conf.default.arp_announce" = "2";
+        "net.ipv4.conf.lo.arp_announce" = "2";
+        "net.ipv4.conf.all.arp_announce" = "2";
+        "net.ipv4.tcp_max_tw_buckets" = "5000";
+        "net.ipv4.tcp_syncookies" = "1";
+        "net.ipv4.tcp_max_syn_backlog" = "1024";
+        "net.ipv4.tcp_synack_retries" = "2";
+        "net.ipv4.tcp_slow_start_after_idle" = "0";
+      };
+    };
+  hardware =
+    {
+      config,
+      lib,
+      modulesPath,
+      ...
+    }:
+
+    {
+      imports = [
+        (modulesPath + "/installer/scan/not-detected.nix")
+      ];
+
+      boot.initrd.availableKernelModules = [
+        "nvme"
+      ];
+
+      disko.devices.disk.system.device = "/dev/vda";
+
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+    };
+}
