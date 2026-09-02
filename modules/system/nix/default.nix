@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   nixos =
-    { pkgs, ... }:
+    { pkgs, options, ... }:
     {
       nix = {
         package = pkgs.nix;
@@ -47,6 +47,11 @@
       nixpkgs.config.allowUnfree = true;
 
       networking.nftables.enable = true;
+      networking.timeServers = options.networking.timeServers.default ++ [
+        "ntp.aliyun.com"
+        "ntp.ntsc.ac.cn"
+        "time.apple.com"
+      ];
 
       services.firewalld.enable = true;
       services.resolved.enable = true;
