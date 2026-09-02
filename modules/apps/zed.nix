@@ -79,15 +79,24 @@ _: {
             shell.program = "${pkgs.fish}/bin/fish";
           };
 
-          languages.Zig = {
-            format_on_save = "on";
-            language_servers = [
-              "zls"
-              "..."
-            ];
-            code_actions_on_format = {
-              "source.fixAll" = true;
-              "source.organizeImports" = true;
+          languages = {
+            JSON = {
+              tab_size = 2;
+            };
+            YAML = {
+              tab_size = 2;
+            };
+            TOML = {
+              tab_size = 2;
+            };
+            Nix = {
+              tab_size = 2;
+            };
+            TypeScript = {
+              tab_size = 2;
+            };
+            JavaScript = {
+              tab_size = 2;
             };
           };
 
