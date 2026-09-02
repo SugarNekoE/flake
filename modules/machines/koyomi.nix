@@ -82,6 +82,11 @@
           network.enable = true;
           settings = {
             preserve_hostname = false;
+            growpart = {
+              mode = "auto";
+              devices = [ "/" ];
+            };
+            resize_rootfs = true;
           };
         };
         qemuGuest.enable = true;
