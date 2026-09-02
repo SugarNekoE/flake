@@ -25,7 +25,7 @@
     {
       environment.systemPackages = with pkgs; [ cloud-utils ];
 
-      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aster ];
+      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.koyomi ];
 
       networking.firewall.enable = lib.mkForce false;
 
