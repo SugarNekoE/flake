@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake-file.inputs.kernel-dev = {
-    url = "git+file:///mnt/data/Projects/kernel-dev";
+    url = "git+https://forge.asnk.io/sugar/kernel-dev";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
