@@ -2,6 +2,7 @@
 let
   qcow2Module =
     {
+      config,
       lib,
       modulesPath,
       ...
@@ -10,7 +11,11 @@ let
       imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
       disko = {
-        devices.disk.system.device = lib.mkForce "/dev/vda";
+        devices.disk.system = {
+          device = lib.mkForce "/dev/vda";
+          imageName = lib.mkForce config.networking.hostName;
+          imageSize = lib.mkDefault "32G";
+        };
         imageBuilder.imageFormat = "qcow2";
       };
 

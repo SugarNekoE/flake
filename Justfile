@@ -58,9 +58,9 @@ build hostname:
 build-qcow2 hostname:
     nix build "path:.#qcow2Configurations.{{ hostname }}.config.system.build.diskoImages"
 
-# Build the script that creates a machine's writable qcow2 image.
+# Build a machine's writable qcow2 image script as <hostname>-result.
 build-qcow2-script hostname:
-    nix build "path:.#qcow2Configurations.{{ hostname }}.config.system.build.diskoImagesScript"
+    nix build --out-link "{{ hostname }}-result" "path:.#qcow2Configurations.{{ hostname }}.config.system.build.diskoImagesScript"
 
 # Build and activate a machine locally.
 switch hostname:
