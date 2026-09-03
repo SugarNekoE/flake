@@ -77,8 +77,7 @@
       ...
     }:
     let
-      cifsCredentialsFile =
-        config.sops.secrets."cifs-credentials".path or "/run/secrets/cifs-credentials";
+      cifsCredentialsFile = config.sops.secrets.cifs-credentials.path;
     in
     {
       imports = [
