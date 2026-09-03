@@ -12,6 +12,7 @@
 
     # services
     aliyun
+    podman
     (pocket-id.withEnvFile ../secrets/pocket-id.env)
     (cloudflared.withSecret ../secrets/cloudflared/miko.yaml)
   ];
