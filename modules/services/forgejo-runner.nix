@@ -8,6 +8,7 @@ let
         inherit sopsFile;
         format = "yaml";
         key = "";
+        restartUnits = [ "forgejo-runner.service" ];
       };
     };
   };
