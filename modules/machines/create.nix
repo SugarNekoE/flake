@@ -34,31 +34,21 @@
 
       networking.firewall.enable = lib.mkForce false;
 
-      virtualisation.containers.registries.settings = {
-        unqualified-search-registries = [
-          "docker.io"
-        ];
-        registry = [
-          {
-            prefix = "docker.io";
-            location = "docker.io";
-            mirror = [
-              {
-                location = "w5fumkts.mirror.aliyuncs.com";
-              }
-              {
-                location = "docker.ims.run";
-              }
-              {
-                location = "docker.1panel.live";
-              }
-              {
-                location = "docker.m.daocloud.io";
-              }
-            ];
-          }
-        ];
-      };
+      environment.etc."containers/registries.conf".source = lib.mkForce (
+        pkgs.writeText "registries.conf" ''
+          unqualified-search-registries = ["docker.io"]
+
+          [[registry]]
+          prefix = "docker.io"
+          location = "docker.io"
+
+          [[registry.mirror]]
+          location = "dockerproxy.net"
+
+          [[registry.mirror]]
+          location = "docker.m.daocloud.io"
+        ''
+      );
 
       system.autoUpgrade = {
         enable = true;
