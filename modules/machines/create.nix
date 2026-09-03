@@ -51,6 +51,23 @@
         ''
       );
 
+      services = {
+        cloud-init = {
+          enable = true;
+          network.enable = true;
+          settings = {
+            datasource_list = [ "AliYun" ];
+            preserve_hostname = false;
+            growpart = {
+              mode = "auto";
+              devices = [ "/" ];
+            };
+            resize_rootfs = true;
+          };
+        };
+        qemuGuest.enable = true;
+      };
+
       system.autoUpgrade = {
         enable = true;
         upgrade = true;
@@ -88,7 +105,6 @@
 
     {
       imports = [
-        (modulesPath + "/installer/scan/not-detected.nix")
         (modulesPath + "/profiles/qemu-guest.nix")
       ];
 
@@ -97,23 +113,6 @@
       ];
 
       disko.devices.disk.system.device = "/dev/vda";
-
-      services = {
-        cloud-init = {
-          enable = true;
-          network.enable = true;
-          settings = {
-            datasource_list = [ "AliYun" ];
-            preserve_hostname = false;
-            growpart = {
-              mode = "auto";
-              devices = [ "/" ];
-            };
-            resize_rootfs = true;
-          };
-        };
-        qemuGuest.enable = true;
-      };
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
     };
