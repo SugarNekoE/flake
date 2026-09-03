@@ -2,7 +2,23 @@ let
   installPath = "/opt/mcsmanager";
 in
 {
-  nixos = { config, ... }: {
+  nixos = { config, pkgs, ... }: {
+    systemd.services.podman-network-mcsm = {
+      description = "Create MCSManager Podman network";
+
+      wantedBy = [ "multi-user.target" ];
+
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+
+      script = ''
+        ${pkgs.podman}/bin/podman network exists mcsm ||
+          ${pkgs.podman}/bin/podman network create mcsm
+      '';
+    };
+
     virtualisation.oci-containers = {
       backend = "podman";
       containers = {
