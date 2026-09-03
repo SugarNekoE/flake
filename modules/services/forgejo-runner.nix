@@ -7,7 +7,7 @@ let
       sops.secrets.forgejo-runner-config = {
         inherit sopsFile;
         format = "yaml";
-        key = "url";
+        key = "";
       };
     };
   };
