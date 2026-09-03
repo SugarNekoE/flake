@@ -28,6 +28,8 @@
         unzip
       ];
 
+      nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.create ];
 
       networking.firewall.enable = lib.mkForce false;
