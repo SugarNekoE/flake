@@ -48,5 +48,9 @@ in
             --config ${config.sops.secrets.forgejo-runner-config.path}
         '';
       };
+
+      systemd.tmpfiles.rules = [
+        "d /opt/forgejo-runner 0755 root root -"
+      ];
     };
 }
