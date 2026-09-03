@@ -60,9 +60,9 @@ in
             --url "$(cat ${config.sops.secrets.forgejo-runner-url.path})" \
             --uuid "$(cat ${config.sops.secrets.forgejo-runner-uuid.path})" \
             --token-url "file://${config.sops.secrets.forgejo-runner-token.path}" \
-            --label ${lib.escapeShellArg} "nixos-latest:docker://nixos/nix:latest" \
-            --label ${lib.escapeShellArg} "node-24:docker://node:24" \
-            --label ${lib.escapeShellArg} "go:docker://golang:latest" \
+            --label ${lib.escapeShellArg "nixos-latest:docker://nixos/nix:latest"} \
+            --label ${lib.escapeShellArg "node-24:docker://node:24"} \
+            --label ${lib.escapeShellArg "go:docker://golang:latest"} \
             --wait
         '';
       };
