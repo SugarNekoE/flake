@@ -80,7 +80,7 @@ in
         '';
 
         script = ''
-          exec ${lib.getExe pkgs.forgejo-runner} one-job
+          exec ${lib.getExe pkgs.forgejo-runner}
         '';
       };
     };
