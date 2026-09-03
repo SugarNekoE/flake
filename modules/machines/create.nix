@@ -11,6 +11,7 @@
     server
 
     # services
+    aliyun
     podman
     mcsmanager
   ];
@@ -102,6 +103,7 @@
           enable = true;
           network.enable = true;
           settings = {
+            datasource_list = [ "AliYun" ];
             preserve_hostname = false;
             growpart = {
               mode = "auto";

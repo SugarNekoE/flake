@@ -11,8 +11,9 @@
     server
 
     # services
-    (cloudflared.withSecret ../secrets/cloudflared/koyomi.yaml)
+    aliyun
     nekomonogatari-bot
+    (cloudflared.withSecret ../secrets/cloudflared/koyomi.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
@@ -79,6 +80,7 @@
           enable = true;
           network.enable = true;
           settings = {
+            datasource_list = [ "AliYun" ];
             preserve_hostname = false;
             growpart = {
               mode = "auto";
