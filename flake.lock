@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "aliyun-assist-client": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782885674,
+        "narHash": "sha256-4eiiNeA5zb57mJONlCPbUrX24msRvpkwPwxXhFfm3zE=",
+        "owner": "aliyun",
+        "repo": "aliyun_assist_client",
+        "rev": "8bbe05f476a172f7c7d9233011f7bc80d4f2686b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aliyun",
+        "ref": "release",
+        "repo": "aliyun_assist_client",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -573,6 +590,7 @@
     },
     "root": {
       "inputs": {
+        "aliyun-assist-client": "aliyun-assist-client",
         "disko": "disko",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",

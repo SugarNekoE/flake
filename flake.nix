@@ -4,6 +4,10 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./modules/aspects.nix;
 
   inputs = {
+    aliyun-assist-client = {
+      url = "github:aliyun/aliyun_assist_client/release";
+      flake = false;
+    };
     disko.url = "github:nix-community/disko";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
