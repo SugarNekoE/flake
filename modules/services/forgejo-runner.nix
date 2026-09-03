@@ -4,20 +4,22 @@ let
     _class = "aspects";
     imports = [ inputs.self.modules.aspects.forgejo-runner ];
     nixosModule = { config, ... }: {
-      sops.secrets.forgejo-runner-url = {
-        inherit sopsFile;
-        format = "yaml";
-        key = "url";
-      };
-      sops.secrets.forgejo-runner-uuid = {
-        inherit sopsFile;
-        format = "yaml";
-        key = "uuid";
-      };
-      sops.secrets.forgejo-runner-token = {
-        inherit sopsFile;
-        format = "yaml";
-        key = "token";
+      sops.secrets = {
+        forgejo-runner-url = {
+          inherit sopsFile;
+          format = "yaml";
+          key = "url";
+        };
+        forgejo-runner-uuid = {
+          inherit sopsFile;
+          format = "yaml";
+          key = "uuid";
+        };
+        forgejo-runner-token = {
+          inherit sopsFile;
+          format = "yaml";
+          key = "token";
+        };
       };
     };
   };
