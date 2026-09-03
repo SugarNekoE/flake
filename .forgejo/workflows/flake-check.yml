@@ -20,7 +20,7 @@ jobs:
           "$HOME/.nix-profile/bin/node" --version
 
       - name: Check out repository
-        uses: https://data.forgejo.org/actions/checkout@v6
+        uses: actions/checkout@v6
 
       - name: Validate flake
         run: nix flake check --no-build --show-trace
