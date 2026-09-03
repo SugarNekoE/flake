@@ -36,7 +36,7 @@ in
     }:
     {
       systemd.services.forgejo-runner = {
-        description = "Ephemeral Forgejo Actions Runner";
+        description = "Forgejo Actions Runner";
 
         wantedBy = [ "multi-user.target" ];
 
