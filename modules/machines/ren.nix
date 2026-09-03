@@ -13,10 +13,7 @@
     # services
     aliyun
     podman
-    (forgejo-runner.withConfig {
-      sopsFile = ../secrets/forgejo-runner/asnk-forge.env;
-      forgejoUrl = "https://forge.asnk.io";
-    })
+    (forgejo-runner.withConfig ../secrets/forgejo-runner/asnk-forge.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
