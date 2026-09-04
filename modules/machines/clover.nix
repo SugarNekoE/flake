@@ -98,7 +98,7 @@
       mounts.nfs = {
         "/mnt/data" = {
           remote = "121wm2ey8pigiyqr6qw-xqr37.cn-hongkong.nas.aliyuncs.com:/";
-          version = "v4";
+          version = "4";
           minorVersion = "0";
           extraOptions = [
             "rsize=1048576"
