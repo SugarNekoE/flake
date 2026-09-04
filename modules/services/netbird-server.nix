@@ -3,6 +3,40 @@ let
 in
 {
   nixos = {
+    imports = [
+      (
+        {
+          config,
+          pkgs,
+          ...
+        }:
+        {
+          sops.secrets.cloudflare-acme-api-token = {
+            sopsFile = ../secrets/cloudflare-acme.yaml;
+            key = "api-token";
+          };
+
+          security.acme = {
+            acceptTerms = true;
+            defaults.email = "sugar@sne.moe";
+            certs.netbird-proxy = {
+              domain = "*.connect.sne.moe";
+              extraDomainNames = [ "*.home.arpa.sne.moe" ];
+              dnsProvider = "cloudflare";
+              credentialFiles.CF_DNS_API_TOKEN_FILE = config.sops.secrets.cloudflare-acme-api-token.path;
+              postRun = ''
+                ${pkgs.coreutils}/bin/install -m 0600 -o 1000 -g 1000 \
+                  key.pem ${installPath}/data/netbird_proxy_certs/netbird-proxy.key
+                ${pkgs.coreutils}/bin/install -m 0600 -o 1000 -g 1000 \
+                  fullchain.pem ${installPath}/data/netbird_proxy_certs/netbird-proxy.crt
+              '';
+              reloadServices = [ "podman-netbird-proxy.service" ];
+            };
+          };
+        }
+      )
+    ];
+
     services.traefik = {
       enable = true;
 
@@ -136,8 +170,10 @@ in
             "${installPath}/proxy.env"
           ];
           environment = {
+            NB_PROXY_ACME_CERTIFICATES = "true";
             NB_PROXY_PROXY_PROTOCOL = "true";
             NB_PROXY_TRUSTED_PROXIES = "10.88.0.0/16";
+            NB_PROXY_WILDCARD_CERT_DIR = "/certs";
           };
           volumes = [
             "${installPath}/data/netbird_proxy_certs:/certs"
@@ -157,6 +193,18 @@ in
             "${installPath}/data/crowdsec_db:/var/lib/crowdsec/data"
           ];
         };
+      };
+    };
+
+    systemd.services = {
+      acme-order-renew-netbird-proxy = {
+        after = [ "sops-install-secrets.service" ];
+        requires = [ "sops-install-secrets.service" ];
+        serviceConfig.ReadWritePaths = [ "${installPath}/data/netbird_proxy_certs" ];
+      };
+      podman-netbird-proxy = {
+        after = [ "acme-order-renew-netbird-proxy.service" ];
+        requires = [ "acme-order-renew-netbird-proxy.service" ];
       };
     };
 
