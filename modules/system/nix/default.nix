@@ -56,5 +56,10 @@
       services.resolved.enable = true;
 
       environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
+      environment.systemPackages = with pkgs; [ lnav ];
+      environment.variables = {
+        SYSTEMD_PAGER = "lnav";
+        SYSTEMD_LESS = "";
+      };
     };
 }
