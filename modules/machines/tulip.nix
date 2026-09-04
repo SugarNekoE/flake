@@ -14,7 +14,7 @@
     aliyun
     mosdns
     (netbird.withSetupKey {
-      sopsFile = "../secrets/netbird/sne-connect.yaml";
+      sopsFile = ../secrets/netbird/sne-connect.yaml;
       managementUrl = "https://connect.sne.moe:443";
       name = "sne-connect";
       port = 51820;
