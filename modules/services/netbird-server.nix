@@ -32,7 +32,6 @@ in
           storage = "${installPath}/data/netbird_traefik_letsencrypt/acme.json";
           tlsChallenge = { };
         };
-        providers.file.filename = "${installPath}/netbird-dynamic.yaml";
       };
 
       dynamicConfigOptions = {
@@ -46,7 +45,7 @@ in
             };
 
             netbird-grpc = {
-              rule = "Host(`connect.sne.moe`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`))";
+              rule = "Host(`connect.sne.moe`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`) || PathPrefix(`/management.ProxyService/`))";
               entryPoints = [ "websecure" ];
               tls.certResolver = "letsencrypt";
               service = "netbird-h2c";
@@ -73,6 +72,25 @@ in
               { url = "h2c://127.0.0.1:8081"; }
             ];
           };
+        };
+
+        tcp = {
+          routers.proxy-passthrough = {
+            rule = "HostSNI(`*`) && !HostSNI(`connect.sne.moe`)";
+            entryPoints = [ "websecure" ];
+            priority = 1;
+            tls.passthrough = true;
+            service = "proxy-tls";
+          };
+
+          services.proxy-tls.loadBalancer = {
+            servers = [
+              { address = "127.0.0.1:8443"; }
+            ];
+            serversTransport = "pp-v2";
+          };
+
+          serversTransports.pp-v2.proxyProtocol.version = 2;
         };
       };
     };
@@ -111,6 +129,7 @@ in
         netbird-proxy = {
           image = "docker.io/netbirdio/reverse-proxy:latest";
           ports = [
+            "127.0.0.1:8443:8443"
             "51820:51820/udp"
           ];
           environmentFiles = [
