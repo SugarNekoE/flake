@@ -14,6 +14,9 @@ in
             "/etc/localtime:/etc/localtime:ro"
             "${installPath}:/app/data"
           ];
+          extraOptions = [
+            "--cap-add=NET_RAW"
+          ];
         };
       };
     };
