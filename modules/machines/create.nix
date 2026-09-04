@@ -44,10 +44,13 @@
           location = "docker.io"
 
           [[registry.mirror]]
-          location = "dockerproxy.net"
+          location = "docker.1ms.run"
 
           [[registry.mirror]]
           location = "docker.m.daocloud.io"
+
+          [[registry.mirror]]
+          location = "dockerproxy.net"
         ''
       );
 
