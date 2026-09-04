@@ -12,6 +12,7 @@
 
     # services
     aliyun
+    mosdns
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
