@@ -135,6 +135,10 @@ in
           environmentFiles = [
             "${installPath}/proxy.env"
           ];
+          environment = {
+            NB_PROXY_PROXY_PROTOCOL = "true";
+            NB_PROXY_TRUSTED_PROXIES = "10.88.0.0/16";
+          };
           volumes = [
             "${installPath}/data/netbird_proxy_certs:/certs"
           ];
