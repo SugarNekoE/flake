@@ -13,6 +13,7 @@
     # services
     aliyun
     podman
+    netbird-server
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
