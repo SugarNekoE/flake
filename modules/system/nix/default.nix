@@ -59,6 +59,7 @@
       environment.systemPackages = with pkgs; [ lnav ];
       environment.variables = {
         SYSTEMD_PAGER = "lnav";
+        SYSTEMD_PAGERSECURE = "0";
         SYSTEMD_LESS = "";
       };
     };
