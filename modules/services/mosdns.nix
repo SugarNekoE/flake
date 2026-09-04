@@ -9,7 +9,6 @@ in
 
     systemd.services.mosdns = {
       description = "MosDNS DNS Forwarder";
-      workingDirectory = installPath;
       wantedBy = [
         "multi-user.target"
       ];
@@ -20,6 +19,7 @@ in
         "network-online.target"
       ];
       serviceConfig = {
+        workingDirectory = installPath;
         ExecStart = ''
           ${pkgs.mosdns}/bin/mosdns start \
             -c ${installPath}/config.yaml
