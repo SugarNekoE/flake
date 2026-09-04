@@ -53,7 +53,6 @@
         "time.apple.com"
       ];
 
-      services.firewalld.enable = true;
       services.resolved.enable = true;
 
       environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
