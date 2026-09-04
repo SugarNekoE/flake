@@ -138,13 +138,13 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d /opt/netbird 0751 root root -"
-      "d /opt/netbird/crowdsec 0750 root root -"
-      "d /opt/netbird/data 0751 root root -"
-      "d /opt/netbird/data/netbird_data 0750 root root -"
-      "d /opt/netbird/data/netbird_traefik_letsencrypt 0700 traefik traefik -"
-      "d /opt/netbird/data/netbird_proxy_certs 0750 root root -"
-      "d /opt/netbird/data/crowdsec_db 0750 root root -"
+      "d ${installPath} 0751 root root -"
+      "d ${installPath}/crowdsec 0750 root root -"
+      "d ${installPath}/data 0751 root root -"
+      "d ${installPath}/data/netbird_data 0750 root root -"
+      "d ${installPath}/data/netbird_traefik_letsencrypt 0700 traefik traefik -"
+      "d ${installPath}/data/netbird_proxy_certs 0700 1000 1000 -"
+      "d ${installPath}/data/crowdsec_db 0750 root root -"
     ];
   };
 }
