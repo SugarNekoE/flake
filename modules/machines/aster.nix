@@ -15,6 +15,12 @@
     (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
     })
+    (netbird.withSetupKey {
+      sopsFile = "../secrets/netbird/sne-connect.yaml";
+      managementUrl = "https://connect.sne.moe:443";
+      name = "sne-connect";
+      port = 51820;
+    })
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
