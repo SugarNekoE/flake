@@ -12,6 +12,7 @@
 
     # services
     podman
+    uptimekuma
     (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
     })
@@ -26,11 +27,14 @@
   nixos =
     {
       identity,
+      pkgs,
       ...
     }:
     {
       nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aster ];
+
       networking.firewall = {
         allowPing = true;
         allowedTCPPorts = [
@@ -38,6 +42,26 @@
           9990
         ];
       };
+
+      environment.etc."containers/registries.conf".source = lib.mkForce (
+        pkgs.writeText "registries.conf" ''
+          unqualified-search-registries = ["docker.io"]
+
+          [[registry]]
+          prefix = "docker.io"
+          location = "docker.io"
+
+          [[registry.mirror]]
+          location = "docker.1ms.run"
+
+          [[registry.mirror]]
+          location = "docker.m.daocloud.io"
+
+          [[registry.mirror]]
+          location = "dockerproxy.net"
+        ''
+      );
+
       system.autoUpgrade = {
         enable = true;
         upgrade = true;
