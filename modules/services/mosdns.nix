@@ -9,6 +9,7 @@ in
 
     systemd.services.mosdns = {
       description = "MosDNS DNS Forwarder";
+      workingDirectory = installPath;
       wantedBy = [
         "multi-user.target"
       ];
@@ -25,20 +26,7 @@ in
         '';
         Restart = "on-failure";
         RestartSec = 5;
-        User = "mosdns";
-        Group = "mosdns";
-        StateDirectory = "mosdns";
-        ProtectSystem = "strict";
-        ProtectHome = true;
-        PrivateTmp = true;
       };
     };
-
-    users.users.mosdns = {
-      isSystemUser = true;
-      group = "mosdns";
-    };
-
-    users.groups.mosdns = { };
   };
 }
