@@ -136,5 +136,15 @@ in
         };
       };
     };
+
+    systemd.tmpfiles.rules = [
+      "d /opt/netbird 0750 root root -"
+      "d /opt/netbird/crowdsec 0750 root root -"
+      "d /opt/netbird/data 0750 root root -"
+      "d /opt/netbird/data/netbird_data 0750 root root -"
+      "d /opt/netbird/data/netbird_traefik_letsencrypt 0750 root root -"
+      "d /opt/netbird/data/netbird_proxy_certs 0750 root root -"
+      "d /opt/netbird/data/crowdsec_db 0750 root root -"
+    ];
   };
 }
