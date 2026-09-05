@@ -6,7 +6,7 @@ let
 
   piSettings = {
     defaultProvider = "openai-codex";
-    defaultModel = "gpt-5.6-sol";
+    defaultModel = "gpt-6-astra";
     defaultThinkingLevel = "high";
     theme = "Monokai Pro (CE)";
   };
