@@ -58,7 +58,7 @@ _: {
           mv $out/bin/hmcl $out/bin/.hmcl-wrapped
           makeShellWrapper $out/bin/.hmcl-wrapped $out/bin/hmcl \
             --set HMCL_FONT ${lib.escapeShellArg font} \
-            --run ${lib.escapeShellArg applyTheme}
+            --run ${lib.escapeShellArg applyTheme} \
             --run '
                     if [ -z "$HMCL_JAVA_OPTS" ]; then
                       if [ "$XDG_SESSION_TYPE" = "x11" ]; then
