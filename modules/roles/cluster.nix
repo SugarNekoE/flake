@@ -7,6 +7,7 @@
         kubectl
         k0sctl
         k9s
+        skopeo
       ];
     };
 }
