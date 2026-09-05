@@ -53,24 +53,55 @@ _: {
           ${pkgs.coreutils}/bin/install -m600 ${themeFile} "$settings_file"
         fi
       '';
+      detectScale = ''
+        if [ -z "''${HMCL_UI_SCALE:-}" ]; then
+          scale=""
+
+          if [ "''${XDG_SESSION_TYPE:-}" = "wayland" ]; then
+            case "''${XDG_CURRENT_DESKTOP:-}" in
+              *KDE*)
+                scale=$(
+                  ${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor -j 2>/dev/null \
+                    | ${pkgs.jq}/bin/jq -er '
+                        [
+                          .outputs[]
+                          | select(.enabled and .connected)
+                        ]
+                        | (map(select(.priority == 1)) + .)[0].scale
+                        | select(type == "number" and . > 0)
+                      ' 2>/dev/null
+                ) || scale=""
+                ;;
+            esac
+          fi
+
+          if [ -z "$scale" ]; then
+            dpi=$(
+              ${pkgs.xrdb}/bin/xrdb -query 2>/dev/null \
+                | ${pkgs.gnugrep}/bin/grep -m1 "^Xft\\.dpi:" \
+                | ${pkgs.gawk}/bin/awk '{print $2}'
+            )
+
+            if [ -n "$dpi" ]; then
+              scale=$(
+                ${pkgs.gawk}/bin/awk -v dpi="$dpi" \
+                  'BEGIN { if (dpi > 0) printf "%.4g", dpi / 96 }'
+              )
+            fi
+          fi
+
+          if [ -n "$scale" ]; then
+            export HMCL_UI_SCALE="$scale"
+          fi
+        fi
+      '';
       hmcl = pkgs.hmcl.overrideAttrs (oldAttrs: {
         postFixup = (oldAttrs.postFixup or "") + ''
           mv $out/bin/hmcl $out/bin/.hmcl-wrapped
           makeShellWrapper $out/bin/.hmcl-wrapped $out/bin/hmcl \
             --set HMCL_FONT ${lib.escapeShellArg font} \
             --run ${lib.escapeShellArg applyTheme} \
-            --run '
-                    if [ -z "$HMCL_JAVA_OPTS" ]; then
-                      if [ "$XDG_SESSION_TYPE" = "x11" ]; then
-                        dpi=$(xrdb -query 2>/dev/null | ${pkgs.gnugrep}/bin/grep "Xft.dpi" | ${pkgs.gawk}/bin/awk "{print \$2}")
-
-                        if [ -n "$dpi" ]; then
-                          scale=$(awk "BEGIN {printf \"%.2f\", $dpi / 96}")
-                          export HMCL_JAVA_OPTS="-Dglass.gtk.uiScale=$scale"
-                        fi
-                      fi
-                    fi
-                  '
+            --run ${lib.escapeShellArg detectScale}
         '';
       });
     in
