@@ -12,7 +12,6 @@
 
     # services
     podman
-    uptimekuma
     (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
     })
