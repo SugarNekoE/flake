@@ -43,8 +43,8 @@ generate-hardware output="/tmp/hardware.nix":
     sudo nixos-generate-config --show-hardware-config --no-filesystems > "{{ output }}"
 
 # Generate hardware facts from an SSH target outside the repository.
-generate-hardware-remote target output="/tmp/hardware.nix":
-    ssh "{{ target }}" "nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#nixos-install-tools -c nixos-generate-config --show-hardware-config --no-filesystems" > "{{ output }}"
+generate-hardware-remote target output="/tmp/hardware.nix" port="22":
+    ssh -p "{{ port }}" "{{ target }}" "nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#nixos-install-tools -c nixos-generate-config --show-hardware-config --no-filesystems" > "{{ output }}"
 
 # Preview a machine build without realizing it.
 dry-run hostname:
@@ -71,36 +71,37 @@ boot hostname:
     nh os boot "path:.#{{ hostname }}"
 
 # Build, copy, and activate a machine configuration over SSH.
-deploy hostname target:
-    nh os switch --target-host "{{ target }}" "path:.#{{ hostname }}"
+deploy hostname target port="22":
+    NH_SSHOPTS="-p {{ port }} ${NH_SSHOPTS:-${NIX_SSHOPTS:-}}" nh os switch --target-host "{{ target }}" "path:.#{{ hostname }}"
 
 # Build and copy a machine configuration over SSH, activating it on the next boot.
-deploy-boot hostname target:
-    nh os boot --target-host "{{ target }}" "path:.#{{ hostname }}"
+deploy-boot hostname target port="22":
+    NH_SSHOPTS="-p {{ port }} ${NH_SSHOPTS:-${NIX_SSHOPTS:-}}" nh os boot --target-host "{{ target }}" "path:.#{{ hostname }}"
 
 # Destructively install a machine over SSH while preserving its SSH host keys.
-install hostname target:
-    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys
+install hostname target port="22":
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --ssh-port "{{ port }}" --copy-host-keys
 
 # Install with an additional root tree copied into the target installation.
-install-with-files hostname target files:
-    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --extra-files "{{ files }}"
+install-with-files hostname target files port="22":
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --ssh-port "{{ port }}" --copy-host-keys --extra-files "{{ files }}"
 
 # Install with a local disk-encryption key copied into the installer environment.
-install-encrypted hostname target key_file remote_path="/tmp/disko-luks-password":
-    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}"
+install-encrypted hostname target key_file remote_path="/tmp/disko-luks-password" port="22":
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --ssh-port "{{ port }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}"
 
 # Install with disk encryption and an additional root tree.
-install-encrypted-with-files hostname target key_file files remote_path="/tmp/disko-luks-password":
-    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}" --extra-files "{{ files }}"
+install-encrypted-with-files hostname target key_file files remote_path="/tmp/disko-luks-password" port="22":
+    nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --ssh-port "{{ port }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}" --extra-files "{{ files }}"
 
 # Interactively install a LUKS machine with SOPS and SSH bootstrap files.
-anywhere hostname target:
+anywhere hostname target port="22":
     #!/usr/bin/env bash
     set -euo pipefail
 
     machine="{{ hostname }}"
     ssh_target="{{ target }}"
+    ssh_port="{{ port }}"
     age_key="$HOME/.config/sops/age/keys.txt"
 
     if [[ ! -f "$age_key" ]]; then
@@ -117,7 +118,7 @@ anywhere hostname target:
     fi
 
     echo "Target disks:"
-    ssh "$ssh_target" 'if [[ $(id -u) -eq 0 ]]; then lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; else sudo -n lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; fi'
+    ssh -p "$ssh_port" "$ssh_target" 'if [[ $(id -u) -eq 0 ]]; then lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; else sudo -n lsblk -o NAME,SIZE,MODEL,TYPE,MOUNTPOINTS; fi'
     echo
     echo "WARNING: nixos-anywhere will destroy the disks selected by '$machine'."
     read -r -p "Type $machine to continue: " confirmation
@@ -178,6 +179,7 @@ anywhere hostname target:
     anywhere_args=(
       --flake "path:.#$machine"
       --target-host "$ssh_target"
+      --ssh-port "$ssh_port"
       --copy-host-keys
       --extra-files "$extra_files_dir"
       --env-password
