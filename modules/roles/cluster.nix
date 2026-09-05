@@ -8,6 +8,7 @@
         k0sctl
         k9s
         skopeo
+        kubernetes-helm
       ];
     };
 }
