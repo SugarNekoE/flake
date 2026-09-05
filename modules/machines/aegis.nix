@@ -34,7 +34,10 @@
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aegis ];
 
       networking.firewall.enable = lib.mkForce false;
-      networking.hosts."172.31.129.10" = [ "forge.asnk.io" ];
+      networking.hosts = {
+        "172.31.129.21" = [ "forge.asnk.io" ];
+        "172.31.129.22" = [ "forge.asnk.io" ];
+      };
 
       boot.kernel.sysctl = lib.mkForce {
         "vm.swappiness" = "0";
