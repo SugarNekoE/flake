@@ -11,7 +11,9 @@
     server
 
     # services
-    (sing-box.withProfile ../secrets/sing-box/home.json)
+    (sing-box.withProfile {
+      sopsFile = ../secrets/sing-box/home.json;
+    })
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
@@ -61,22 +63,6 @@
           };
         };
         qemuGuest.enable = true;
-      };
-
-      boot.kernel.sysctl = lib.mkForce {
-        "vm.swappiness" = "0";
-        "kernel.sysrq" = "1";
-        "net.ipv4.neigh.default.gc_stale_time" = "120";
-        "net.ipv4.conf.all.rp_filter" = "0";
-        "net.ipv4.conf.default.rp_filter" = "0";
-        "net.ipv4.conf.default.arp_announce" = "2";
-        "net.ipv4.conf.lo.arp_announce" = "2";
-        "net.ipv4.conf.all.arp_announce" = "2";
-        "net.ipv4.tcp_max_tw_buckets" = "5000";
-        "net.ipv4.tcp_syncookies" = "1";
-        "net.ipv4.tcp_max_syn_backlog" = "1024";
-        "net.ipv4.tcp_synack_retries" = "2";
-        "net.ipv4.tcp_slow_start_after_idle" = "0";
       };
     };
   hardware =
