@@ -1,5 +1,5 @@
 _: {
-  nixos = {
+  nixos = { pkgs, ... }: {
     virtualisation = {
       docker.enable = false;
       podman = {
@@ -8,5 +8,9 @@ _: {
         defaultNetwork.settings.dns_enabled = true;
       };
     };
+    environment.systemPackages = with pkgs; [
+      podman-compose
+      docker-compose
+    ];
   };
 }
