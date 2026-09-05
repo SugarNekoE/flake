@@ -21,7 +21,6 @@
       name = "sne-connect";
       port = 51820;
     })
-    (cloudflared.withSecret ../secrets/cloudflared/aster.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
