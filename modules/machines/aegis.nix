@@ -14,7 +14,7 @@
     aliyun
     podman
     uptimekuma
-    (cloudflared.withSecret ../secrets/cloudflared/aster.yaml)
+    (cloudflared.withSecret ../secrets/cloudflared/aegis.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
