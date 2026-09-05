@@ -14,6 +14,12 @@
     aliyun
     podman
     uptimekuma
+    (netbird.withSetupKey {
+      sopsFile = ../secrets/netbird/sne-connect.yaml;
+      managementUrl = "https://connect.sne.moe:443";
+      name = "sne-connect";
+      port = 51820;
+    })
     (cloudflared.withSecret ../secrets/cloudflared/aegis.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
