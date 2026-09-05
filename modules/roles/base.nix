@@ -4,6 +4,7 @@
     nix
     unstable
     secrets
+    openssh
   ];
 
   nixos = {
