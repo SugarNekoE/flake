@@ -23,6 +23,7 @@ let
     "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
     "npm:pi-studio@0.9.52" = "sha256-W7JBgzpLsFKmP7yZ78DvFvYTE4N8RRZniIdw0vG1bQU=";
     "npm:pi-auto-reviewer@1.1.0" = "sha256-538TiFxvcqfvNLNJWNm+NurAnqKjdlUpTbNJGwOBjUY=";
+    "npm:pi-openai-long-context" = "sha256-NvV3/CF4I14QSe65mLhMtYD0UNo00RGk3wGGd0wrGUM=";
     "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
     "npm:@narumitw/pi-usage@0.54.0" = "sha256-7wFMNCnVi6ynJyjcNxoqfTAK+j5xD/PPhSdCD5Fns8Q=";
     "npm:@krfantasy/pi-monokai-pro@0.1.0" = "sha256-7ti+iHnkpKmqQ0rbJHcyU9YC82Cni3kvKmYL0kfCEf4=";
