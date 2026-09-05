@@ -17,11 +17,9 @@
     blueman
     fingerprint
     networkmanager
-    podman
     power
     plymouth
     polkit
-    openssh
     (singbox-gui.withProfile {
       name = "SNEPX";
       sopsFile = ../secrets/sing-box/remote.json;

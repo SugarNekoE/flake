@@ -19,11 +19,9 @@
     audio
     bluetooth
     networkmanager.nixos
-    podman
     power
     plymouth
     polkit.nixos
-    openssh
     (singbox-gui.withProfile {
       name = "SNEPX";
       sopsFile = ../secrets/sing-box/home.json;
@@ -41,6 +39,7 @@
     office
     social
     work
+    cluster
 
     # apps
     plasma
