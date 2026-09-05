@@ -19,6 +19,13 @@
 
   env.SOPS_EDITOR = "zeditor --wait";
 
+  languages = {
+    go = {
+      enable = true;
+      version = "1.26.0";
+    };
+  };
+
   git-hooks = {
     enable = true;
     hooks = {
