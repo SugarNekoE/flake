@@ -3,6 +3,7 @@
   imports = with inputs.self.aspects; [
     agents
     zed
+    podman
     (flatpak.withPackages [
       "com.redis.RedisInsight"
     ])
@@ -15,6 +16,7 @@
         lens
         winbox
         blender
+        terraform
         jetbrains.idea
         unstable.xpipe
         android-tools
