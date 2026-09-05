@@ -59,6 +59,18 @@ _: {
           makeShellWrapper $out/bin/.hmcl-wrapped $out/bin/hmcl \
             --set HMCL_FONT ${lib.escapeShellArg font} \
             --run ${lib.escapeShellArg applyTheme}
+            --run '
+                    if [ -z "$HMCL_JAVA_OPTS" ]; then
+                      if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+                        dpi=$(xrdb -query 2>/dev/null | ${pkgs.gnugrep}/bin/grep "Xft.dpi" | ${pkgs.gawk}/bin/awk "{print \$2}")
+
+                        if [ -n "$dpi" ]; then
+                          scale=$(awk "BEGIN {printf \"%.2f\", $dpi / 96}")
+                          export HMCL_JAVA_OPTS="-Dglass.gtk.uiScale=$scale"
+                        fi
+                      fi
+                    fi
+                  '
         '';
       });
     in
