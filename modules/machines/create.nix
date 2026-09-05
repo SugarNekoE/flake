@@ -71,17 +71,6 @@
         qemuGuest.enable = true;
       };
 
-      system.autoUpgrade = {
-        enable = true;
-        upgrade = true;
-        operation = "switch";
-        flake = "git+https://forge.asnk.io/sugar/flake";
-        dates = "4:00";
-        flags = [
-          "--refresh"
-        ];
-      };
-
       boot.kernel.sysctl = lib.mkForce {
         "vm.swappiness" = "0";
         "kernel.sysrq" = "1";

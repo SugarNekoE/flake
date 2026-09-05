@@ -63,17 +63,6 @@
           location = "dockerproxy.net"
         ''
       );
-
-      system.autoUpgrade = {
-        enable = true;
-        upgrade = true;
-        operation = "switch";
-        flake = "git+https://forge.asnk.io/sugar/flake";
-        dates = "4:00";
-        flags = [
-          "--refresh"
-        ];
-      };
     };
   hardware =
     {
