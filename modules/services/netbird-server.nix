@@ -160,7 +160,6 @@ in
                 environmentFiles = [
                   "${installPath}/proxy.env"
                 ];
-                environment.NB_PROXY_WILDCARD_CERT_DIR = "/certs";
                 extraOptions = [ "--network-alias=proxy" ];
                 labels = {
                   "traefik.enable" = "true";
