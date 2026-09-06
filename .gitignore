@@ -21,6 +21,3 @@ devenv.local.yaml
 result
 result-*
 *-result
-
-# acs files
-acs-*.yaml
