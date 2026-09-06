@@ -145,6 +145,8 @@ in
       home = {
         packages = [
           piWithExa
+          pkgs.llm-agents.codex
+          pkgs.llm-agents.chatgpt
           pkgs.bubblewrap
         ];
         file.".pi/agent/settings.json".source = settingsFile;
