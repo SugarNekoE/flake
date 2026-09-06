@@ -19,7 +19,7 @@ in
         "network-online.target"
       ];
       serviceConfig = {
-        workingDirectory = installPath;
+        WorkingDirectory = installPath;
         ExecStart = ''
           ${pkgs.mosdns}/bin/mosdns start \
             -c ${installPath}/config.yaml
