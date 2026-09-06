@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "acs-k8s": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788669378,
+        "narHash": "sha256-Vq4Ru+RtDd2yR0M/xe6ZsNznZn4IH1CphAxgR1YvlLk=",
+        "ref": "refs/heads/main",
+        "rev": "de81afe0abec6480b38b2d85623fa20a01e55005",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://forge.asnk.io/sugar/acs-k8s"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://forge.asnk.io/sugar/acs-k8s"
+      }
+    },
     "aliyun-assist-client": {
       "flake": false,
       "locked": {
@@ -608,6 +624,7 @@
     },
     "root": {
       "inputs": {
+        "acs-k8s": "acs-k8s",
         "aliyun-assist-client": "aliyun-assist-client",
         "disko": "disko",
         "flake-file": "flake-file",

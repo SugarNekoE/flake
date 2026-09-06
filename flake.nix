@@ -4,6 +4,7 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./modules/aspects.nix;
 
   inputs = {
+    acs-k8s.url = "git+https://forge.asnk.io/sugar/acs-k8s";
     aliyun-assist-client = {
       url = "github:aliyun/aliyun_assist_client/release";
       flake = false;
