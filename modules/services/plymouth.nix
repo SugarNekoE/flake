@@ -8,7 +8,7 @@ _: {
           (pkgs.stdenv.mkDerivation {
             name = "plymouth-theme-nixos-mac-style";
             version = "1.0";
-            src = ../../plymouth/nixos-mac-style;
+            src = ../../assets/plymouth/nixos-mac-style;
             installPhase = ''
               mkdir -p $out/share/plymouth/themes/nixos-mac-style
               cp -r . $out/share/plymouth/themes/nixos-mac-style/
