@@ -48,21 +48,38 @@ in
       };
     in
     {
-      systemd.services.podman-network-forgejo = {
-        description = "Create Forgejo Podman network";
-
-        wantedBy = [ "multi-user.target" ];
-
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
+      systemd.services =
+        lib.genAttrs
+          [
+            "podman-db"
+            "podman-server"
+            "podman-anubis"
+            "podman-caddy"
+          ]
+          (_: {
+            after = [ "podman-network-forgejo.service" ];
+            requires = [ "podman-network-forgejo.service" ];
+            preStart = lib.mkBefore ''
+              until ${pkgs.systemd}/bin/systemctl start mnt-data.mount; do
+                sleep 30
+              done
+            '';
+            serviceConfig.RestartSec = "30s";
+          })
+        // {
+          podman-network-forgejo = {
+            description = "Create Forgejo Podman network";
+            wantedBy = [ "multi-user.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+            script = ''
+              ${pkgs.podman}/bin/podman network exists forgejo ||
+                ${pkgs.podman}/bin/podman network create forgejo
+            '';
+          };
         };
-
-        script = ''
-          ${pkgs.podman}/bin/podman network exists forgejo ||
-            ${pkgs.podman}/bin/podman network create forgejo
-        '';
-      };
 
       virtualisation.oci-containers = {
         backend = "podman";
