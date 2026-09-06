@@ -5,11 +5,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1788670938,
-        "narHash": "sha256-1JO7rkiY/aBanZJIexJbdY6LnB56cQ+7yU+qpwiIyQ4=",
+        "lastModified": 1788671636,
+        "narHash": "sha256-qvPxqw4rDYp2y7+ioeyvj7iKxTlDDkitV52YmGiwWhE=",
         "ref": "refs/heads/main",
-        "rev": "105a31facdd9d1a05d06ab36efe484d0ce9e1677",
-        "revCount": 13,
+        "rev": "8c4a280cce4e4a26e558a344a78035e725fd637d",
+        "revCount": 14,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/acs-k8s"
       },
@@ -348,11 +348,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1788665075,
-        "narHash": "sha256-GOT5oGLLrVqOji404S0/ESoDBXtsPs214SPy7Zsq930=",
+        "lastModified": 1788666866,
+        "narHash": "sha256-VAgCiLV/S2R525JvI6a5jt5whLzKMbzzbEJnHaPtTYI=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "a88db21237d777979ff43059880cd3b047c9f817",
+        "rev": "e44191f87d0fd1990a7b38fb0b89af1af8d541d5",
         "type": "github"
       },
       "original": {
