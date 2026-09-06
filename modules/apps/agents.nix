@@ -14,14 +14,14 @@ let
   piNpmPackages = {
     "npm:pi-ask-user@0.14.0" = "sha256-HpdEKc6OjyteonKQ2XF1GwP3WPIUySZjaDzZ3UIYcdg=";
     "npm:pi-diff-review@0.1.26" = "sha256-Auq5iZpQwEzF2/LR5WnDvrsWmh+noD6Rbn+d+fG47UQ=";
-    "npm:pi-mcp-adapter@2.29.0" = "sha256-OrdOu1g0OeyrcdjOSNTcj1Alv2xNTOAECZPwQBZOgL8=";
+    "npm:pi-mcp-adapter@2.29.0" = "sha256-Hb2lDwt91wSDTpQ2ergTgvXr7xkdo68qyQ2JBIPi3kc=";
     "npm:pi-simplify@0.2.3" = "sha256-eP18i9BdSXt5p1ssc4k6bhogR3cyg0ZoFExUc/KogzE=";
-    "npm:pi-web-access@0.25.0" = "sha256-DYznZFiZ93TN3puBv4ZhavRQkxfGBBkiBWeqrveDOFU=";
+    "npm:pi-web-access@0.25.0" = "sha256-Mq26lT0cB5chfbap81OFC0s5lTmRRe5OgyBGo03quwg=";
     "npm:pi-btw@0.4.1" = "sha256-PJKMskXImX2dsyDdjP56DPRRvrPIUpBFl04APGdEE5c=";
     "npm:pi-better-harness@0.1.27" = "sha256-55kKA3AzAmlElIgOjvA/P0bkwgJxoYxXnpDZ5YI51xc=";
     "npm:pi-better-models@1.0.1" = "sha256-fpOqbdE25bxF6CbJXnt8EMJtOUQiCUwjaEbPFDMvopM=";
     "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
-    "npm:pi-studio@0.9.52" = "sha256-W7JBgzpLsFKmP7yZ78DvFvYTE4N8RRZniIdw0vG1bQU=";
+    "npm:pi-studio@0.9.52" = "sha256-VqZKO3DiibuaDQaGIiZWCvmmsSPicoFi1Eebp8m9jX8=";
     "npm:pi-auto-reviewer@1.1.0" = "sha256-538TiFxvcqfvNLNJWNm+NurAnqKjdlUpTbNJGwOBjUY=";
     "npm:pi-openai-long-context" = "sha256-snPGzye5D8koHjfRZYr74QjSqLaa2OhhhbW1isYBpis=";
     "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
