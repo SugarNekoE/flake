@@ -46,6 +46,7 @@
     logitech
     sdrpp
     davinci
+    acs-cli
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =

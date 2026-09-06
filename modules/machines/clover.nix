@@ -29,6 +29,9 @@
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.clover ];
 
       networking.firewall.enable = lib.mkForce false;
+      networking.enableIPv6 = true;
+      networking.useNetworkd = true;
+      networking.useDHCP = false;
 
       services = {
         cloud-init = {

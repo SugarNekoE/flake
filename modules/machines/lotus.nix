@@ -27,6 +27,22 @@
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.lotus ];
 
       networking.firewall.enable = lib.mkForce false;
+      networking.networkmanager.enable = lib.mkForce false;
+      networking.enableIPv6 = true;
+      networking.useNetworkd = true;
+      networking.useDHCP = false;
+
+      environment.etc."systemd/network/10-cloud-init-ens5.network.d/50-ipv6.conf".text = ''
+        [Network]
+        DHCP=yes
+        IPv6AcceptRA=yes
+
+        [DHCPv6]
+        WithoutRA=solicit
+
+        [IPv6AcceptRA]
+        DHCPv6Client=always
+      '';
 
       services = {
         cloud-init = {
@@ -45,7 +61,7 @@
         qemuGuest.enable = true;
       };
 
-      boot.kernel.sysctl = lib.mkForce {
+      boot.kernel.sysctl = {
         "vm.swappiness" = "0";
         "kernel.sysrq" = "1";
         "net.ipv4.neigh.default.gc_stale_time" = "120";

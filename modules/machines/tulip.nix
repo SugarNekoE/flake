@@ -32,6 +32,10 @@
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.tulip ];
 
       networking.firewall.enable = lib.mkForce false;
+      networking.networkmanager.enable = lib.mkForce false;
+      networking.enableIPv6 = true;
+      networking.useNetworkd = true;
+      networking.useDHCP = false;
 
       services = {
         cloud-init = {

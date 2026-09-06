@@ -34,6 +34,10 @@
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aegis ];
 
       networking.firewall.enable = lib.mkForce false;
+      networking.networkmanager.enable = lib.mkForce false;
+      networking.enableIPv6 = true;
+      networking.useNetworkd = true;
+      networking.useDHCP = false;
       networking.hosts = {
         "172.31.129.21" = [ "forge.asnk.io" ];
         "172.31.129.22" = [ "forge.asnk.io" ];

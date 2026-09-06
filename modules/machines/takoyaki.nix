@@ -35,6 +35,10 @@
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.takoyaki ];
 
       networking.firewall.enable = lib.mkForce false;
+      networking.networkmanager.enable = lib.mkForce false;
+      networking.enableIPv6 = true;
+      networking.useNetworkd = true;
+      networking.useDHCP = false;
 
       environment.etc."containers/registries.conf".source = lib.mkForce (
         pkgs.writeText "registries.conf" ''
