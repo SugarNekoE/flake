@@ -63,7 +63,6 @@ in
               _: container:
               container
               // {
-                # Podman supports a size cap, but not Docker's max-file option.
                 log-driver = "k8s-file";
                 extraOptions = (container.extraOptions or [ ]) ++ [
                   "--log-opt=max-size=500m"
