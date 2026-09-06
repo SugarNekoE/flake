@@ -11,4 +11,10 @@
       "sh.ppy.osu"
     ])
   ];
+
+  home = { pkgs, ... }: {
+    home.packages = with pkgs; [
+      zulu21
+    ];
+  };
 }
