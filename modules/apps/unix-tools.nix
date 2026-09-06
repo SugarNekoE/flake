@@ -34,6 +34,8 @@
         killall
         openssl
         ripgrep
+        pciutils
+        usbutils
         fastfetch
         wl-clipboard
         nix-output-monitor
