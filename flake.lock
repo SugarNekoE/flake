@@ -5,11 +5,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1788679744,
-        "narHash": "sha256-Ln+gxHiTHckXMIQ/bNjXdOZucZd6xM8kHlGaXXr1gnc=",
+        "lastModified": 1788680399,
+        "narHash": "sha256-bmh10MjixWCfDGoteDT2e5u4r28u6fcy/0NMwvSPStg=",
         "ref": "refs/heads/main",
-        "rev": "582c5e7e362755deb16041ed65a11eb42a9a7a4e",
-        "revCount": 24,
+        "rev": "3ca0e930c12c02a7f91cc926ce20c0b1a018a4e5",
+        "revCount": 26,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/acs-k8s"
       },
