@@ -19,4 +19,5 @@ devenv.local.yaml
 
 # build artifacts
 result
+result-*
 *-result
