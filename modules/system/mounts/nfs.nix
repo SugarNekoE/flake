@@ -57,6 +57,7 @@
             "timeo=600"
             "retrans=2"
             "noresvport"
+            "nconnect=4"
           ]
           ++ mount.extraOptions;
         }) mounts;
