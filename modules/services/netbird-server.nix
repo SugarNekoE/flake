@@ -49,25 +49,24 @@ in
             ${pkgs.coreutils}/bin/install -m 0600 -o 1000 -g 1000 \
               fullchain.pem ${installPath}/data/netbird_proxy_certs/netbird-proxy.crt
           '';
-          reloadServices = [ "docker-netbird-proxy.service" ];
+          reloadServices = [ "podman-netbird-proxy.service" ];
         };
       };
 
-      virtualisation.docker.enable = lib.mkForce true;
-      virtualisation.podman.dockerSocket.enable = lib.mkForce false;
+      virtualisation.podman.dockerSocket.enable = true;
 
       virtualisation.oci-containers = {
-        backend = "docker";
+        backend = "podman";
         containers =
           lib.mapAttrs
             (
               _: container:
               container
               // {
-                log-driver = "json-file";
+                # Podman supports a size cap, but not Docker's max-file option.
+                log-driver = "k8s-file";
                 extraOptions = (container.extraOptions or [ ]) ++ [
                   "--log-opt=max-size=500m"
-                  "--log-opt=max-file=2"
                 ];
               }
             )
@@ -184,6 +183,7 @@ in
 
               netbird-crowdsec = {
                 image = "docker.io/crowdsecurity/crowdsec:v1.7.7";
+                podman.sdnotify = "healthy";
                 extraOptions = [
                   "--network-alias=crowdsec"
                   "--health-cmd=cscli lapi status"
@@ -205,52 +205,39 @@ in
       };
 
       systemd.services = lib.mkMerge [
-        (lib.genAttrs (map (name: "docker-${name}") containerNames) (_: {
-          after = [ "docker-network-netbird.service" ];
-          requires = [ "docker-network-netbird.service" ];
+        (lib.genAttrs (map (name: "podman-${name}") containerNames) (_: {
+          after = [ "podman-network-netbird.service" ];
+          requires = [ "podman-network-netbird.service" ];
           serviceConfig.Restart = lib.mkForce "always";
         }))
         {
-          docker-network-netbird = {
-            description = "Create NetBird Docker network";
+          podman-network-netbird = {
+            description = "Create NetBird Podman network";
             after = [
               "network-online.target"
-              "docker.service"
             ];
             wants = [ "network-online.target" ];
-            requires = [ "docker.service" ];
             serviceConfig = {
               Type = "oneshot";
               RemainAfterExit = true;
             };
             script = ''
-              ${pkgs.docker}/bin/docker network inspect netbird >/dev/null 2>&1 ||
-                ${pkgs.docker}/bin/docker network create --driver=bridge \
+              ${pkgs.podman}/bin/podman network exists netbird ||
+                ${pkgs.podman}/bin/podman network create --driver=bridge \
                   --subnet=172.30.0.0/24 --gateway=172.30.0.1 netbird
             '';
           };
+          podman-netbird-traefik = {
+            after = [ "podman.socket" ];
+            requires = [ "podman.socket" ];
+          };
+          podman-netbird-crowdsec.serviceConfig.TimeoutStartSec = lib.mkForce 300;
           acme-order-renew-netbird-proxy = {
             after = [ "sops-install-secrets.service" ];
             requires = [ "sops-install-secrets.service" ];
             serviceConfig.ReadWritePaths = [ "${installPath}/data/netbird_proxy_certs" ];
           };
-          docker-netbird-proxy = {
-            preStart = lib.mkAfter ''
-              for attempt in $(seq 1 120); do
-                server=$(${pkgs.docker}/bin/docker inspect --format '{{.State.Running}}' netbird-server 2>/dev/null || true)
-                health=$(${pkgs.docker}/bin/docker inspect --format '{{.State.Health.Status}}' netbird-crowdsec 2>/dev/null || true)
-                if [ "$server" = true ] && [ "$health" = healthy ]; then
-                  exit 0
-                fi
-                if [ "$health" = unhealthy ]; then
-                  echo "NetBird CrowdSec failed its health check" >&2
-                  exit 1
-                fi
-                sleep 2
-              done
-              echo "Timed out waiting for NetBird server and CrowdSec" >&2
-              exit 1
-            '';
+          podman-netbird-proxy = {
             after = [
               "acme-order-renew-netbird-proxy.service"
             ];
