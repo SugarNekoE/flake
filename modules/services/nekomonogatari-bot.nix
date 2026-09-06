@@ -17,6 +17,7 @@
       key = "";
       format = "yaml";
       owner = "nekomonogatari-bot";
+      restartUnits = [ "nekomonogatari-bot.service" ];
     };
 
     services.nekomonogatari-bot = {
