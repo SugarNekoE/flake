@@ -160,6 +160,7 @@ in
                 environmentFiles = [
                   "${installPath}/proxy.env"
                 ];
+                environment.NB_PROXY_WILDCARD_CERT_DIR = "/certs";
                 extraOptions = [ "--network-alias=proxy" ];
                 labels = {
                   "traefik.enable" = "true";
@@ -221,9 +222,16 @@ in
               RemainAfterExit = true;
             };
             script = ''
-              ${pkgs.podman}/bin/podman network exists netbird ||
+              if ${pkgs.podman}/bin/podman network exists netbird; then
+                if [ "$(${pkgs.podman}/bin/podman network inspect --format '{{.IPv6Enabled}}' netbird)" != true ]; then
+                  echo "NetBird network is IPv4-only; stop its containers and recreate the network for IPv6." >&2
+                  exit 1
+                fi
+              else
                 ${pkgs.podman}/bin/podman network create --driver=bridge \
-                  --subnet=172.30.0.0/24 --gateway=172.30.0.1 netbird
+                  --subnet=172.30.0.0/24 --gateway=172.30.0.1 \
+                  --ipv6 --subnet=fd30:6e65:7462::/64 --gateway=fd30:6e65:7462::1 netbird
+              fi
             '';
           };
           podman-netbird-traefik = {
