@@ -11,6 +11,13 @@ _: {
       colors = config.lib.stylix.colors.withHashtag;
       brightness = if config.stylix.polarity == "either" then "auto" else config.stylix.polarity;
       font = config.stylix.fonts.sansSerif.name;
+      fontconfig = pkgs.makeFontsConf {
+        fontDirectories = [
+          config.stylix.fonts.sansSerif.package
+          config.stylix.fonts.monospace.package
+          config.stylix.fonts.emoji.package
+        ];
+      };
       themeSettings = {
         "$schema" = "https://schemas.glavo.site/hmcl/launcher-settings/1.0.0";
         themeAppearanceOverrides = [
@@ -99,6 +106,7 @@ _: {
         postFixup = (oldAttrs.postFixup or "") + ''
           mv $out/bin/hmcl $out/bin/.hmcl-wrapped
           makeShellWrapper $out/bin/.hmcl-wrapped $out/bin/hmcl \
+            --set FONTCONFIG_FILE ${fontconfig} \
             --set HMCL_FONT ${lib.escapeShellArg font} \
             --run ${lib.escapeShellArg applyTheme} \
             --run ${lib.escapeShellArg detectScale}
