@@ -15,7 +15,7 @@ in
         plugins = [
           "github.com/mholt/caddy-l4@v0.1.1"
         ];
-        hash = "sha256-hDGhrMLxrjNdNaCp+oT1WPfA9ty5Ltw2gkVt1Z48q7g=";
+        hash = "sha256-iidNF6WoA1kzXJqT9bXB7Gmq2T9Ebhr+ZFrf7mnmnhA=";
       };
 
       caddyBase = pkgs.dockerTools.pullImage {
@@ -76,7 +76,7 @@ in
             };
             script = ''
               ${pkgs.podman}/bin/podman network exists forgejo ||
-                ${pkgs.podman}/bin/podman network create forgejo
+                ${pkgs.podman}/bin/podman network create --ipv6 forgejo
             '';
           };
         };
@@ -129,6 +129,9 @@ in
             environment = {
               USER_UID = "1000";
               USER_GID = "1000";
+              GIT_CONFIG_COUNT = "1";
+              GIT_CONFIG_KEY_0 = "http.followRedirects";
+              GIT_CONFIG_VALUE_0 = "true";
             };
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
