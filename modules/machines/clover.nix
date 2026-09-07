@@ -96,6 +96,7 @@
           extraOptions = [
             "rsize=1048576"
             "wsize=1048576"
+            "nconnect=16"
           ];
         };
       };
