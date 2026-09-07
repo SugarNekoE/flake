@@ -28,30 +28,14 @@
 
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.singcat ];
 
-      networking.firewall.enable = lib.mkForce false;
-      networking.networkmanager.enable = lib.mkForce false;
-      networking.enableIPv6 = true;
-      networking.useNetworkd = true;
-      networking.useDHCP = false;
-
-      environment.etc."containers/registries.conf".source = lib.mkForce (
-        pkgs.writeText "registries.conf" ''
-          unqualified-search-registries = ["docker.io"]
-
-          [[registry]]
-          prefix = "docker.io"
-          location = "docker.io"
-
-          [[registry.mirror]]
-          location = "docker.1ms.run"
-
-          [[registry.mirror]]
-          location = "docker.m.daocloud.io"
-
-          [[registry.mirror]]
-          location = "dockerproxy.net"
-        ''
-      );
+      networking.firewall = {
+        allowPing = true;
+        allowedTCPPorts = [
+          22
+          2080
+          9990
+        ];
+      };
 
       services = {
         cloud-init = {
