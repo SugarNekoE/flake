@@ -129,9 +129,6 @@ in
             environment = {
               USER_UID = "1000";
               USER_GID = "1000";
-              GIT_CONFIG_COUNT = "1";
-              GIT_CONFIG_KEY_0 = "http.followRedirects";
-              GIT_CONFIG_VALUE_0 = "true";
             };
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
