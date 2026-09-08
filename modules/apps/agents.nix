@@ -21,7 +21,7 @@ let
     "npm:pi-better-harness@0.1.27" = "sha256-55kKA3AzAmlElIgOjvA/P0bkwgJxoYxXnpDZ5YI51xc=";
     "npm:pi-better-models@1.0.1" = "sha256-fpOqbdE25bxF6CbJXnt8EMJtOUQiCUwjaEbPFDMvopM=";
     "npm:pi-better-openai@0.1.22" = "sha256-cCrd34XWA5PxmwIuyH7043ruDTYv3BdDGjHpzuQSs2Q=";
-    "npm:pi-studio@0.9.52" = "sha256-VqZKO3DiibuaDQaGIiZWCvmmsSPicoFi1Eebp8m9jX8=";
+    "npm:pi-studio@0.9.52" = "sha256-qMFqxQO+kEItajFodRfXXFuyz3jO8adfVx4en/R71qw=";
     "npm:pi-auto-reviewer@1.1.0" = "sha256-538TiFxvcqfvNLNJWNm+NurAnqKjdlUpTbNJGwOBjUY=";
     "npm:pi-openai-long-context" = "sha256-snPGzye5D8koHjfRZYr74QjSqLaa2OhhhbW1isYBpis=";
     "npm:@ff-labs/pi-fff@0.10.5" = "sha256-KfilZVZohnisnbQ8XO7+50TQzSaIrw6DpLxA5XRIi+w=";
