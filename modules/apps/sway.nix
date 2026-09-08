@@ -96,36 +96,68 @@ in
       screenshotScreen = "grimshot --notify savecopy screen";
       screenshotWindow = "grimshot --notify savecopy active";
       lockScreen = lib.getExe config.programs.swaylock.package;
-      lidDisplayControl = pkgs.writeShellApplication {
-        name = "lid-display-control";
-        runtimeInputs = [ pkgs.unstable.swayfx ];
+      laptopLidControl = pkgs.writeShellApplication {
+        name = "laptop-lid-control";
+        runtimeInputs = [
+          config.wayland.windowManager.sway.package
+          pkgs.systemd
+        ];
         text = ''
-          action="''${1:?expected close or open}"
+          login_property() {
+            busctl --system get-property org.freedesktop.login1 \
+              /org/freedesktop/login1 org.freedesktop.login1.Manager "$1"
+          }
 
-          if [[ "$action" == "close" ]]; then
-            on_ac_power=false
-            for supply in /sys/class/power_supply/*; do
-              if [[ -r "$supply/type" && -r "$supply/online" ]] \
-                && [[ "$(<"$supply/type")" == "Mains" ]] \
-                && [[ "$(<"$supply/online")" == "1" ]]; then
-                on_ac_power=true
-                break
+          suspend_on_battery() {
+            [[ "$(login_property OnExternalPower)" == "b false" ]] || return 0
+            systemctl suspend-then-hibernate
+          }
+
+          action="''${1:?expected close, open, resume, power or idle}"
+          case "$action" in
+            open)
+              swaymsg 'output * power on'
+              ;;
+            resume)
+              [[ "$(login_property LidClosed)" == "b false" ]] || exit 0
+              swaymsg 'output * power on'
+              ;;
+            close|power)
+              if [[ "$action" == "power" ]]; then
+                [[ "$(login_property LidClosed)" == "b true" ]] || exit 0
               fi
-            done
-
-            [[ "$on_ac_power" == true ]] || exit 0
-            ${lockScreen} --daemonize
-            power_state="off"
-          elif [[ "$action" == "open" ]]; then
-            power_state="on"
-          else
-            echo "unknown lid action: $action" >&2
-            exit 2
-          fi
-
-          swaymsg "output * power $power_state"
+              if ! ${lib.getExe config.programs.swaylock.package} --daemonize; then
+                echo "swaylock failed or the session is already locked" >&2
+              fi
+              if [[ "$(login_property LidClosed)" == "b false" ]]; then
+                swaymsg 'output * power on'
+                exit 0
+              fi
+              swaymsg 'output * power off'
+              suspend_on_battery
+              ;;
+            idle)
+              suspend_on_battery
+              ;;
+            *)
+              echo "unknown laptop lid action: $action" >&2
+              exit 2
+              ;;
+          esac
         '';
       };
+      idleSteps = ''
+        lock_screen:
+          timeout 1800
+          command "swaylock"
+        end
+
+        display_off:
+          timeout 300
+          command "swaymsg 'output * power off'"
+          resume_command "laptop-lid-control resume"
+        end
+      '';
     in
     {
       imports = [
@@ -144,61 +176,39 @@ in
       services.stasis = {
         extraPathPackages = [
           config.programs.swaylock.package
-          lidDisplayControl
+          laptopLidControl
           pkgs.unstable.swayfx
         ];
         extraConfig = ''
           @author "sugar"
-          @description "Sway idle management"
+          @description "Sway idle and lid management"
 
           default:
             enable_loginctl_integration true
             enable_dbus_inhibit true
-            lid_close_action "lid-display-control close"
-            lid_open_action "lid-display-control open"
             monitor_media true
             ignore_remote_media true
             notify_on_unpause true
 
-            lock_screen:
-              timeout 1800
-              command "swaylock"
-            end
-
-            display_off:
-              timeout 300
-              command "swaymsg 'output * power off'"
-              resume_command "swaymsg 'output * power on'"
-            end
+            ${idleSteps}
 
             ac:
-              lock_screen:
-                timeout 1800
-                command "swaylock"
-              end
-
-              display_off:
-                timeout 300
-                command "swaymsg 'output * power off'"
-                resume_command "swaymsg 'output * power on'"
-              end
+              ${idleSteps}
             end
 
             battery:
-              lock_screen:
-                timeout 1800
-                command "swaylock"
+              # Startup actions also run when switching from AC to battery,
+              # even while lid-close handling has paused the idle timers.
+              startup:
+                timeout 0
+                command "laptop-lid-control power"
               end
 
-              display_off:
-                timeout 300
-                command "swaymsg 'output * power off'"
-                resume_command "swaymsg 'output * power on'"
-              end
+              ${idleSteps}
 
               suspend:
                 timeout 1800
-                command "systemctl suspend"
+                command "laptop-lid-control idle"
               end
             end
           end
@@ -276,6 +286,8 @@ in
           };
         };
         extraConfig = ''
+          bindswitch --locked --reload lid:on exec ${lib.getExe laptopLidControl} close
+          bindswitch --locked --reload lid:off exec ${lib.getExe laptopLidControl} open
           bindgesture swipe:3:right workspace prev
           bindgesture swipe:3:left workspace next
           seat * hide_cursor when-typing enable
