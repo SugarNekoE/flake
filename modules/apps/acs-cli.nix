@@ -4,7 +4,7 @@
 
   nixos = {
     nix.settings = {
-      extra-substituters = [ "https://acs-nix.cachix.org" ];
+      extra-substituters = [ "https://acs-k8s.cachix.org" ];
       extra-trusted-public-keys = [
         "acs-k8s.cachix.org-1:DWI0wISknATlw/wqfWvcNKqHS2ck9hjqAtysB/ZaQLQ="
       ];
