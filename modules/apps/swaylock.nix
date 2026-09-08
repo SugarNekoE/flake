@@ -6,7 +6,6 @@ _: {
         fprintAuth = config.services.fprintd.enable;
       }
       // lib.optionalAttrs config.services.fprintd.enable {
-        # Check a submitted password before waiting for the fingerprint reader.
         rules.auth.fprintd.order = config.security.pam.services.swaylock.rules.auth.unix.order + 10;
       };
     };

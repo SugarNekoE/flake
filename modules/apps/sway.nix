@@ -197,8 +197,6 @@ in
             end
 
             battery:
-              # Startup actions also run when switching from AC to battery,
-              # even while lid-close handling has paused the idle timers.
               startup:
                 timeout 0
                 command "laptop-lid-control power"
@@ -216,11 +214,10 @@ in
       };
       wayland.windowManager.sway = {
         enable = true;
-        systemd.enable = false; # UWSM managed
+        systemd.enable = false;
         package = pkgs.unstable.swayfx;
         xwayland = true;
         extraConfigEarly = "include /etc/sway/config.d/*";
-        # SwayFX requires a DRM renderer even for its config check, which is unavailable in the build sandbox.
         checkConfig = false;
         wrapperFeatures.gtk = true;
         config = {
