@@ -16,7 +16,7 @@ let
     "npm:pi-diff-review@0.1.26" = "sha256-FweI9Pw6J+lxH1s+ywsZzjTeAatWhHR/0oKfSw1LdXA=";
     "npm:pi-mcp-adapter@2.29.0" = "sha256-Hb2lDwt91wSDTpQ2ergTgvXr7xkdo68qyQ2JBIPi3kc=";
     "npm:pi-simplify@0.2.3" = "sha256-eP18i9BdSXt5p1ssc4k6bhogR3cyg0ZoFExUc/KogzE=";
-    "npm:pi-web-access@0.25.0" = "sha256-Mq26lT0cB5chfbap81OFC0s5lTmRRe5OgyBGo03quwg=";
+    "npm:pi-web-access@0.25.0" = "sha256-USzQ0FxLmm15hN1jGf2gpI2J0mMtAWmJEdXd3lBL7F0=";
     "npm:pi-btw@0.4.1" = "sha256-PJKMskXImX2dsyDdjP56DPRRvrPIUpBFl04APGdEE5c=";
     "npm:pi-better-harness@0.1.27" = "sha256-55kKA3AzAmlElIgOjvA/P0bkwgJxoYxXnpDZ5YI51xc=";
     "npm:pi-better-models@1.0.1" = "sha256-fpOqbdE25bxF6CbJXnt8EMJtOUQiCUwjaEbPFDMvopM=";
