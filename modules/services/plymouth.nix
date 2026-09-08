@@ -12,6 +12,8 @@ _: {
             installPhase = ''
               mkdir -p $out/share/plymouth/themes/nixos-mac-style
               cp -r . $out/share/plymouth/themes/nixos-mac-style/
+              substituteInPlace "$out/share/plymouth/themes/nixos-mac-style/nixos-mac-style.plymouth" \
+                --replace-fail /usr/share/plymouth "$out/share/plymouth"
             '';
           })
         ];
