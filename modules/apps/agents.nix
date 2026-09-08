@@ -13,7 +13,7 @@ let
 
   piNpmPackages = {
     "npm:pi-ask-user@0.14.0" = "sha256-HpdEKc6OjyteonKQ2XF1GwP3WPIUySZjaDzZ3UIYcdg=";
-    "npm:pi-diff-review@0.1.26" = "sha256-Auq5iZpQwEzF2/LR5WnDvrsWmh+noD6Rbn+d+fG47UQ=";
+    "npm:pi-diff-review@0.1.26" = "sha256-FweI9Pw6J+lxH1s+ywsZzjTeAatWhHR/0oKfSw1LdXA=";
     "npm:pi-mcp-adapter@2.29.0" = "sha256-Hb2lDwt91wSDTpQ2ergTgvXr7xkdo68qyQ2JBIPi3kc=";
     "npm:pi-simplify@0.2.3" = "sha256-eP18i9BdSXt5p1ssc4k6bhogR3cyg0ZoFExUc/KogzE=";
     "npm:pi-web-access@0.25.0" = "sha256-Mq26lT0cB5chfbap81OFC0s5lTmRRe5OgyBGo03quwg=";
