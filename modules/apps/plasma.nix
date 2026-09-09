@@ -96,7 +96,10 @@ in
           runAlways = true;
         };
 
-        workspace.iconTheme = "breeze-dark";
+        workspace = {
+          iconTheme = "breeze-dark";
+          splashScreen.theme = "none";
+        };
 
         kwin = {
           edgeBarrier = 0;
