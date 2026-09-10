@@ -6,6 +6,7 @@
     podman
     (flatpak.withPackages [
       "com.redis.RedisInsight"
+      "org.apache.directory.studio"
     ])
   ];
   home =
@@ -24,7 +25,6 @@
         podman-desktop
         jetbrains.datagrip
         jetbrains.gateway
-        apache-directory-studio
       ];
     };
 }
