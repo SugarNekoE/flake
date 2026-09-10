@@ -22,7 +22,6 @@
       "io.gitlab.adhami3310.Impression"
       "org.gnome.Brasero"
       "org.gnome.NetworkDisplays"
-      "io.missioncenter.MissionCenter"
       "io.github.ilya_zlobintsev.LACT"
       "hu.irl.cameractrls"
     ])
