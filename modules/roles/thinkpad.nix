@@ -106,7 +106,7 @@ _: {
 
           swayosd-client \
             --custom-icon preferences-system-power-symbolic \
-            --custom-message "Power mode: $label"
+            --custom-message "Power mode: $label" || true
           notify-send \
             --app-name="Power mode" \
             --icon=preferences-system-power-symbolic \

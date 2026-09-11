@@ -1,4 +1,7 @@
-_: {
+{ inputs, ... }:
+{
+  imports = with inputs.self.aspects; [ auto-power-profile ];
+
   nixos = {
     services.logind.settings.Login = {
       HandleLidSwitch = "suspend-then-hibernate";
