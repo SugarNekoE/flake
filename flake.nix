@@ -21,13 +21,7 @@
       url = "git+https://forge.asnk.io/sugar/kernel-dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    llm-agents = {
-      url = "github:numtide/llm-agents.nix";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs-unstable";
-      };
-    };
+    llm-agents.url = "github:numtide/llm-agents.nix";
     nekomonogatari-bot.url = "git+https://forge.asnk.io/sugar/nekomonogatari-bot";
     nix-auto-follow = {
       url = "github:fzakaria/nix-auto-follow";
