@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake-file = {
-    inputs.nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz";
+    inputs.nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
 
     outputs = ''
       inputs:
