@@ -9,7 +9,7 @@
     gnupg
     kitty
     netbird-app
-    neovim
+    helix
     starship
     unix-tools
     (flatpak.withPackages [
