@@ -50,7 +50,7 @@
 
       systemd.services.auto-power-profile = {
         description = "Select the laptop power profile from AC and battery state";
-        wantedBy = [ "multi-user.target" ];
+        wantedBy = [ "graphical.target" ];
         wants = [
           "upower.service"
           "power-profiles-daemon.service"
