@@ -50,6 +50,7 @@ _: {
           set -g fish_pager_color_selected_background --background=${colors.base02}
         '';
         shellAliases = {
+          "v" = "vim";
           "z" = "cd";
           "ls" = "eza --icons";
           "ll" = "ls -lh";

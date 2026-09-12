@@ -17,8 +17,6 @@
     vscode-json-languageserver
   ];
 
-  env.SOPS_EDITOR = "hx";
-
   languages = {
     go = {
       enable = true;
