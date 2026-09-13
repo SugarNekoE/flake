@@ -70,9 +70,10 @@
         opts = {
           number = true;
           relativenumber = true;
+          numberwidth = 2;
           cursorline = true;
           scrolloff = 10;
-          signcolumn = "yes";
+          signcolumn = "yes:1";
           clipboard = "unnamedplus";
           ignorecase = true;
           smartcase = true;
@@ -93,6 +94,11 @@
         diagnostic.settings = {
           severity_sort = true;
           virtual_text = true;
+        };
+        highlightOverride = {
+          MiniDiffSignAdd.fg = config.lib.stylix.colors.withHashtag.base0B;
+          MiniDiffSignChange.fg = config.lib.stylix.colors.withHashtag.base0D;
+          MiniDiffSignDelete.fg = config.lib.stylix.colors.withHashtag.base08;
         };
 
         plugins = {
@@ -141,9 +147,9 @@
               diff.view = {
                 style = "sign";
                 signs = {
-                  add = "+";
-                  change = "~";
-                  delete = "_";
+                  add = "▎";
+                  change = "▎";
+                  delete = "▁";
                 };
               };
               clue = {
