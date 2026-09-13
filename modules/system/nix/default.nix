@@ -61,4 +61,5 @@
         SYSTEMD_PAGER = "less -R";
       };
     };
+  targets.console.enable = true;
 }
