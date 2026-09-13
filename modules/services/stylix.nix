@@ -31,6 +31,7 @@ in
       stylix = {
         enable = true;
         autoEnable = false;
+        targets.console.enable = true;
         polarity = "dark";
         base16Scheme = {
           system = "base16";
@@ -67,8 +68,6 @@ in
           dark = "la-capitaine-icon-theme";
           light = "la-capitaine-icon-theme";
         };
-        # These fonts apply to the explicitly enabled Stylix targets only;
-        # modules/services/fonts.nix defines the system-wide fallback order.
         fonts = {
           serif = {
             name = "Noto Serif CJK SC";
