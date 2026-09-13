@@ -1,6 +1,9 @@
 _: {
   nixos = {
-    stylix.targets.plymouth.enable = true;
+    stylix.targets.plymouth = {
+      enable = true;
+      logoAnimated = false;
+    };
     boot = {
       plymouth = {
         enable = true;
