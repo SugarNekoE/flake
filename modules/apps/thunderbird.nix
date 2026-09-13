@@ -19,7 +19,7 @@ _: {
         postPatch = ''
           substituteInPlace extension/background.js \
             --replace-fail $'\nnativeMessagingPing()\n' \
-            $'\nbrowser.storage.local.set({ editor: "hx", terminal: "kitty", shell: "sh", template: "kitty --start-as=normal --override=macos_quit_when_last_window_closed=yes -- hx /path/to/temp.eml" }).then(nativeMessagingPing)\n'
+            $'\nbrowser.storage.local.set({ editor: "nvim", terminal: "kitty", shell: "sh", template: "kitty --start-as=normal --override=macos_quit_when_last_window_closed=yes -- hx /path/to/temp.eml" }).then(nativeMessagingPing)\n'
         '';
 
         installPhase = ''

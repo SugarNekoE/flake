@@ -52,7 +52,7 @@ _: {
         };
         settings = {
           core = {
-            editor = "hx";
+            editor = "nvim";
             autocrlf = "input";
             preloadindex = true;
             fscache = true;
