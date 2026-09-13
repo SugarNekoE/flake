@@ -17,7 +17,7 @@
     vscode-json-languageserver
   ];
 
-  env.SOPS_EDITOR = "zeditor";
+  env.SOPS_EDITOR = "zeditor --wait";
 
   languages = {
     go = {
