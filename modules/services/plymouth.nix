@@ -1,5 +1,6 @@
 _: {
   nixos = { pkgs, ... }: {
+    stylix.targets.plymouth.enable = true;
     boot = {
       plymouth = {
         enable = true;
