@@ -93,7 +93,6 @@ _: {
         runtimeInputs = with pkgs; [
           libnotify
           power-profiles-daemon
-          swayosd
         ];
         text = ''
           profile="''${1:-$(powerprofilesctl get)}"
@@ -104,9 +103,6 @@ _: {
             *) label="$profile" ;;
           esac
 
-          swayosd-client \
-            --custom-icon preferences-system-power-symbolic \
-            --custom-message "Power mode: $label" || true
           notify-send \
             --app-name="Power mode" \
             --icon=preferences-system-power-symbolic \
