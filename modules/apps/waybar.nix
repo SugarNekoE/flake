@@ -148,7 +148,7 @@ in
 
       style = ''
         window#waybar.topbar {
-          background: alpha(@base00, 0.92);
+          background: @base00;
         }
 
         window#waybar.topbar > box {
@@ -175,7 +175,7 @@ in
         }
 
         window#waybar.taskbar {
-          background: alpha(@base00, 0.92);
+          background: @base00;
           border-top: 1px solid alpha(@base04, 0.35);
         }
 
