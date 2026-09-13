@@ -89,12 +89,18 @@
         "ahci"
         "sd_mod"
       ];
-      boot.initrd.kernelModules = [ "dm-snapshot" ];
+      boot.initrd.kernelModules = [
+        "dm-snapshot"
+        "nvidia"
+        "nvidia_modeset"
+        "nvidia_drm"
+      ];
       boot.kernelModules = [
         "kvm-amd"
         "nct6775"
       ];
       boot.extraModulePackages = [ ];
+      boot.loader.systemd-boot.consoleMode = "max";
 
       disko.devices.disk.system.device = "/dev/disk/by-id/nvme-ZHITAI_TiPlus5000_1TB_ZTA21T0KA2342203FY";
 
