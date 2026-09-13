@@ -18,15 +18,16 @@
   home =
     { config, pkgs, ... }:
     let
+      colors = config.lib.stylix.colors.withHashtag;
       raw = code: { __raw = code; };
-      map = mode: key: action: desc: {
+      mkKeymap = mode: key: action: desc: {
         inherit mode key action;
         options.desc = desc;
       };
       exprMap =
         key: action: desc:
         let
-          keymap = map "i" key action desc;
+          keymap = mkKeymap "i" key action desc;
         in
         keymap
         // {
@@ -70,7 +71,8 @@
         opts = {
           number = true;
           relativenumber = true;
-          numberwidth = 2;
+          numberwidth = 4;
+          statuscolumn = "%s%C%=%{v:virtnum == 0 ? (&rnu && v:relnum > 0 ? v:relnum : (&nu ? v:lnum : '')) : ''}  ";
           cursorline = true;
           scrolloff = 10;
           signcolumn = "yes:1";
@@ -96,9 +98,24 @@
           virtual_text = true;
         };
         highlightOverride = {
-          MiniDiffSignAdd.fg = config.lib.stylix.colors.withHashtag.base0B;
-          MiniDiffSignChange.fg = config.lib.stylix.colors.withHashtag.base0D;
-          MiniDiffSignDelete.fg = config.lib.stylix.colors.withHashtag.base08;
+          LineNr = {
+            fg = colors.base04;
+            bg = colors.base00;
+          };
+          LineNrAbove.link = "LineNr";
+          LineNrBelow.link = "LineNr";
+          CursorLineNr = {
+            fg = colors.base0A;
+            bg = colors.base00;
+            bold = true;
+          };
+          SignColumn.bg = colors.base00;
+          CursorLineSign.link = "SignColumn";
+          FoldColumn.link = "LineNr";
+          CursorLineFold.link = "FoldColumn";
+          MiniDiffSignAdd.fg = colors.base0B;
+          MiniDiffSignChange.fg = colors.base0D;
+          MiniDiffSignDelete.fg = colors.base08;
         };
 
         plugins = {
@@ -305,11 +322,11 @@
             };
           };
           keymaps = [
-            (map "n" "gd" (raw "vim.lsp.buf.definition") "Go to definition")
-            (map "n" "gr" (raw "vim.lsp.buf.references") "Find references")
-            (map "n" "K" (raw "vim.lsp.buf.hover") "Hover documentation")
-            (map "n" "<leader>cr" (raw "vim.lsp.buf.rename") "Rename symbol")
-            (map "n" "<leader>ca" (raw "vim.lsp.buf.code_action") "Code action")
+            (mkKeymap "n" "gd" (raw "vim.lsp.buf.definition") "Go to definition")
+            (mkKeymap "n" "gr" (raw "vim.lsp.buf.references") "Find references")
+            (mkKeymap "n" "K" (raw "vim.lsp.buf.hover") "Hover documentation")
+            (mkKeymap "n" "<leader>cr" (raw "vim.lsp.buf.rename") "Rename symbol")
+            (mkKeymap "n" "<leader>ca" (raw "vim.lsp.buf.code_action") "Code action")
           ];
           onAttach = ''
             vim.schedule(function() require("mini.clue").ensure_buf_triggers(bufnr) end)
@@ -317,7 +334,7 @@
         };
 
         keymaps = [
-          (map "n" "<Esc>" "<Cmd>nohlsearch<CR>" "Clear search highlights")
+          (mkKeymap "n" "<Esc>" "<Cmd>nohlsearch<CR>" "Clear search highlights")
           (exprMap "<Tab>" (raw ''
             function()
               if vim.fn.pumvisible() == 1 then return "<C-n>" end
@@ -352,12 +369,12 @@
               return require("mini.pairs").cr()
             end
           '') "Accept completion or insert newline")
-          (map "n" "<leader>gd" "<Cmd>lua MiniDiff.toggle_overlay(0)<CR>" "Toggle Git diff overlay")
-          (map "n" "<leader>gs" "<Cmd>Git status<CR>" "Git status")
-          (map "n" "<leader>gl" "<Cmd>Git log --oneline --decorate<CR>" "Git log")
-          (map "n" "<leader>cd" (raw "vim.diagnostic.open_float") "Line diagnostics")
-          (map "n" "<leader>cw" "<Cmd>lua MiniTrailspace.trim()<CR>" "Trim trailing whitespace")
-          (map [ "n" "x" ] "<leader>cf"
+          (mkKeymap "n" "<leader>gd" "<Cmd>lua MiniDiff.toggle_overlay(0)<CR>" "Toggle Git diff overlay")
+          (mkKeymap "n" "<leader>gs" "<Cmd>Git status<CR>" "Git status")
+          (mkKeymap "n" "<leader>gl" "<Cmd>Git log --oneline --decorate<CR>" "Git log")
+          (mkKeymap "n" "<leader>cd" (raw "vim.diagnostic.open_float") "Line diagnostics")
+          (mkKeymap "n" "<leader>cw" "<Cmd>lua MiniTrailspace.trim()<CR>" "Trim trailing whitespace")
+          (mkKeymap [ "n" "x" ] "<leader>cf"
             ''<Cmd>lua require("conform").format({ async = true, lsp_format = "fallback" })<CR>''
             "Format"
           )
