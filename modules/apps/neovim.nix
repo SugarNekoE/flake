@@ -1,4 +1,7 @@
-_: {
+{ inputs, ... }:
+{
+  flake-file.inputs.nixvim.url = "github:nix-community/nixvim/nixos-26.05";
+
   nixos =
     { pkgs, ... }:
     {
@@ -13,12 +16,37 @@ _: {
     };
 
   home =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
+    let
+      raw = code: { __raw = code; };
+      map = mode: key: action: desc: {
+        inherit mode key action;
+        options.desc = desc;
+      };
+      exprMap =
+        key: action: desc:
+        let
+          keymap = map "i" key action desc;
+        in
+        keymap
+        // {
+          options = keymap.options // {
+            expr = true;
+          };
+        };
+      projectPicker = action: desc: {
+        inherit action;
+        options.desc = desc;
+        settings.cwd = raw ''vim.fs.root(0, { ".git", "flake.nix" }) or vim.fn.getcwd()'';
+      };
+    in
     {
-      stylix.targets.neovim.enable = true;
+      imports = [ inputs.nixvim.homeModules.nixvim ];
+      stylix.targets.nixvim.enable = true;
 
-      programs.neovim = {
+      programs.nixvim = {
         enable = true;
+        nixpkgs.useGlobalPackages = true;
         viAlias = true;
         vimAlias = true;
         withPython3 = false;
@@ -27,26 +55,162 @@ _: {
 
         extraPackages = with pkgs; [
           fd
-          fzf
+          git
           ripgrep
-          nixd
           nixfmt
-          marksman
-          taplo
-          vscode-langservers-extracted
-          yaml-language-server
           yamlfmt
           prettier
           wl-clipboard
         ];
 
-        plugins = with pkgs.vimPlugins; [
-          mini-nvim
-          fzf-lua
-          nvim-lspconfig
-          conform-nvim
-          (nvim-treesitter.withPlugins (
-            parsers: with parsers; [
+        globals = {
+          mapleader = " ";
+          maplocalleader = "\\";
+        };
+        opts = {
+          number = true;
+          relativenumber = true;
+          cursorline = true;
+          scrolloff = 10;
+          signcolumn = "yes";
+          clipboard = "unnamedplus";
+          ignorecase = true;
+          smartcase = true;
+          expandtab = true;
+          shiftwidth = 2;
+          tabstop = 2;
+          splitbelow = true;
+          splitright = true;
+          termguicolors = true;
+          undofile = true;
+          updatetime = 250;
+          completeopt = [
+            "menu"
+            "menuone"
+            "noselect"
+          ];
+        };
+        diagnostic.settings = {
+          severity_sort = true;
+          virtual_text = true;
+        };
+
+        plugins = {
+          friendly-snippets.enable = true;
+          mini = {
+            enable = true;
+            modules = {
+              ai = { };
+              align = { };
+              completion = { };
+              git = { };
+              icons = { };
+              move = { };
+              pairs = { };
+              splitjoin = { };
+              statusline = { };
+              trailspace = { };
+              jump2d.mappings.start_jumping = "<leader>j";
+              indentscope.draw.animation = raw ''require("mini.indentscope").gen_animation.none()'';
+              hipatterns.highlighters = {
+                fixme = {
+                  pattern = "%f[%w]()FIXME()%f[%W]";
+                  group = "MiniHipatternsFixme";
+                };
+                hack = {
+                  pattern = "%f[%w]()HACK()%f[%W]";
+                  group = "MiniHipatternsHack";
+                };
+                todo = {
+                  pattern = "%f[%w]()TODO()%f[%W]";
+                  group = "MiniHipatternsTodo";
+                };
+                note = {
+                  pattern = "%f[%w]()NOTE()%f[%W]";
+                  group = "MiniHipatternsNote";
+                };
+                hex_color = raw ''require("mini.hipatterns").gen_highlighter.hex_color()'';
+              };
+              snippets = {
+                snippets = [ (raw ''require("mini.snippets").gen_loader.from_lang()'') ];
+                mappings = {
+                  jump_next = "";
+                  jump_prev = "";
+                };
+              };
+              diff.view = {
+                style = "sign";
+                signs = {
+                  add = "+";
+                  change = "~";
+                  delete = "_";
+                };
+              };
+              clue = {
+                triggers = [
+                  {
+                    mode = "n";
+                    keys = "<leader>";
+                  }
+                  {
+                    mode = "x";
+                    keys = "<leader>";
+                  }
+                  {
+                    mode = "n";
+                    keys = "g";
+                  }
+                  {
+                    mode = "x";
+                    keys = "g";
+                  }
+                  {
+                    mode = "n";
+                    keys = "z";
+                  }
+                  {
+                    mode = "x";
+                    keys = "z";
+                  }
+                  {
+                    mode = "n";
+                    keys = "<C-w>";
+                  }
+                ];
+                clues = [
+                  {
+                    mode = "n";
+                    keys = "<leader>c";
+                    desc = "Code";
+                  }
+                  {
+                    mode = "x";
+                    keys = "<leader>c";
+                    desc = "Code";
+                  }
+                  {
+                    mode = "n";
+                    keys = "<leader>g";
+                    desc = "Git";
+                  }
+                  {
+                    mode = "n";
+                    keys = "<leader>s";
+                    desc = "Search";
+                  }
+                  (raw ''require("mini.clue").gen_clues.g()'')
+                  (raw ''require("mini.clue").gen_clues.z()'')
+                  (raw ''require("mini.clue").gen_clues.windows()'')
+                ];
+                window.delay = 300;
+              };
+            };
+          };
+
+          treesitter = {
+            enable = true;
+            highlight.enable = true;
+            grammarPackages = with config.programs.nixvim.plugins.treesitter.package.builtGrammars; [
               bash
               json
               json5
@@ -58,115 +222,142 @@ _: {
               vim
               vimdoc
               yaml
-            ]
-          ))
+            ];
+          };
+
+          lspconfig.enable = true;
+          conform-nvim = {
+            enable = true;
+            settings = {
+              formatters_by_ft = {
+                nix = [ "nixfmt" ];
+                markdown = [ "prettier" ];
+                toml = [ "taplo" ];
+                json = [ "prettier" ];
+                jsonc = [ "prettier" ];
+                yaml = [ "yamlfmt" ];
+              };
+              format_on_save = {
+                timeout_ms = 1500;
+                lsp_format = "fallback";
+              };
+            };
+          };
+          fzf-lua = {
+            enable = true;
+            settings.files.hidden = true;
+            keymaps = {
+              "<leader>f" = projectPicker "files" "Find files";
+              "<leader>r" = projectPicker "live_grep" "Search project";
+              "<leader>b" = {
+                action = "buffers";
+                options.desc = "Find buffers";
+              };
+              "<leader>d" = {
+                action = "diagnostics_workspace";
+                options.desc = "Find diagnostics";
+              };
+              "<leader>sk" = {
+                action = "keymaps";
+                options.desc = "Find keymaps";
+              };
+            };
+          };
+        };
+
+        lsp = {
+          servers = {
+            "*".config.capabilities = raw ''require("mini.completion").get_lsp_capabilities()'';
+            nixd = {
+              enable = true;
+              config.settings.nixd.formatting.command = [ "nixfmt" ];
+            };
+            marksman.enable = true;
+            taplo.enable = true;
+            jsonls = {
+              enable = true;
+              config.settings.json = {
+                validate.enable = true;
+                schemas = [
+                  {
+                    fileMatch = [ "package.json" ];
+                    url = "https://www.schemastore.org/package";
+                  }
+                ];
+              };
+            };
+            yamlls = {
+              enable = true;
+              config.settings = {
+                redhat.telemetry.enabled = false;
+                yaml = {
+                  keyOrdering = false;
+                  validate = true;
+                  schemaStore.enable = true;
+                };
+              };
+            };
+          };
+          keymaps = [
+            (map "n" "gd" (raw "vim.lsp.buf.definition") "Go to definition")
+            (map "n" "gr" (raw "vim.lsp.buf.references") "Find references")
+            (map "n" "K" (raw "vim.lsp.buf.hover") "Hover documentation")
+            (map "n" "<leader>cr" (raw "vim.lsp.buf.rename") "Rename symbol")
+            (map "n" "<leader>ca" (raw "vim.lsp.buf.code_action") "Code action")
+          ];
+          onAttach = ''
+            vim.schedule(function() require("mini.clue").ensure_buf_triggers(bufnr) end)
+          '';
+        };
+
+        keymaps = [
+          (map "n" "<Esc>" "<Cmd>nohlsearch<CR>" "Clear search highlights")
+          (exprMap "<Tab>" (raw ''
+            function()
+              if vim.fn.pumvisible() == 1 then return "<C-n>" end
+              local session = require("mini.snippets").session.get()
+              if session and session.buf_id == vim.api.nvim_get_current_buf() then
+                return "<Cmd>lua MiniSnippets.session.jump('next')<CR>"
+              end
+              if vim.snippet.active({ direction = 1 }) then
+                return "<Cmd>lua vim.snippet.jump(1)<CR>"
+              end
+              return "<Tab>"
+            end
+          '') "Next completion or snippet tabstop")
+          (exprMap "<S-Tab>" (raw ''
+            function()
+              if vim.fn.pumvisible() == 1 then return "<C-p>" end
+              local session = require("mini.snippets").session.get()
+              if session and session.buf_id == vim.api.nvim_get_current_buf() then
+                return "<Cmd>lua MiniSnippets.session.jump('prev')<CR>"
+              end
+              if vim.snippet.active({ direction = -1 }) then
+                return "<Cmd>lua vim.snippet.jump(-1)<CR>"
+              end
+              return "<S-Tab>"
+            end
+          '') "Previous completion or snippet tabstop")
+          (exprMap "<CR>" (raw ''
+            function()
+              if vim.fn.pumvisible() == 1 and vim.fn.complete_info().selected ~= -1 then
+                return "<C-y>"
+              end
+              return require("mini.pairs").cr()
+            end
+          '') "Accept completion or insert newline")
+          (map "n" "<leader>gd" "<Cmd>lua MiniDiff.toggle_overlay(0)<CR>" "Toggle Git diff overlay")
+          (map "n" "<leader>gs" "<Cmd>Git status<CR>" "Git status")
+          (map "n" "<leader>gl" "<Cmd>Git log --oneline --decorate<CR>" "Git log")
+          (map "n" "<leader>cd" (raw "vim.diagnostic.open_float") "Line diagnostics")
+          (map "n" "<leader>cw" "<Cmd>lua MiniTrailspace.trim()<CR>" "Trim trailing whitespace")
+          (map [ "n" "x" ] "<leader>cf"
+            ''<Cmd>lua require("conform").format({ async = true, lsp_format = "fallback" })<CR>''
+            "Format"
+          )
         ];
 
-        initLua = ''
-          vim.g.mapleader = " "
-          vim.g.maplocalleader = "\\"
-          vim.opt.number = true
-          vim.opt.relativenumber = true
-          vim.opt.cursorline = true
-          vim.opt.scrolloff = 10
-          vim.opt.signcolumn = "yes"
-          vim.opt.clipboard = "unnamedplus"
-          vim.opt.ignorecase = true
-          vim.opt.smartcase = true
-          vim.opt.expandtab = true
-          vim.opt.shiftwidth = 2
-          vim.opt.tabstop = 2
-          vim.opt.splitbelow = true
-          vim.opt.splitright = true
-          vim.opt.termguicolors = true
-          vim.opt.undofile = true
-          vim.opt.updatetime = 250
-          vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
-          require("mini.ai").setup()
-          require("mini.icons").setup()
-          require("mini.completion").setup()
-          require("mini.pairs").setup()
-          require("mini.statusline").setup()
-
-          -- Parsers and queries come from Nix; other filetypes use Vim syntax.
-          vim.api.nvim_create_autocmd("FileType", {
-            callback = function(args)
-              local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
-              if lang and vim.treesitter.language.add(lang) then
-                vim.treesitter.start(args.buf, lang)
-              end
-            end,
-          })
-
-          vim.diagnostic.config({ severity_sort = true, virtual_text = true })
-          vim.lsp.config("*", {
-            capabilities = require("mini.completion").get_lsp_capabilities(),
-          })
-          vim.lsp.config("nixd", {
-            settings = { nixd = { formatting = { command = { "nixfmt" } } } },
-          })
-          vim.lsp.config("jsonls", {
-            settings = {
-              json = {
-                validate = { enable = true },
-                schemas = {
-                  { fileMatch = { "package.json" }, url = "https://www.schemastore.org/package" },
-                },
-              },
-            },
-          })
-          vim.lsp.config("yamlls", {
-            settings = {
-              redhat = { telemetry = { enabled = false } },
-              yaml = { keyOrdering = false, validate = true, schemaStore = { enable = true } },
-            },
-          })
-          vim.lsp.enable({ "nixd", "marksman", "taplo", "jsonls", "yamlls" })
-
-          vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(args)
-              local function map(key, action, desc)
-                vim.keymap.set("n", key, action, { buffer = args.buf, desc = desc })
-              end
-              map("gd", vim.lsp.buf.definition, "Go to definition")
-              map("gr", vim.lsp.buf.references, "Find references")
-              map("K", vim.lsp.buf.hover, "Hover documentation")
-              map("<leader>cr", vim.lsp.buf.rename, "Rename symbol")
-              map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-            end,
-          })
-
-          require("conform").setup({
-            formatters_by_ft = {
-              nix = { "nixfmt" },
-              markdown = { "prettier" },
-              toml = { "taplo" },
-              json = { "prettier" },
-              jsonc = { "prettier" },
-              yaml = { "yamlfmt" },
-            },
-            format_on_save = { timeout_ms = 1500, lsp_format = "fallback" },
-          })
-
-          local fzf = require("fzf-lua")
-          fzf.setup({ files = { hidden = true } })
-          local function project_picker(picker)
-            return function()
-              local root = vim.fs.root(0, { ".git", "flake.nix" }) or vim.fn.getcwd()
-              fzf[picker]({ cwd = root })
-            end
-          end
-          vim.keymap.set("n", "<leader>f", project_picker("files"), { desc = "Find files" })
-          vim.keymap.set("n", "<leader>r", project_picker("live_grep"), { desc = "Search project" })
-          vim.keymap.set("n", "<leader>b", fzf.buffers, { desc = "Find buffers" })
-          vim.keymap.set("n", "<leader>d", fzf.diagnostics_workspace, { desc = "Find diagnostics" })
-          vim.keymap.set("n", "<leader>sk", fzf.keymaps, { desc = "Find keymaps" })
-          vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostics" })
-          vim.keymap.set({ "n", "x" }, "<leader>cf", function()
-            require("conform").format({ async = true, lsp_format = "fallback" })
-          end, { desc = "Format" })
-        '';
+        extraConfigLuaPost = ''require("mini.clue").ensure_all_triggers()'';
       };
     };
 }
