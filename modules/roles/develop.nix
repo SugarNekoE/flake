@@ -5,6 +5,7 @@
     zed
     podman
     (flatpak.withPackages [
+      "com.usebruno.Bruno"
       "com.redis.RedisInsight"
       "org.apache.directory.studio"
     ])
