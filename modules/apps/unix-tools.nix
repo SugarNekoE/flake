@@ -21,6 +21,7 @@
         duf
         dig
         zip
+        rar
         nixd
         tldr
         dust
@@ -29,6 +30,7 @@
         procs
         socat
         unzip
+        p7zip
         devenv
         cachix
         killall
