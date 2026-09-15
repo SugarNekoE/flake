@@ -41,12 +41,13 @@
 
       home.packages = with pkgs; [
         mpv
+        vlc
         ffmpeg
-        google-chrome
-        tor-browser
         splayer
         obs-studio
-        vlc
+        tor-browser
+        google-chrome
+        unstable.hqplayer-desktop
       ];
     };
 }
