@@ -47,7 +47,6 @@
         obs-studio
         tor-browser
         google-chrome
-        unstable.hqplayer-desktop
       ];
     };
 }
