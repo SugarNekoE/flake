@@ -7,7 +7,7 @@ _: {
       jack.enable = true;
       pulse.enable = true;
       wireplumber.enable = true;
-      extraConfig.pipewire."99-hifi" = {
+      extraConfig.pipewire."99-sample-rate" = {
         "context.properties" = {
           "default.clock.rate" = 48000;
           "default.clock.allowed-rates" = [
