@@ -69,6 +69,16 @@
       ];
       networking.firewall.enable = false;
     };
+  home = {
+    home.file.".local/share/applications/cn.feishu.Feishu.desktop".text = ''
+      [Desktop Entry]
+      Name=Feishu
+      Exec=flatpak run cn.feishu.Feishu --force-device-scale-factor=1.75
+      Icon=cn.feishu.Feishu
+      Type=Application
+      Categories=Office;
+    '';
+  };
   hardware =
     {
       config,
