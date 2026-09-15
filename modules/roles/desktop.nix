@@ -24,6 +24,7 @@
       "org.gnome.NetworkDisplays"
       "io.github.ilya_zlobintsev.LACT"
       "hu.irl.cameractrls"
+      "org.videolan.VLC"
     ])
   ];
 
@@ -41,7 +42,6 @@
 
       home.packages = with pkgs; [
         mpv
-        vlc
         ffmpeg
         splayer
         obs-studio
