@@ -24,6 +24,7 @@
       "org.gnome.NetworkDisplays"
       "hu.irl.cameractrls"
       "org.videolan.VLC"
+      "com.github.wwmm.easyeffects"
     ])
   ];
 
