@@ -20,6 +20,7 @@
     power
     plymouth
     polkit
+    kmscon
     (singbox-gui.withProfile {
       name = "SNEPX";
       sopsFile = ../secrets/sing-box/remote.json;
@@ -41,7 +42,6 @@
     work
 
     # apps
-    ly
     sway
     swaylock
     waybar
@@ -61,6 +61,11 @@
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
       networking.firewall.enable = false;
 
+      services.getty = {
+        autologinUser = user.username;
+        autologinOnce = true;
+      };
+
       services.pipewire.wireplumber.extraConfig."51-daisy-dmic-format" = {
         "monitor.alsa.rules" = [
           {
@@ -76,7 +81,13 @@
         ];
       };
     };
-  home = {
+  home = { lib, pkgs, ... }: {
+    programs.fish.loginShellInit = ''
+      if status is-interactive; and ${lib.getExe pkgs.uwsm} check may-start
+        exec ${lib.getExe pkgs.uwsm} start -F -- /run/current-system/sw/bin/sway
+      end
+    '';
+
     wayland.windowManager.sway.config.output = {
       "eDP-1" = {
         mode = "1920x1200@60Hz";
