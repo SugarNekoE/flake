@@ -19,7 +19,6 @@ in
     }:
     {
       environment.sessionVariables = waylandSessionVariables;
-      environment.systemPackages = [ pkgs.unstable.wlr-utils ];
 
       programs.sway = {
         enable = true;
@@ -50,12 +49,10 @@ in
       services.displayManager.defaultSession = "sway-uwsm";
 
       xdg.portal = {
-        config.sway."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-        wlr.settings.screencast = {
-          chooser_type = "simple";
-          chooser_cmd = lib.getExe' pkgs.unstable.wlr-utils "wlr-chooser";
-          force_mod_linear = true;
-          max_fps = 30;
+        extraPortals = [ pkgs.unstable.xdg-desktop-portal-luminous ];
+        config.sway = {
+          "org.freedesktop.impl.portal.ScreenCast" = lib.mkForce [ "luminous" ];
+          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
         };
       };
 
