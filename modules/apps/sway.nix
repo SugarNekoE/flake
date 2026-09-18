@@ -17,19 +17,6 @@ in
       pkgs,
       ...
     }:
-    let
-      uwsmSwaySession = pkgs.writeTextFile {
-        name = "sway-uwsm-session";
-        destination = "/share/wayland-sessions/sway-uwsm.desktop";
-        text = ''
-          [Desktop Entry]
-          Name=Sway (UWSM)
-          Comment=Sway compositor managed by UWSM
-          Exec=${lib.getExe pkgs.uwsm} start -F -- /run/current-system/sw/bin/sway
-          Type=Application
-        '';
-      };
-    in
     {
       environment.sessionVariables = waylandSessionVariables;
 
@@ -60,7 +47,6 @@ in
       };
 
       services.displayManager.defaultSession = "sway-uwsm";
-      services.displayManager.ly.settings.waylandsessions = "${uwsmSwaySession}/share/wayland-sessions";
 
       xdg.portal = {
         config.sway."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
