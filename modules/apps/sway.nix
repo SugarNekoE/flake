@@ -19,6 +19,7 @@ in
     }:
     {
       environment.sessionVariables = waylandSessionVariables;
+      environment.systemPackages = [ pkgs.unstable.wlr-utils ];
 
       programs.sway = {
         enable = true;
@@ -51,8 +52,8 @@ in
       xdg.portal = {
         config.sway."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
         wlr.settings.screencast = {
-          chooser_type = "dmenu";
-          chooser_cmd = "${lib.getExe pkgs.wmenu} -i -l 12 -p 'Share a screen or window:'";
+          chooser_type = "simple";
+          chooser_cmd = lib.getExe' pkgs.unstable.wlr-utils "wlr-chooser";
           force_mod_linear = true;
           max_fps = 30;
         };
