@@ -74,7 +74,6 @@ _: {
               "Noto Sans Mono"
               "Noto Sans Symbols"
               "Noto Sans Symbols 2"
-              "Noto Color Emoji"
             ];
             shell.program = "${pkgs.fish}/bin/fish";
           };
