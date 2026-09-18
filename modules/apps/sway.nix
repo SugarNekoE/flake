@@ -49,9 +49,9 @@ in
       services.displayManager.defaultSession = "sway-uwsm";
 
       xdg.portal = {
-        extraPortals = [ pkgs.unstable.xdg-desktop-portal-luminous ];
+        extraPortals = [ pkgs.unstable.xdg-desktop-portal-cosmic ];
         config.sway = {
-          "org.freedesktop.impl.portal.ScreenCast" = lib.mkForce [ "luminous" ];
+          "org.freedesktop.impl.portal.ScreenCast" = lib.mkForce [ "cosmic" ];
           "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
         };
       };
