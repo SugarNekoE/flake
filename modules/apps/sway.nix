@@ -254,7 +254,6 @@ in
             "${modifier}+b" = "exec ${browser}";
             "${modifier}+e" = "exec ${filemanager}";
             "${modifier}+Escape" = "exec ${lockScreen}";
-            "${modifier}+l" = lib.mkForce "exec ${lockScreen}";
             "${modifier}+Shift+s" = "exec ${screenshot}";
             "${modifier}+Shift+v" = "exec ${clipboardHistory}";
             "${modifier}+Return" = "exec ${terminal}";
