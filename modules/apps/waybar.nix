@@ -1,8 +1,4 @@
-_:
-let
-  largeIcon = icon: "<span size='140%'>${icon}</span>";
-in
-{
+_: {
   home = {
     stylix.targets.waybar = {
       enable = true;
@@ -53,14 +49,14 @@ in
 
           systemd-failed-units = {
             hide-on-ok = true;
-            format = "${largeIcon ""} {nr_failed}";
-            format-ok = largeIcon "";
+            format = " {nr_failed}";
+            format-ok = "";
             system = true;
             user = true;
           };
 
           backlight = {
-            format = "${largeIcon "{icon}"} {percent}%";
+            format = "{icon} {percent}%";
             format-icons = [
               "󰃞"
               "󰃝"
@@ -72,9 +68,9 @@ in
           };
 
           battery = {
-            format = "${largeIcon "{icon}"} {capacity}%";
-            format-charging = "${largeIcon ""} {capacity}%";
-            format-plugged = "${largeIcon ""} {capacity}%";
+            format = "{icon} {capacity}%";
+            format-charging = " {capacity}%";
+            format-plugged = " {capacity}%";
             format-icons = [
               "󰂎"
               "󰁺"
@@ -92,12 +88,12 @@ in
 
           cpu = {
             interval = 3;
-            format = "${largeIcon ""} {}%";
+            format = " {}%";
           };
 
           memory = {
             interval = 3;
-            format = "${largeIcon ""} {}%";
+            format = " {}%";
             tooltip = true;
             tooltip-format = "Memory - {used:0.1f}GB used";
             on-click = "kitty --start-as=fullscreen --title btop sh -c 'btop'";
@@ -105,8 +101,8 @@ in
 
           "network#speed" = {
             interval = 3;
-            format-wifi = "${largeIcon ""} {bandwidthUpBytes} ${largeIcon ""} {bandwidthDownBytes}";
-            format-ethernet = "${largeIcon ""} {bandwidthUpBytes} ${largeIcon ""} {bandwidthDownBytes}";
+            format-wifi = " {bandwidthUpBytes}  {bandwidthDownBytes}";
+            format-ethernet = " {bandwidthUpBytes}  {bandwidthDownBytes}";
           };
 
           tray = {
