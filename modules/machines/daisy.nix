@@ -42,6 +42,7 @@
     work
 
     # apps
+    gdm
     sway
     swaylock
     waybar
@@ -61,9 +62,9 @@
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
       networking.firewall.enable = false;
 
-      services.getty = {
-        autologinUser = user.username;
-        autologinOnce = true;
+      services.displayManager.autoLogin = {
+        enable = true;
+        user = user.username;
       };
 
       services.pipewire.wireplumber.extraConfig."51-daisy-dmic-format" = {
@@ -81,13 +82,7 @@
         ];
       };
     };
-  home = { lib, pkgs, ... }: {
-    programs.fish.loginShellInit = ''
-      if status is-interactive; and ${lib.getExe pkgs.uwsm} check may-start
-        exec ${lib.getExe pkgs.uwsm} start -F -- /run/current-system/sw/bin/sway
-      end
-    '';
-
+  home = {
     wayland.windowManager.sway.config.output = {
       "eDP-1" = {
         mode = "1920x1200@60Hz";
