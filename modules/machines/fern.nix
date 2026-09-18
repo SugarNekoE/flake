@@ -22,6 +22,7 @@
     power
     plymouth
     polkit.nixos
+    kmscon
     (singbox-gui.withProfile {
       name = "SNEPX";
       sopsFile = ../secrets/sing-box/home.json;
