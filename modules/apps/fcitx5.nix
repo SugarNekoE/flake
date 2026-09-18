@@ -127,7 +127,10 @@ _: {
         config.xdg.dataFile."fcitx5/themes/stylix/highlight.svg".source
       ];
 
-      systemd.user.services.fcitx5-daemon.Service.ExecStart =
-        pkgs.lib.mkForce "${config.i18n.inputMethod.package}/bin/fcitx5 --replace";
+      systemd.user.services.fcitx5-daemon.Service = {
+        ExecStart = lib.mkForce "${config.i18n.inputMethod.package}/bin/fcitx5 --replace";
+        Restart = "always";
+        RestartSec = "2s";
+      };
     };
 }
