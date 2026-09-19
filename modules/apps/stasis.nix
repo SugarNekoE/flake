@@ -4,7 +4,6 @@
     url = "github:saltnpepper97/stasis";
     inputs = {
       flake-parts.follows = "flake-parts";
-      nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 

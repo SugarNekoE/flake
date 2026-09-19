@@ -8,7 +8,7 @@ default:
 _require-tracked-flake:
     @if ! git ls-files --error-unmatch flake.nix >/dev/null 2>&1; then echo "flake.nix must be reviewed and tracked before flake-file can regenerate it."; exit 1; fi
 
-# Regenerate flake.nix and normalize flake.lock.
+# Regenerate flake.nix.
 generate: _require-tracked-flake
     nix run path:.#write-flake
 
