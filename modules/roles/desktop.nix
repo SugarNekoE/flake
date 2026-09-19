@@ -12,6 +12,7 @@
     neovim
     starship
     unix-tools
+    splayer-next
     (flatpak.withPackages [
       "com.github.tchx84.Flatseal"
       "io.github.flattool.Warehouse"
@@ -43,7 +44,6 @@
       home.packages = with pkgs; [
         mpv
         ffmpeg
-        unstable.splayer-next
         obs-studio
         tor-browser
         google-chrome
