@@ -18,7 +18,7 @@
     {
       imports = [ inputs.self.modules.nixos.users ];
 
-      sops.secrets.github-token = {
+      sops.secrets.nix-auth = {
         sopsFile = ../secrets/nix-auth.yaml;
         key = "nix-auth";
         owner = user.username;
