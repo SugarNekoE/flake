@@ -44,7 +44,10 @@
         "xfs"
       ];
 
-      nixpkgs.config.allowUnfree = true;
+      nixpkgs.config = {
+        allowUnfree = true;
+        allowInsecure = true;
+      };
 
       networking.nftables.enable = true;
       networking.timeServers = options.networking.timeServers.default ++ [
