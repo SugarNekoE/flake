@@ -43,7 +43,7 @@
       home.packages = with pkgs; [
         mpv
         ffmpeg
-        splayer
+        unstable.splayer-next
         obs-studio
         tor-browser
         google-chrome
