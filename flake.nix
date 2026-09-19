@@ -1,4 +1,4 @@
-# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
+# DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./modules/aspects.nix;
@@ -10,23 +10,19 @@
       flake = false;
     };
     disko.url = "github:nix-community/disko";
-    flake-file.url = "github:vic/flake-file";
+    flake-file.url = "github:denful/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     home-manager.url = "github:nix-community/home-manager/release-26.05";
-    import-tree.url = "github:vic/import-tree";
+    import-tree.url = "github:denful/import-tree";
     kernel-dev = {
       url = "git+https://forge.asnk.io/sugar/kernel-dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
     nekomonogatari-bot.url = "git+https://forge.asnk.io/sugar/nekomonogatari-bot";
-    nix-auto-follow = {
-      url = "github:fzakaria/nix-auto-follow";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
@@ -39,21 +35,12 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
-    sfd-nix = {
-      url = "git+https://forge.asnk.io/sugar/sfd-nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    sfd-nix.url = "git+https://forge.asnk.io/sugar/sfd-nix";
     sops-nix.url = "github:Mic92/sops-nix";
     stasis = {
       url = "github:saltnpepper97/stasis";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs-unstable";
-      };
+      inputs.flake-parts.follows = "flake-parts";
     };
-    stylix = {
-      url = "github:nix-community/stylix/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    stylix.url = "github:nix-community/stylix/release-26.05";
   };
 }
