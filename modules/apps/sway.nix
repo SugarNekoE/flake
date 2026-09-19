@@ -156,6 +156,17 @@ in
           lock = lockScreen;
           before-sleep = lockScreen;
         };
+        timeouts = [
+          {
+            timeout = 10;
+            command = ''
+              if ${lib.getExe' pkgs.procps "pgrep"} -u "$USER" -x swaylock >/dev/null; then
+                ${lib.getExe' config.wayland.windowManager.sway.package "swaymsg"} 'output * power off'
+              fi
+            '';
+            resumeCommand = "${lib.getExe laptopLidControl} resume";
+          }
+        ];
       };
       services.stasis = {
         extraPathPackages = [
