@@ -18,6 +18,13 @@
     {
       imports = [ inputs.self.modules.nixos.users ];
 
+      sops.secrets.github-token = {
+        sopsFile = ../secrets/nix-auth.yaml;
+        key = "nix-auth";
+        owner = user.username;
+        mode = "0400";
+      };
+
       users.users.${user.username} = {
         isNormalUser = true;
         description = user.fullName;
@@ -40,11 +47,22 @@
     };
 
   home =
-    { user, ... }:
+    {
+      user,
+      nixosConfig,
+      pkgs,
+      ...
+    }:
     {
       home = {
         inherit (user) username;
         homeDirectory = "/home/${user.username}";
+        nix = {
+          package = pkgs.nix;
+          extraOptions = ''
+            !include ${nixosConfig.sops.secrets.nix-auth.path}
+          '';
+        };
         sessionVariables = {
           LANG = "en_US.UTF-8";
           LANGUAGE = "en_US.UTF-8";
