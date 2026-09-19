@@ -1,5 +1,5 @@
 _: {
-  nixos = { pkgs, ... }: {
+  nixos = {
     stylix.targets.kmscon.enable = true;
     services.kmscon = {
       enable = true;
