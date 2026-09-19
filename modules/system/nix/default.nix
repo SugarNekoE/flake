@@ -46,7 +46,6 @@
 
       nixpkgs.config = {
         allowUnfree = true;
-        allowInsecure = true;
       };
 
       networking.nftables.enable = true;
