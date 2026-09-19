@@ -50,19 +50,18 @@
     {
       user,
       nixosConfig,
-      pkgs,
       ...
     }:
     {
+      nix = {
+        extraOptions = ''
+          !include ${nixosConfig.sops.secrets.nix-auth.path}
+        '';
+      };
+
       home = {
         inherit (user) username;
         homeDirectory = "/home/${user.username}";
-        nix = {
-          package = pkgs.nix;
-          extraOptions = ''
-            !include ${nixosConfig.sops.secrets.nix-auth.path}
-          '';
-        };
         sessionVariables = {
           LANG = "en_US.UTF-8";
           LANGUAGE = "en_US.UTF-8";
