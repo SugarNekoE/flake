@@ -19,10 +19,22 @@ _: {
     {
       stylix.targets.fish.enable = true;
 
+      home.packages = with pkgs; [
+        fortune
+        cowsay
+      ];
+
       programs.fish = {
         enable = true;
         interactiveShellInit = lib.mkAfter ''
-          set -g fish_greeting
+          if status is-interactive
+            if type -q fortune; and type -q cowsay
+              set -g fish_greeting "$(fortune -s -n 80 | cowsay -f tux)"
+            else
+              set -g fish_greeting
+            end
+          end
+
           fish_vi_key_bindings
           fzf_configure_bindings
 
