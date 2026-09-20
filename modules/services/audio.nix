@@ -1,10 +1,9 @@
 _: {
-  nixos = { user, ... }: {
+  nixos = {
     security.rtkit.enable = true;
     services.pulseaudio.enable = false;
     services.pipewire = {
       enable = true;
-      systemWide = true;
       alsa.enable = true;
       jack.enable = true;
       pulse.enable = true;
@@ -26,7 +25,6 @@ _: {
         };
       };
     };
-    users.users.${user.username}.extraGroups = [ "pipewire" ];
   };
 
   home =
