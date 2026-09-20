@@ -10,6 +10,7 @@
     kitty
     netbird-app
     neovim
+    splayer-next
     starship
     unix-tools
     (flatpak.withPackages [
@@ -46,7 +47,6 @@
         obs-studio
         tor-browser
         google-chrome
-        unstable.splayer-next
       ];
     };
 }
