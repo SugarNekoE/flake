@@ -12,7 +12,6 @@
     neovim
     starship
     unix-tools
-    splayer-next
     (flatpak.withPackages [
       "com.github.tchx84.Flatseal"
       "io.github.flattool.Warehouse"
@@ -47,6 +46,7 @@
         obs-studio
         tor-browser
         google-chrome
+        unstable.splayer-next
       ];
     };
 }
