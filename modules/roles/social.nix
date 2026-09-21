@@ -8,6 +8,7 @@
       "com.discordapp.Discord"
       "org.telegram.desktop"
       "org.gnome.Fractal"
+      "com.ktechpit.whatsie"
     ])
   ];
 
