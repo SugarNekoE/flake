@@ -6,6 +6,9 @@ review ceremony.
 
 ## Scope and Safety
 
+- Before making any file changes, present the proposed changes for user review
+  and wait for explicit approval. This includes creating, editing, deleting, or
+  regenerating files.
 - Preserve unrelated user changes and keep edits within the requested scope.
 - Do not stage, commit, push, merge, create branches or worktrees, or rewrite
   history unless the user explicitly asks.
