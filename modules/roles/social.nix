@@ -7,8 +7,8 @@
       "com.teamspeak.TeamSpeak3"
       "com.discordapp.Discord"
       "org.telegram.desktop"
+      "com.rtosta.zapzap"
       "org.gnome.Fractal"
-      "com.ktechpit.whatsie"
     ])
   ];
 

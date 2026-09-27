@@ -180,6 +180,7 @@ in
                   "applications:qq.desktop"
                   "applications:org.telegram.desktop.desktop"
                   "applications:com.discordapp.Discord.desktop"
+                  "applications:com.rtosta.zapzap.desktop"
                   "applications:org.squidowl.halloy.desktop"
                   "applications:org.gnome.Fractal.desktop"
                   "applications:com.slack.Slack.desktop"
