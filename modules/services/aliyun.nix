@@ -40,9 +40,12 @@
       };
       cloudmonitor-agent = pkgs.stdenv.mkDerivation {
         pname = "aliyun-cloudmonitor-agent";
-        version = "latest";
+        version = "3.5.12";
 
-        src = ../../assets/cloudmonitor-agent.tar.gz;
+        src = pkgs.fetchurl {
+          url = "https://cloudmonitor-agent.oss-cn-hangzhou.aliyuncs.com/Argus/3.5.12/cloudmonitor_linux64.tar.gz";
+          hash = "sha256-WTrzXS5dpwbr1QZyhhPiR3WoPeoETUsmD7mh4hKdri4=";
+        };
 
         installPhase = ''
           mkdir -p $out/lib/cloudmonitor
