@@ -23,7 +23,7 @@
         packages = [
           agents.codex
           agents.chatgpt
-          agents.opencode
+          agents.opencode2
           pkgs.bubblewrap
         ];
       };
