@@ -16,24 +16,3 @@ Personal NixOS/Home Manager flake. Modules use selectable `nixos`/`home` aspects
 | [modules/secrets](modules/secrets) | SOPS-encrypted secrets; do not decrypt during inspection |
 | [modules/lib/qcow2.nix](modules/lib/qcow2.nix) | QCOW2 image helper |
 | [devenv.nix](devenv.nix), [Justfile](Justfile) | Development tools and host commands |
-
-## ACS
-
-**Go handles ACS operations and checks; Buildah builds runner images.**
-Nix is optional workstation CLI packaging and a workflow tool inside the Nix pool.
-
-| Path | Purpose |
-| --- | --- |
-| [Deployment guide](acs-k8s/acs-deployment-guide.md) | Setup, deployment, pool management and troubleshooting |
-| [Operator example](acs-k8s/acs-config.example.json) | Template for ignored `acs-config.json` |
-| [Deployment example](acs-k8s/acs-deployment.example.json) | Template for ignored `acs-deployment.json`; fill image references |
-| [CLI aspect](modules/apps/acs-cli.nix) | Home Manager installation and package outputs |
-| [Image recipes](acs-k8s/images/Containerfile) | Digest-pinned base images and four Buildah targets |
-| [CLI entry](acs-k8s/cli/cmd/acs/main.go) | Executable entry point |
-| [Go implementation](acs-k8s/cli/internal/app) | Configuration, Buildah builds/checks, manifests, SOPS, deployment and Kind |
-| [Embedded assets](acs-k8s/cli/internal/app/assets) | Pinned KEDA chart and Kind registry fixture |
-| [Test fixtures](acs-k8s/cli/internal/app/testdata/nix-reference) | Former Nix outputs for regression comparison |
-
-Checks: `acs validate cli`, `acs validate platform`, `acs validate images`.
-Go tests are beside the implementation. Generated YAML snapshots stay versioned.
-Full Kind acceptance remains pending; Service routing was the last reported blocker.
