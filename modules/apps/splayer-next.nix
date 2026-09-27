@@ -4,23 +4,29 @@
     let
       splayer-next = pkgs.unstable.splayer-next.overrideAttrs (
         finalAttrs: oldAttrs: {
-          version = "1.2.0-nightly.872";
+          version = "1.2.0-nightly.904";
 
-          # Pin the nightly release's commit because the nightly tag moves.
           src = oldAttrs.src.override {
             tag = null;
-            rev = "d3dd84df99333f19b04a2faef1972a89f35aee0f";
-            hash = "sha256-fAzce8yDPOoukK/T8TUKZ9OxFwE2YgPKXqjBAWygi8c=";
+            rev = "ceb9d72b34fe4266674c814f2b3dcd46352a67e5";
+            hash = "sha256-J2qpeWBB32NWjg5oNJ77djDM67MVPOZd8LERlg56B4E=";
           };
 
           pnpmDeps = oldAttrs.pnpmDeps.override {
             inherit (finalAttrs) version src;
-            hash = "sha256-wYQnp76oCjpirj5VOQKmPmXxkyraJAFcShUQK7cCXY0=";
+            hash = "sha256-X2YhbuYe2+o62y/ECk7fsLDDHmbwIqJ1ZRkfYLPz2Ag=";
           };
+
+          cargoDeps = pkgs.unstable.rustPlatform.fetchCargoVendor {
+            inherit (finalAttrs) pname version src;
+            hash = "sha256-9doP83tZlKM8Hsu+NHYOLLWq1RWFS+IGB2oOXwA4d2g=";
+          };
+
+          buildInputs = oldAttrs.buildInputs ++ [ pkgs.unstable.dbus ];
 
           postPatch = oldAttrs.postPatch + ''
             substituteInPlace package.json \
-              --replace-fail '"version": "1.2.0-alpha.1"' '"version": "${finalAttrs.version}"'
+              --replace-fail '"version": "1.2.0-beta.1"' '"version": "${finalAttrs.version}"'
           '';
 
           meta = oldAttrs.meta // {
