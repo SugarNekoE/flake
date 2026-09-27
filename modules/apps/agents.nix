@@ -24,7 +24,6 @@
           agents.codex
           agents.chatgpt
           agents.opencode
-          agents.cc-switch-cli
           pkgs.bubblewrap
         ];
       };
