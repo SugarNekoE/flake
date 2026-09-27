@@ -4,6 +4,7 @@
     hmcl
     (flatpak.withPackages [
       "com.valvesoftware.Steam"
+      "com.valvesoftware.Steam.CompatibilityTool.Proton-GE"
       "com.vysp3r.ProtonPlus"
       "io.github.Foldex.AdwSteamGtk"
       "net.lutris.Lutris"
