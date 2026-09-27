@@ -34,11 +34,9 @@ let
   duplicateNames =
     files:
     let
-      names = map moduleName files;
+      grouped = builtins.groupBy moduleName files;
     in
-    lib.filter (name: builtins.length (lib.filter (candidate: candidate == name) names) > 1) (
-      lib.unique names
-    );
+    lib.attrNames (lib.filterAttrs (_name: group: builtins.length group > 1) grouped);
   duplicateMachineNames = duplicateNames machineModuleFiles;
   duplicateAspectNames = duplicateNames aspectModuleFiles;
 
@@ -141,29 +139,35 @@ let
   selectAspect =
     name: aspect:
     let
+      module = builtins.head (aspect { }).imports;
       parsed =
-        (lib.evalModules {
-          class = "aspects";
-          specialArgs = { inherit inputs; };
-          modules = [
-            aspectType
-            aspect
-          ];
-        }).config;
+        if module ? imports then
+          (lib.evalModules {
+            class = "aspects";
+            specialArgs = { inherit inputs; };
+            modules = [
+              aspectType
+              module
+            ];
+          }).config
+        else
+          module.config or { };
+      nixosModule = parsed.nixosModule or null;
+      homeModule = parsed.homeModule or null;
       modules = lib.filterAttrs (_field: module: module != null) {
-        inherit (parsed) nixosModule homeModule;
+        inherit nixosModule homeModule;
       };
       homeOnly = {
         _class = "aspects";
       }
-      // lib.optionalAttrs (parsed.homeModule != null) {
-        inherit (parsed) homeModule;
+      // lib.optionalAttrs (homeModule != null) {
+        inherit homeModule;
       };
       nixosOnly = {
         _class = "aspects";
       }
-      // lib.optionalAttrs (parsed.nixosModule != null) {
-        inherit (parsed) nixosModule;
+      // lib.optionalAttrs (nixosModule != null) {
+        inherit nixosModule;
       };
       helpers = config.aspectHelpers.${name} or { };
     in
