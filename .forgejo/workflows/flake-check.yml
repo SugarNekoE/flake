@@ -22,5 +22,24 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
 
+      - name: Check formatting
+        run: nix run nixpkgs#nixfmt -- --check $(git ls-files '*.nix')
+
+      - name: Lint Nix
+        run: nix run nixpkgs#statix -- check .
+
+      - name: Verify flake.nix is regenerated
+        run: |
+          nix run path:.#write-flake
+          git diff --exit-code -- flake.nix
+
+      - name: Evaluate every host
+        run: |
+          for host in $(nix eval --raw path:.#nixosConfigurations \
+              --apply 'builtins.concatStringsSep " " (builtins.attrNames)'); do
+            echo "Evaluating $host"
+            nix eval --raw "path:.#nixosConfigurations.$host.config.system.build.toplevel.drvPath" > /dev/null
+          done
+
       - name: Validate flake
         run: nix flake check --no-build --show-trace
