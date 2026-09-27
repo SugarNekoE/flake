@@ -23,7 +23,6 @@
         packages = [
           agents.codex
           agents.chatgpt
-          agents.herdr
           pkgs.bubblewrap
         ];
       };
