@@ -9,34 +9,31 @@
   nixos =
     { pkgs, inputs, ... }:
     let
-      aliyun-assist = pkgs.stdenv.mkDerivation {
+      aliyun-assist = pkgs.buildGoModule {
         pname = "aliyun-assist-client";
         version = "unstable";
 
         src = inputs.aliyun-assist-client;
 
-        nativeBuildInputs = [
-          pkgs.go
+        vendorHash = null;
+
+        subPackages = [ "." ];
+
+        ldflags = [
+          "-s"
+          "-w"
         ];
 
-        buildPhase = ''
-          runHook preBuild
-          export HOME=$TMPDIR
-          export GOCACHE=$TMPDIR/go-cache
-          go build \
-            -mod=vendor \
-            -trimpath \
-            -o aliyun-service \
-            .
-          runHook postBuild
+        postInstall = ''
+          mv $out/bin/aliyun_assist_client $out/bin/aliyun-service
         '';
 
-        installPhase = ''
-          runHook preInstall
-          mkdir -p $out/bin
-          install -Dm755 aliyun-service $out/bin/aliyun-service
-          runHook postInstall
-        '';
+        meta = {
+          description = "Alibaba Cloud Assist client";
+          homepage = "https://github.com/aliyun/aliyun_assist_client";
+          license = pkgs.lib.licenses.asl20;
+          mainProgram = "aliyun-service";
+        };
       };
       cloudmonitor-agent = pkgs.stdenv.mkDerivation {
         pname = "aliyun-cloudmonitor-agent";
