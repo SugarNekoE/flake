@@ -21,8 +21,6 @@
     {
       home = {
         packages = [
-          agents.codex
-          agents.chatgpt
           agents.opencode2
           pkgs.bubblewrap
         ];
