@@ -10,7 +10,6 @@
     age
     ssh-to-age
     nixos-rebuild-ng
-    uv
     ruff
     yaml-language-server
     package-version-server
