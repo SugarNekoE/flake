@@ -22,7 +22,6 @@ in
 
       programs.sway = {
         enable = true;
-        package = pkgs.unstable.swayfx;
       };
 
       services.accounts-daemon.enable = true;
@@ -168,7 +167,7 @@ in
         extraPathPackages = [
           config.programs.swaylock.package
           laptopLidControl
-          pkgs.unstable.swayfx
+          config.wayland.windowManager.sway.package
         ];
         extraConfig = ''
           @author "sugar"
@@ -206,7 +205,6 @@ in
       wayland.windowManager.sway = {
         enable = true;
         systemd.enable = false;
-        package = pkgs.unstable.swayfx;
         xwayland = true;
         extraConfigEarly = "include /etc/sway/config.d/*";
         checkConfig = false;
@@ -279,8 +277,6 @@ in
           bindgesture swipe:3:right workspace prev
           bindgesture swipe:3:left workspace next
           seat * hide_cursor when-typing enable
-          blur enable
-          default_dim_inactive 0.2
           exec uwsm finalize
         '';
       };

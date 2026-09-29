@@ -159,8 +159,8 @@ _: {
         name = "toggle-touchpad";
         runtimeInputs = with pkgs; [
           jq
+          sway
           swayosd
-          unstable.swayfx
         ];
         text = ''
           current="$(swaymsg -t get_inputs | jq -r '[.[] | select(.type == "touchpad")][0].libinput.send_events')"

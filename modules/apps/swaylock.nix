@@ -18,8 +18,6 @@ _: {
       ...
     }:
     let
-      # Left-aligned clock that stays on screen in every auth state, with a
-      # state-coloured underline instead of the rotating ring/arc.
       clockPatch = pkgs.writeText "swaylock-effects-clock.patch" ''
         --- a/render.c
         +++ b/render.c
@@ -174,8 +172,6 @@ _: {
 
             color = colors.base00;
 
-            # Underline: grey idle, blue while typing, then state colours.
-            # inside-caps-lock-color doubles as the idle colour.
             inside-color = colors.base0D;
             inside-ver-color = colors.base0B;
             inside-clear-color = colors.base0A;
