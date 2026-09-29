@@ -90,7 +90,6 @@ in
         enable = true;
         uninstallUnmanaged = true;
         uninstallUnused = true;
-        update.onActivation = true;
         overrides.global = {
           Context.filesystems = [
             "xdg-data/icons:ro"
