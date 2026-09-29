@@ -21,6 +21,7 @@
     {
       home = {
         packages = [
+          agents.herdr
           agents.opencode2
           agents.claude-code
           pkgs.bubblewrap
