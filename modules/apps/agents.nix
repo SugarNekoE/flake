@@ -17,6 +17,9 @@
     { pkgs, ... }:
     let
       agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+      opencode-wrapper = pkgs.writeShellScriptBin "opencode" ''
+        exec ${agents.opencode2}/bin/opencode2 "$@"
+      '';
     in
     {
       home = {
@@ -25,6 +28,7 @@
           agents.opencode2
           agents.claude-code
           pkgs.bubblewrap
+          opencode-wrapper
         ];
       };
     };
