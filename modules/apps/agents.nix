@@ -22,6 +22,7 @@
       home = {
         packages = [
           agents.opencode2
+          agents.claude-code
           pkgs.bubblewrap
         ];
       };
