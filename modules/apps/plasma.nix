@@ -59,6 +59,7 @@ in
 
   home =
     {
+      config,
       lib,
       pkgs,
       ...
@@ -90,6 +91,12 @@ in
 
       programs.plasma = {
         enable = true;
+
+        hotkeys.commands.vicinae = lib.mkIf config.programs.vicinae.enable {
+          name = "Vicinae";
+          key = "Meta+Space";
+          command = "${lib.getExe config.programs.vicinae.package} toggle";
+        };
 
         startup.startupScript."1password" = {
           text = "1password --silent &";

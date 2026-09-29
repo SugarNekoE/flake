@@ -44,6 +44,7 @@
 
     # apps
     plasma
+    vicinae
     logitech
     sdrpp
     davinci
