@@ -40,6 +40,7 @@
         pciutils
         usbutils
         fastfetch
+        python314
         wl-clipboard
         nix-output-monitor
         yaml-language-server
