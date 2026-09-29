@@ -16,6 +16,7 @@
         fd
         sd
         jq
+        uv
         nil
         mtr
         duf
@@ -41,6 +42,8 @@
         fastfetch
         wl-clipboard
         nix-output-monitor
+        yaml-language-server
+        vscode-json-languageserver
       ];
 
       programs.nh.enable = true;
