@@ -15,7 +15,7 @@ _: {
       settings = [
         {
           name = "topbar";
-          layer = "overlay";
+          layer = "top";
           position = "top";
           margin-top = 0;
           exclusive = true;
