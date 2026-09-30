@@ -24,8 +24,10 @@
     {
       home = {
         packages = [
+          agents.grok
           agents.herdr
           agents.codex
+          agents.grok-bot
           agents.opencode2
           agents.claude-code
           pkgs.bubblewrap
