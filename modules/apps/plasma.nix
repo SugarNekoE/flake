@@ -208,6 +208,7 @@ in
                       "org.kde.plasma.networkmanagement"
                       "org.kde.plasma.volume"
                       "org.kde.plasma.clipboard"
+                      "org.kde.plasma.notifications"
                     ];
                     shown = [
                       "org.kde.plasma.battery"
@@ -216,6 +217,7 @@ in
                       "org.kde.plasma.networkmanagement"
                       "org.kde.plasma.volume"
                       "org.kde.plasma.clipboard"
+                      "org.kde.plasma.notifications"
                     ];
                   };
                 };
