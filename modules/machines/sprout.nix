@@ -63,6 +63,11 @@
         "net.ipv4.tcp_synack_retries" = "2";
         "net.ipv4.tcp_slow_start_after_idle" = "0";
       };
+
+      nix.settings = {
+        min-free = 8 * 1024 * 1024 * 1024;
+        max-free = 16 * 1024 * 1024 * 1024;
+      };
     };
 
   hardware =
