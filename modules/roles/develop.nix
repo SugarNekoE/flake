@@ -9,6 +9,11 @@
       "org.apache.directory.studio"
     ])
   ];
+  nixos = {
+    nixpkgs.config = {
+      android_sdk.accept_license = true;
+    };
+  };
   home =
     { pkgs, ... }:
     {
@@ -18,13 +23,13 @@
         winbox
         blender
         terraform
-        jetbrains.idea
-        unstable.xpipe
-        android-tools
-        android-studio
         podman-desktop
-        jetbrains.datagrip
-        jetbrains.gateway
+        unstable.xpipe
+        unstable.android-tools
+        unstable.android-studio-full
+        unstable.jetbrains.idea
+        unstable.jetbrains.datagrip
+        unstable.jetbrains.gateway
       ];
     };
 }
