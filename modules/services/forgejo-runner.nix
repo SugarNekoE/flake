@@ -3,7 +3,7 @@ let
   withConfig = sopsFile: {
     _class = "aspects";
     imports = [ inputs.self.modules.aspects.forgejo-runner ];
-    nixosModule = { config, ... }: {
+    nixosModule = {
       sops.secrets.forgejo-runner-config = {
         inherit sopsFile;
         format = "yaml";
