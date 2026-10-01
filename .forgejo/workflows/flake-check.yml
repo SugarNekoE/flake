@@ -26,7 +26,7 @@ jobs:
       - name: Evaluate every host
         run: |
           for host in $(nix eval --raw path:.#nixosConfigurations \
-              --apply 'builtins.concatStringsSep " " (builtins.attrNames)'); do
+              --apply 'hosts: builtins.concatStringsSep " " (builtins.attrNames hosts)'); do
             echo "Evaluating $host"
             nix eval --raw "path:.#nixosConfigurations.$host.config.system.build.toplevel.drvPath" > /dev/null
           done
