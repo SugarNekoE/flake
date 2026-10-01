@@ -11,7 +11,7 @@ env:
 jobs:
   check:
     name: Check flake
-    runs-on: acs-nix
+    runs-on: nixos-latest
     steps:
       - name: Install Node.js 24
         run: |
