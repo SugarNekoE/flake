@@ -36,6 +36,7 @@
     laptop
     thinkpad
     develop
+    agents
     office
     social
     unixkey

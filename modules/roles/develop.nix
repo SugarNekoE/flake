@@ -1,7 +1,6 @@
 { inputs, ... }:
 {
   imports = with inputs.self.aspects; [
-    agents
     zed
     podman
     (flatpak.withPackages [

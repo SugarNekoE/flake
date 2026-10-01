@@ -36,6 +36,7 @@
     base
     desktop
     develop
+    agents
     games
     office
     social
