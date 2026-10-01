@@ -21,6 +21,8 @@
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           ];
           trusted-users = [ "@wheel" ];
+          min-free = 8 * 1024 * 1024 * 1024;
+          max-free = 16 * 1024 * 1024 * 1024;
         };
 
         nixPath = [ "/etc/nix/path" ];
