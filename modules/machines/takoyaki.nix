@@ -94,7 +94,6 @@
     };
   hardware =
     {
-      config,
       lib,
       modulesPath,
       ...

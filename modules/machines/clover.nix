@@ -20,7 +20,6 @@
   nixos =
     {
       identity,
-      pkgs,
       lib,
       ...
     }:
@@ -70,7 +69,6 @@
 
   hardware =
     {
-      config,
       lib,
       modulesPath,
       ...
