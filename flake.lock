@@ -173,11 +173,11 @@
     },
     "flake-file": {
       "locked": {
-        "lastModified": 1790485366,
-        "narHash": "sha256-viHKtslN6kMa+bKxge26uvtDSv1FtlHul/5I6MphjnA=",
+        "lastModified": 1790698230,
+        "narHash": "sha256-24oUHm2evb57Dgu46X41rLY9ue/au47nxbaUTo6lJVc=",
         "owner": "denful",
         "repo": "flake-file",
-        "rev": "de3e0fcfe03b1af5d36b95952f216ea9ba087c8a",
+        "rev": "91280a19eede3b3035e3889a3523c27e8fc07886",
         "type": "github"
       },
       "original": {
@@ -307,11 +307,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1790215976,
-        "narHash": "sha256-VkR1rMGyjU9jtw8ISFx5uqR9e+LEaOlhHwrseFkiIVk=",
+        "lastModified": 1790742243,
+        "narHash": "sha256-kaNo6xHiL31AbNNEreG0OTKf4j6Cxlo5bPawjX7lnbQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "a6631107a83ceab5872f298a2ea710859c80c4cb",
+        "rev": "e5fcd298a00f08b6e8390baf04aa8edb62203070",
         "type": "github"
       },
       "original": {
@@ -446,13 +446,29 @@
         "type": "github"
       }
     },
+    "nixpkgs-cronet": {
+      "locked": {
+        "lastModified": 1790605008,
+        "narHash": "sha256-mbMHR2jOFEHpBDtAPKdbFdPsz5T3m/9gANJDWhBcuPY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e71f1aa922d90b3f5b01a68c00f685711e307412",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1790463110,
-        "narHash": "sha256-VZHcT2wKLkApBCACQ2SH4P1jVZUbbOA7jWAGi1MIViw=",
-        "rev": "e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa",
+        "lastModified": 1790689126,
+        "narHash": "sha256-VyUI5WA3WdOB9kjb04A0pxE6XTWC6cG95ZkoPSv58F0=",
+        "rev": "b4fd65b198c599cbe814fcb9f42d25d021595ec9",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1080189.e158d9ed9b51/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1082427.b4fd65b198c5/nixexprs.tar.zst"
       },
       "original": {
         "type": "tarball",
@@ -525,11 +541,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1788807765,
-        "narHash": "sha256-J9oC0bKnkXUrMegqRTXVkyDFJ0gn2U/Qpoo9HgGMQmA=",
+        "lastModified": 1789998861,
+        "narHash": "sha256-62XMQD4WLdMAfdT0/8gJmPH2dKeTw908ryNloAplTr8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "93108a538f079596c9a16c72cf03e9322782b6dd",
+        "rev": "1e8bc658fc985ef27ccd66d107d767b32bb7ef98",
         "type": "github"
       },
       "original": {
@@ -589,11 +605,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1790450978,
-        "narHash": "sha256-GM0+sQwNfU1In6UEyBwpwjG3vX3g81kfKvcTlW2muL0=",
-        "rev": "5e2305d577ca00acbba631b05cb1094d172b29f3",
+        "lastModified": 1790750587,
+        "narHash": "sha256-neiwVQVB0ONcopw7wbiinq1vYtMOTjTLuEueGF9Ex1Y=",
+        "rev": "78e9c786dc08cd4f3420c2395cd977206a9b1da2",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.10718.5e2305d577ca/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.10927.78e9c786dc08/nixexprs.tar.zst"
       },
       "original": {
         "type": "tarball",
@@ -727,14 +743,15 @@
     },
     "sfd-nix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_9"
+        "nixpkgs": "nixpkgs_9",
+        "nixpkgs-cronet": "nixpkgs-cronet"
       },
       "locked": {
-        "lastModified": 1789120300,
-        "narHash": "sha256-ANW3GcgCx0lFein4U2SLqZ9meIeIQEh4dhoOA/wDI0Y=",
+        "lastModified": 1790606056,
+        "narHash": "sha256-KUee8oHYGUxYXCQFscRLwfcQSBUjH6XmMToIz8ZL4B4=",
         "ref": "refs/heads/main",
-        "rev": "c1177d4d8549355459a13410a260bcab92074cd8",
-        "revCount": 22,
+        "rev": "6ec9b90bfe20c78f63430d7c259320cba8c04a58",
+        "revCount": 24,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/sfd-nix"
       },
