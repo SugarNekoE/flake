@@ -20,7 +20,6 @@
           pkgs.llm-agents.grok-bot
           pkgs.llm-agents.opencode2
           pkgs.llm-agents.claude-code
-          pkgs.bubblewrap
           opencode-wrapper
         ];
       };
