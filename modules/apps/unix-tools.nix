@@ -44,6 +44,7 @@
         wl-clipboard
         nix-output-monitor
         yaml-language-server
+        package-version-server
         vscode-json-languageserver
       ];
 
