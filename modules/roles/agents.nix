@@ -14,7 +14,6 @@
     {
       home = {
         packages = [
-          pkgs.llm-agents.grok
           pkgs.llm-agents.herdr
           pkgs.llm-agents.codex
           pkgs.llm-agents.grok-bot
