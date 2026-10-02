@@ -5,11 +5,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1789120782,
-        "narHash": "sha256-Mj1OQbOme6pjJBXhkCk+ULTiPYIPjYQ+2jvGNjLk4Y0=",
+        "lastModified": 1790870642,
+        "narHash": "sha256-hZQquiTxS4q2opp0nS5nmn0uztfSGcwBauFSGG/xB1g=",
         "ref": "refs/heads/main",
-        "rev": "acd6d785c8b78c324dbac955b37a9162f1c7dbe0",
-        "revCount": 30,
+        "rev": "902fd2ee41f56bdb84b8731425d682804c6437ee",
+        "revCount": 32,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/acs-k8s"
       },
@@ -193,11 +193,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788450739,
-        "narHash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
+        "lastModified": 1790898470,
+        "narHash": "sha256-zTwuwezD0w3hpga6a6P8emidzAZFyWqlNeRBlpWOOl8=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
+        "rev": "024633cd702b10285db5cb19b40ad48d2399ba60",
         "type": "github"
       },
       "original": {
@@ -214,11 +214,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788450739,
-        "narHash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
+        "lastModified": 1790898470,
+        "narHash": "sha256-zTwuwezD0w3hpga6a6P8emidzAZFyWqlNeRBlpWOOl8=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
+        "rev": "024633cd702b10285db5cb19b40ad48d2399ba60",
         "type": "github"
       },
       "original": {
@@ -365,11 +365,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1790832743,
-        "narHash": "sha256-ho6vTx7+GLxXZNzp9eCq/X+49s16KLO1EEEGYCkMjQ0=",
+        "lastModified": 1790947657,
+        "narHash": "sha256-Qhw25MEtJdqzYshdaLc1EPGpIQOwxI++D50w/A7p1rs=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "3a994324e0a724f3eb043200368f0b60c06862e3",
+        "rev": "54b915b290377072e2903d2fcdae122dd37f64fc",
         "type": "github"
       },
       "original": {
@@ -383,11 +383,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1789120399,
-        "narHash": "sha256-SGYgekrZQo3PB4OJfCHQ/XKQu6KaKPXa750Z9URYTkI=",
+        "lastModified": 1790870679,
+        "narHash": "sha256-Uv4Z3FnXGU1w+j9rjfEkFDlVJhCA4frXdCpdazE2Dqs=",
         "ref": "refs/heads/main",
-        "rev": "3aa15994866068eb0aaf28e0404d949cf3bbf505",
-        "revCount": 16,
+        "rev": "e9ec2793047f1d9f377218360d72583b821b2e6a",
+        "revCount": 18,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/nekomonogatari-bot"
       },
@@ -464,11 +464,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1790689126,
-        "narHash": "sha256-VyUI5WA3WdOB9kjb04A0pxE6XTWC6cG95ZkoPSv58F0=",
-        "rev": "b4fd65b198c599cbe814fcb9f42d25d021595ec9",
+        "lastModified": 1790822859,
+        "narHash": "sha256-VBA0QerzzmL+4wxgtwiCdiLwLpJg2/9xOxhgO3BRJQA=",
+        "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1082427.b4fd65b198c5/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1083223.c59305bab206/nixexprs.tar.zst"
       },
       "original": {
         "type": "tarball",
@@ -605,11 +605,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1790750587,
-        "narHash": "sha256-neiwVQVB0ONcopw7wbiinq1vYtMOTjTLuEueGF9Ex1Y=",
-        "rev": "78e9c786dc08cd4f3420c2395cd977206a9b1da2",
+        "lastModified": 1790920529,
+        "narHash": "sha256-S5MjznoY0gbQbcANPLz5RYjg+5/WQmFRgNbHcP+ydcg=",
+        "rev": "774debe7a0d1b496e35677ad955a1011c6ff74f3",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.10927.78e9c786dc08/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.11045.774debe7a0d1/nixexprs.tar.zst"
       },
       "original": {
         "type": "tarball",
@@ -747,11 +747,11 @@
         "nixpkgs-cronet": "nixpkgs-cronet"
       },
       "locked": {
-        "lastModified": 1790606056,
-        "narHash": "sha256-KUee8oHYGUxYXCQFscRLwfcQSBUjH6XmMToIz8ZL4B4=",
+        "lastModified": 1790870714,
+        "narHash": "sha256-uLxJHK+6NIQh2Kl9DXW8/tivZxZ9yG5AgQyWqot3Zcg=",
         "ref": "refs/heads/main",
-        "rev": "6ec9b90bfe20c78f63430d7c259320cba8c04a58",
-        "revCount": 24,
+        "rev": "68291068f653b9bffd12c645a3addeff7554445b",
+        "revCount": 26,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/sfd-nix"
       },
