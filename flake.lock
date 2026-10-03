@@ -715,11 +715,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1790971022,
-        "narHash": "sha256-/ydzUwX96O0ttaP5ddGDw9ExZkpXxIcWyZGfFL1GxTA=",
+        "lastModified": 1791023562,
+        "narHash": "sha256-pLkgztaDZ46YtYZ8FHHrI4Z1AGo/JU3YG/UIw/lsHSg=",
         "ref": "refs/heads/main",
-        "rev": "ec4d20c830021350624a99c9a706e812b44a5d86",
-        "revCount": 4,
+        "rev": "c7977fb0914f414e2ed58cac436685f07b2357cf",
+        "revCount": 5,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/paseo"
       },
