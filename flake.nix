@@ -28,6 +28,7 @@
     nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
     nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
+    paseo.url = "git+https://forge.asnk.io/sugar/paseo";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs = {
