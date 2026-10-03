@@ -2,7 +2,6 @@
 {
   imports = with inputs.self.aspects; [
     llm-agents
-    paseo-desktop
   ];
 
   home =
