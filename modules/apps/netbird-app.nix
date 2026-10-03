@@ -39,8 +39,8 @@ _: {
       uiPackage = pkgs.unstable.netbird-ui.overrideAttrs (oldAttrs: {
         tags = (oldAttrs.tags or [ ]) ++ [ "gtk3" ];
         buildInputs = (oldAttrs.buildInputs or [ ]) ++ [
-          pkgs.gtk3
-          pkgs.webkitgtk_4_1
+          pkgs.unstable.gtk3
+          pkgs.unstable.webkitgtk_4_1
         ];
       });
       launcher = pkgs.writeShellScript "netbird-ui-launcher" ''
