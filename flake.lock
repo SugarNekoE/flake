@@ -782,11 +782,11 @@
         "nixpkgs-cronet": "nixpkgs-cronet"
       },
       "locked": {
-        "lastModified": 1790870714,
-        "narHash": "sha256-uLxJHK+6NIQh2Kl9DXW8/tivZxZ9yG5AgQyWqot3Zcg=",
+        "lastModified": 1791022776,
+        "narHash": "sha256-Q7PR3DR/EZNcYIO7rkFtcqL87aKTKLOUvorYJa+RE/0=",
         "ref": "refs/heads/main",
-        "rev": "68291068f653b9bffd12c645a3addeff7554445b",
-        "revCount": 26,
+        "rev": "0f5ff7d6e65d203477ec6ae13893b33e3bfdb0ac",
+        "revCount": 32,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/sfd-nix"
       },
