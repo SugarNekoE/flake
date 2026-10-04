@@ -5,30 +5,26 @@ let
       url,
       hash,
     }:
-    {
-      _class = "aspects";
-      imports = [ inputs.self.modules.aspects.stylix ];
-      nixosModule =
+    let
+      wallpaperModule =
         { pkgs, ... }:
         {
           stylix.image = pkgs.fetchurl { inherit url hash; };
         };
+    in
+    {
+      _class = "aspects";
+      imports = [ inputs.self.modules.aspects.stylix ];
+      nixosModule = wallpaperModule;
+      darwinModule = wallpaperModule;
     };
-in
-{
-  flake-file.inputs.stylix.url = "github:nix-community/stylix/release-26.05";
 
-  aspectHelpers.stylix = { inherit withWallpaper; };
-
-  nixos =
+  themeModule =
     { pkgs, ... }:
     {
-      imports = [ inputs.stylix.nixosModules.stylix ];
-
       stylix = {
         enable = true;
         autoEnable = false;
-        targets.console.enable = true;
         polarity = "dark";
         base16Scheme = {
           system = "base16";
@@ -54,17 +50,6 @@ in
             base0F = "#FC9867";
           };
         };
-        cursor = {
-          name = "macOS";
-          package = pkgs.apple-cursor;
-          size = 24;
-        };
-        icons = {
-          enable = true;
-          package = pkgs.la-capitaine-icon-theme;
-          dark = "la-capitaine-icon-theme";
-          light = "la-capitaine-icon-theme";
-        };
         fonts = {
           serif = {
             name = "Noto Serif CJK SC";
@@ -86,9 +71,45 @@ in
             terminal = 14;
           };
         };
-        opacity.terminal = 0.80;
+        opacity.terminal = 1.0;
       };
     };
+in
+{
+  flake-file.inputs.stylix.url = "github:nix-community/stylix/release-26.05";
+
+  aspectHelpers.stylix = { inherit withWallpaper; };
+
+  nixos =
+    { pkgs, ... }:
+    {
+      imports = [
+        inputs.stylix.nixosModules.stylix
+        themeModule
+      ];
+
+      stylix = {
+        targets.console.enable = true;
+        cursor = {
+          name = "macOS";
+          package = pkgs.apple-cursor;
+          size = 24;
+        };
+        icons = {
+          enable = true;
+          package = pkgs.la-capitaine-icon-theme;
+          dark = "la-capitaine-icon-theme";
+          light = "la-capitaine-icon-theme";
+        };
+      };
+    };
+
+  darwin = {
+    imports = [
+      inputs.stylix.darwinModules.stylix
+      themeModule
+    ];
+  };
 
   home.stylix.autoEnable = false;
 }
