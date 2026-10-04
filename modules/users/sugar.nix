@@ -14,7 +14,7 @@
   };
 
   nixos =
-    { user, ... }:
+    { config, user, ... }:
     {
       imports = [ inputs.self.modules.nixos.users ];
 
@@ -42,37 +42,49 @@
         overwriteBackup = true;
         useGlobalPkgs = true;
         useUserPackages = true;
+        users.${user.username} = {
+          nix.extraOptions = ''
+            !include ${config.sops.secrets.nix-auth.path}
+          '';
+
+          xdg.userDirs = {
+            enable = true;
+            createDirectories = true;
+            projects = null;
+          };
+        };
+      };
+    };
+
+  darwin =
+    { user, ... }:
+    {
+      system.primaryUser = user.username;
+
+      users.users.${user.username} = {
+        description = user.fullName;
+        home = "/Users/${user.username}";
+      };
+
+      home-manager = {
+        backupFileExtension = "backup";
+        overwriteBackup = true;
+        useGlobalPkgs = true;
+        useUserPackages = true;
         users.${user.username} = { };
       };
     };
 
   home =
+    { user, ... }:
     {
-      user,
-      nixosConfig,
-      ...
-    }:
-    {
-      nix = {
-        extraOptions = ''
-          !include ${nixosConfig.sops.secrets.nix-auth.path}
-        '';
-      };
-
       home = {
         inherit (user) username;
-        homeDirectory = "/home/${user.username}";
         sessionVariables = {
           LANG = "en_US.UTF-8";
           LANGUAGE = "en_US.UTF-8";
         };
         stateVersion = "26.05";
-      };
-
-      xdg.userDirs = {
-        enable = true;
-        createDirectories = true;
-        projects = null;
       };
 
       programs.home-manager.enable = true;
