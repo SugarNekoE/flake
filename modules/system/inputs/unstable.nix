@@ -1,8 +1,6 @@
 { inputs, ... }:
-{
-  flake-file.inputs.nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
-
-  nixos = {
+let
+  unstableModule = {
     nixpkgs.overlays = [
       (_final: stable: {
         unstable = import inputs.nixpkgs-unstable {
@@ -12,4 +10,10 @@
       })
     ];
   };
+in
+{
+  flake-file.inputs.nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+
+  nixos = unstableModule;
+  darwin = unstableModule;
 }

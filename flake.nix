@@ -23,9 +23,14 @@
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
     nekomonogatari-bot.url = "git+https://forge.asnk.io/sugar/nekomonogatari-bot";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
     plasma-manager = {

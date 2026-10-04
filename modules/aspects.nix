@@ -47,6 +47,7 @@ let
       source = import file;
       definition = if builtins.isFunction source then source moduleArgs else source;
       passthrough = removeAttrs definition [
+        "darwin"
         "home"
         "nixos"
       ];
@@ -61,6 +62,9 @@ let
           // lib.optionalAttrs ((definition.nixos or null) != null) {
             nixosModule = definition.nixos;
           }
+          // lib.optionalAttrs ((definition.darwin or null) != null) {
+            darwinModule = definition.darwin;
+          }
           // lib.optionalAttrs ((definition.home or null) != null) {
             homeModule = definition.home;
           };
@@ -72,6 +76,7 @@ let
           imports = [ passthrough ];
           config = lib.filterAttrs (_field: module: module != null) {
             nixosModule = definition.nixos or null;
+            darwinModule = definition.darwin or null;
             homeModule = definition.home or null;
           };
         };
@@ -84,6 +89,9 @@ let
         ]
         ++ lib.optional ((definition.nixos or null) != null) {
           flake.modules.nixos.${name} = definition.nixos;
+        }
+        ++ lib.optional ((definition.darwin or null) != null) {
+          flake.modules.darwin.${name} = definition.darwin;
         }
         ++ lib.optional ((definition.home or null) != null) {
           flake.modules.homeManager.${name} = definition.home;
@@ -101,9 +109,11 @@ let
   aspectType = {
     options = {
       nixosModule = nullableModule "NixOS module contributed by this aspect.";
+      darwinModule = nullableModule "nix-darwin module contributed by this aspect.";
       homeModule = nullableModule "Home Manager module contributed by this aspect.";
       home = nullableModule "Selector that keeps only this aspect's Home Manager module.";
       nixos = nullableModule "Selector that keeps only this aspect's NixOS module.";
+      darwin = nullableModule "Selector that keeps only this aspect's nix-darwin module.";
     };
   };
 
@@ -112,7 +122,7 @@ let
       user = lib.mkOption {
         type = lib.types.nullOr lib.types.attrs;
         default = null;
-        description = "Selected user profile passed to NixOS and Home Manager modules.";
+        description = "Selected user profile passed to system and Home Manager modules.";
       };
 
       system = lib.mkOption {
@@ -126,12 +136,15 @@ let
   };
 
   moduleNames = lib.unique (
-    builtins.attrNames config.flake.modules.nixos ++ builtins.attrNames config.flake.modules.homeManager
+    builtins.attrNames config.flake.modules.nixos
+    ++ builtins.attrNames config.flake.modules.darwin
+    ++ builtins.attrNames config.flake.modules.homeManager
   );
 
   inferredAspects = lib.genAttrs moduleNames (name: {
     config = lib.filterAttrs (_field: module: module != null) {
       nixosModule = config.flake.modules.nixos.${name} or null;
+      darwinModule = config.flake.modules.darwin.${name} or null;
       homeModule = config.flake.modules.homeManager.${name} or null;
     };
   });
@@ -153,9 +166,10 @@ let
         else
           module.config or { };
       nixosModule = parsed.nixosModule or null;
+      darwinModule = parsed.darwinModule or null;
       homeModule = parsed.homeModule or null;
       modules = lib.filterAttrs (_field: module: module != null) {
-        inherit nixosModule homeModule;
+        inherit nixosModule darwinModule homeModule;
       };
       homeOnly = {
         _class = "aspects";
@@ -169,28 +183,39 @@ let
       // lib.optionalAttrs (nixosModule != null) {
         inherit nixosModule;
       };
+      darwinOnly = {
+        _class = "aspects";
+      }
+      // lib.optionalAttrs (darwinModule != null) {
+        inherit darwinModule;
+      };
       helpers = config.aspectHelpers.${name} or { };
     in
     {
       _class = "aspects";
       home = homeOnly;
       nixos = nixosOnly;
+      darwin = darwinOnly;
     }
     // modules
     // helpers;
 
   selectableAspects = lib.mapAttrs selectAspect config.flake.modules.aspects;
 
+  machineArgs =
+    machine:
+    {
+      inherit inputs;
+      inherit (config) identity;
+    }
+    // lib.optionalAttrs (machine.user != null) {
+      inherit (machine) user;
+    };
+
   buildMachine =
     name: machine:
     let
-      sharedArgs = {
-        inherit inputs;
-        inherit (config) identity;
-      }
-      // lib.optionalAttrs (machine.user != null) {
-        inherit (machine) user;
-      };
+      sharedArgs = machineArgs machine;
       machineModules = [
         { networking.hostName = name; }
       ]
@@ -215,6 +240,43 @@ let
       specialArgs = sharedArgs;
       modules = machineModules;
     };
+
+  buildDarwinMachine =
+    name: machine:
+    let
+      sharedArgs = machineArgs machine;
+      machineModules = [
+        {
+          networking.hostName = name;
+          nixpkgs.hostPlatform = machine.system;
+        }
+      ]
+      ++ lib.optional (machine.darwinModule != null) machine.darwinModule
+      ++ lib.optionals (machine.homeModule != null) [
+        inputs.home-manager.darwinModules.home-manager
+        {
+          home-manager = {
+            extraSpecialArgs = sharedArgs;
+            sharedModules = [ machine.homeModule ];
+          };
+        }
+      ];
+    in
+    if machine.hardware != null || machine.diskoConfig != null then
+      throw "Darwin machine `${name}` cannot declare NixOS hardware or disko modules"
+    else
+      inputs.nix-darwin.lib.darwinSystem {
+        specialArgs = sharedArgs;
+        modules = machineModules;
+      };
+
+  darwinMachines = lib.filterAttrs (
+    _name: machine: lib.hasSuffix "-darwin" machine.system
+  ) config.machines;
+  nixosMachines = lib.filterAttrs (
+    _name: machine: !lib.hasSuffix "-darwin" machine.system
+  ) config.machines;
+
   validatedModuleFiles =
     if duplicateAspectNames != [ ] then
       throw "duplicate aspect module names are not allowed: ${lib.concatStringsSep ", " duplicateAspectNames}"
@@ -237,7 +299,7 @@ in
       }
     );
     default = { };
-    description = "Machines materialized as NixOS configurations.";
+    description = "Machines materialized as NixOS or nix-darwin configurations.";
   };
 
   options.aspectHelpers = lib.mkOption {
@@ -251,6 +313,7 @@ in
     flake.modules.generic.aspect-interface = aspectType;
     flake.modules.aspects = inferredAspects;
     flake.aspects = selectableAspects;
-    flake.nixosConfigurations = lib.mapAttrs buildMachine config.machines;
+    flake.nixosConfigurations = lib.mapAttrs buildMachine nixosMachines;
+    flake.darwinConfigurations = lib.mapAttrs buildDarwinMachine darwinMachines;
   };
 }
