@@ -6,4 +6,9 @@ _: {
       options = "ctrl:nocaps";
     };
   };
+
+  darwin.system.keyboard = {
+    enableKeyMapping = true;
+    remapCapsLockToControl = true;
+  };
 }
