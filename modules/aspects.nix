@@ -171,6 +171,10 @@ let
       modules = lib.filterAttrs (_field: module: module != null) {
         inherit nixosModule darwinModule homeModule;
       };
+      modulePayload = {
+        _class = "aspects";
+      }
+      // modules;
       homeOnly = {
         _class = "aspects";
       }
@@ -191,13 +195,13 @@ let
       };
       helpers = config.aspectHelpers.${name} or { };
     in
-    {
-      _class = "aspects";
+    modulePayload
+    // {
       home = homeOnly;
       nixos = nixosOnly;
       darwin = darwinOnly;
+      __functor = _self: _args: modulePayload;
     }
-    // modules
     // helpers;
 
   selectableAspects = lib.mapAttrs selectAspect config.flake.modules.aspects;
