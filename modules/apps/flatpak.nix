@@ -99,6 +99,8 @@ in
             XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
             XCURSOR_SIZE = toString config.home.pointerCursor.size;
             XCURSOR_THEME = config.home.pointerCursor.name;
+            GTK_IM_MODULE = "fcitx";
+            QT_IM_MODULE = "fcitx";
           };
         };
       };
