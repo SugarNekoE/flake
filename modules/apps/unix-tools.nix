@@ -16,7 +16,6 @@
         fd
         sd
         jq
-        uv
         nil
         mtr
         duf
@@ -40,12 +39,14 @@
         pciutils
         usbutils
         fastfetch
-        python314
         wl-clipboard
         nix-output-monitor
         yaml-language-server
         package-version-server
         vscode-json-languageserver
+        unstable.uv
+        unstable.bun
+        unstable.python314
       ];
 
       programs.nh.enable = true;
