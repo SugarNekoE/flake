@@ -71,7 +71,6 @@ _: {
           "df" = "duf";
           "ps" = "procs";
           "gg" = "lazygit";
-          "oc" = "opencode2";
           "dig" = "doggo";
           "cat" = "bat";
           "zed" = "zeditor";

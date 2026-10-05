@@ -6,20 +6,15 @@
 
   home =
     { pkgs, ... }:
-    let
-      opencode-wrapper = pkgs.writeShellScriptBin "opencode" ''
-        exec ${pkgs.llm-agents.opencode2}/bin/opencode2 "$@"
-      '';
-    in
     {
       home = {
-        packages = [
-          pkgs.llm-agents.herdr
-          pkgs.llm-agents.codex
-          pkgs.llm-agents.grok-bot
-          pkgs.llm-agents.opencode2
-          pkgs.llm-agents.claude-code
-          opencode-wrapper
+        packages = with pkgs; [
+          llm-agents.omp
+          llm-agents.herdr
+          llm-agents.codex
+          llm-agents.grok-bot
+          llm-agents.opencode2
+          llm-agents.claude-code
         ];
       };
     };
