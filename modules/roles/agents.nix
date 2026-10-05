@@ -13,7 +13,6 @@
           llm-agents.herdr
           llm-agents.codex
           llm-agents.grok-bot
-          llm-agents.opencode2
           llm-agents.claude-code
         ];
       };
