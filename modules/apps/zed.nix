@@ -26,6 +26,14 @@ _: {
             model_parameters = [ ];
           };
 
+          agent_servers = {
+            "Oh My Pi" = {
+              type = "custom";
+              command = "omp";
+              args = [ "acp" ];
+            };
+          };
+
           outline_panel.dock = "left";
           collaboration_panel.dock = "left";
           git_panel.dock = "left";
