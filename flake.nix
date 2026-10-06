@@ -33,6 +33,7 @@
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
+    paseo.url = "git+https://forge.asnk.io/sugar/paseo";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs = {

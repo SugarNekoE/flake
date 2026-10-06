@@ -2,6 +2,7 @@
 {
   imports = with inputs.self.aspects; [
     llm-agents
+    paseo
   ];
 
   home =
@@ -10,7 +11,6 @@
       home = {
         packages = with pkgs; [
           llm-agents.omp
-          llm-agents.orca
           llm-agents.herdr
           llm-agents.codex
           llm-agents.grok-bot
