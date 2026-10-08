@@ -40,7 +40,7 @@
 
     networking.firewall = {
       enable = true;
-      backend = "firewalld";
+      backend = "nftables";
     };
   };
 }
