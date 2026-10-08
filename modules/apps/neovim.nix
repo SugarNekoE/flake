@@ -286,6 +286,17 @@
               };
             };
           };
+          neo-tree = {
+            enable = true;
+            settings = {
+              close_if_last_window = true;
+              filesystem = {
+                hijack_netrw_behavior = "open_current";
+                follow_current_file.enabled = true;
+              };
+              window.width = 30;
+            };
+          };
         };
 
         lsp = {
@@ -378,6 +389,11 @@
             ''<Cmd>lua require("conform").format({ async = true, lsp_format = "fallback" })<CR>''
             "Format"
           )
+          (mkKeymap "n" "<C-S-f>" "<Cmd>Neotree reveal toggle<CR>" "Toggle file explorer")
+          (mkKeymap "n" "<C-S-h>" "<Cmd>wincmd h<CR>" "Window left")
+          (mkKeymap "n" "<C-S-j>" "<Cmd>wincmd j<CR>" "Window down")
+          (mkKeymap "n" "<C-S-k>" "<Cmd>wincmd k<CR>" "Window up")
+          (mkKeymap "n" "<C-S-l>" "<Cmd>wincmd l<CR>" "Window right")
         ];
 
         extraConfigLuaPost = ''require("mini.clue").ensure_all_triggers()'';
