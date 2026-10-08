@@ -69,5 +69,11 @@ in
           }
         );
       };
+      services.resolved.settings.Resolve.Domains = [ "dwelf-hoki.ts.net" ];
+      networking.firewall = {
+        allowedUDPPorts = [ 41641 ];
+        trustedInterfaces = [ "tun0" ];
+        extraReversePathFilterRules = ''iifname "tun0" accept'';
+      };
     };
 }
