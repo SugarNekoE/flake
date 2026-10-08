@@ -69,10 +69,5 @@ in
           }
         );
       };
-      networking.firewall = {
-        allowedUDPPorts = [ 41641 ];
-        trustedInterfaces = [ "tun0" ];
-        extraReversePathFilterRules = ''iifname "tun0" accept'';
-      };
     };
 }

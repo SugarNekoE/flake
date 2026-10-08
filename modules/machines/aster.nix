@@ -35,6 +35,9 @@
           22
           9990
         ];
+        allowedUDPPorts = [ 41641 ];
+        trustedInterfaces = [ "tun0" ];
+        extraReversePathFilterRules = ''iifname "tun0" accept'';
       };
 
       environment.etc."containers/registries.conf".source = lib.mkForce (
