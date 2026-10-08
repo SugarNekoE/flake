@@ -70,7 +70,6 @@
           };
         };
         qemuGuest.enable = true;
-        tailscale.extraSetFlags = [ "--netfilter-mode=off" ];
       };
 
       boot.kernel.sysctl = lib.mkForce {
