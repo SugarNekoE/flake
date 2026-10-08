@@ -58,7 +58,10 @@
       ];
 
       services.fwupd.enable = true;
-      services.resolved.enable = true;
+      services.resolved = {
+        enable = true;
+        settings.Resolve.ResolveUnicastSingleLabel = true;
+      };
 
       environment.etc."nix/path/nixpkgs".source = inputs.nixpkgs;
       environment.variables = {
