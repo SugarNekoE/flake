@@ -13,11 +13,8 @@
     # services
     aliyun
     mosdns
-    (netbird.withSetupKey {
-      sopsFile = ../secrets/netbird/sne-connect.yaml;
-      managementUrl = "https://connect.sne.moe:443";
-      name = "sne-connect";
-      port = 51820;
+    (tailscale.withAuthKey {
+      sopsFile = ../secrets/tailscale/sne-moe.yaml;
     })
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
@@ -51,6 +48,13 @@
           };
         };
         qemuGuest.enable = true;
+        resolved.settings.Resolve = {
+          DNS = [
+            "223.5.5.5"
+            "223.6.6.6"
+          ];
+          Domains = [ "~." ];
+        };
       };
 
       boot.kernel.sysctl = lib.mkForce {
