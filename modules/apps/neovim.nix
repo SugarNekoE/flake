@@ -73,6 +73,7 @@
           relativenumber = true;
           numberwidth = 4;
           statuscolumn = "%s%C%=%{v:virtnum == 0 ? (&rnu && v:relnum > 0 ? v:relnum : (&nu ? v:lnum : '')) : ''}  ";
+          cmdheight = 0;
           cursorline = true;
           scrolloff = 10;
           signcolumn = "yes:1";
