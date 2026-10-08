@@ -70,13 +70,7 @@
           };
         };
         qemuGuest.enable = true;
-        resolved.settings.Resolve = {
-          DNS = [
-            "223.5.5.5"
-            "223.6.6.6"
-          ];
-          Domains = [ "~." ];
-        };
+        tailscale.extraSetFlags = [ "--netfilter-mode=off" ];
       };
 
       boot.kernel.sysctl = lib.mkForce {
