@@ -70,6 +70,7 @@
           };
         };
         qemuGuest.enable = true;
+        tailscale.extraSetFlags = [ "--relay-server-port=40000" ];
       };
 
       boot.kernel.sysctl = lib.mkForce {
