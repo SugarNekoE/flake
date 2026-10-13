@@ -2,6 +2,7 @@
 {
   imports = with inputs.self.aspects; [
     _1password
+    avahi
     fcitx5
     fish
     fonts
@@ -10,6 +11,7 @@
     kitty
     netbird-app
     neovim
+    printing
     splayer-next
     starship
     unix-tools
