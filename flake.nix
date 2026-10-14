@@ -22,6 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
+    magpie.url = "git+https://forge.asnk.io/sugar/magpie";
     nekomonogatari-bot.url = "git+https://forge.asnk.io/sugar/nekomonogatari-bot";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
