@@ -95,13 +95,15 @@ install-encrypted-with-files hostname target key_file files remote_path="/tmp/di
     nix run github:nix-community/nixos-anywhere -- --flake "path:.#{{ hostname }}" --target-host "{{ target }}" --ssh-port "{{ port }}" --copy-host-keys --disk-encryption-keys "{{ remote_path }}" "{{ key_file }}" --extra-files "{{ files }}"
 
 # Interactively install a LUKS machine with SOPS and SSH bootstrap files.
-anywhere hostname target port="22":
+anywhere hostname target port="22" kexec_port="22" kexec_tarball="":
     #!/usr/bin/env bash
     set -euo pipefail
 
     machine="{{ hostname }}"
     ssh_target="{{ target }}"
     ssh_port="{{ port }}"
+    kexec_port="{{ kexec_port }}"
+    kexec_tarball="{{ kexec_tarball }}"
     age_key="$HOME/.config/sops/age/keys.txt"
 
     if [[ ! -f "$age_key" ]]; then
@@ -180,10 +182,14 @@ anywhere hostname target port="22":
       --flake "path:.#$machine"
       --target-host "$ssh_target"
       --ssh-port "$ssh_port"
+      --post-kexec-ssh-port "$kexec_port"
       --copy-host-keys
       --extra-files "$extra_files_dir"
       --env-password
     )
+    if [[ -n "$kexec_tarball" ]]; then
+      anywhere_args+=(--kexec "$kexec_tarball")
+    fi
     if [[ "$uses_luks" == true ]]; then
       anywhere_args+=(--disk-encryption-keys "$luks_remote_path" "$luks_key_file")
     fi
