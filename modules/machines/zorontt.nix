@@ -31,6 +31,10 @@
         llm-agents.claude-code
         llm-agents.grok
       ];
+      systemd.tmpfiles.rules = [
+        "d /root/.grok/bin 0755 root root -"
+        "L+ /root/.grok/bin/grok - - - - ${pkgs.llm-agents.grok}/bin/grok"
+      ];
       networking.firewall.enable = lib.mkForce false;
       networking.networkmanager.enable = lib.mkForce false;
       networking.enableIPv6 = true;
