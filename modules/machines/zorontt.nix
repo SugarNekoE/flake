@@ -5,6 +5,7 @@
     # system
     bios
     i18n
+    llm-agents
 
     # roles
     base
@@ -21,10 +22,15 @@
     {
       identity,
       lib,
+      pkgs,
       ...
     }:
     {
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.zorontt ];
+      environment.systemPackages = with pkgs; [
+        llm-agents.claude-code
+        llm-agents.grok
+      ];
       networking.firewall.enable = lib.mkForce false;
       networking.networkmanager.enable = lib.mkForce false;
       networking.enableIPv6 = true;
