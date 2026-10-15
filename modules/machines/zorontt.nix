@@ -26,6 +26,7 @@
       ...
     }:
     {
+      time.timeZone = lib.mkForce "Asia/Tokyo";
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.zorontt ];
       environment.systemPackages = with pkgs; [
         llm-agents.grok
