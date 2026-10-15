@@ -28,8 +28,9 @@
     {
       users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.zorontt ];
       environment.systemPackages = with pkgs; [
-        llm-agents.claude-code
         llm-agents.grok
+        llm-agents.claude-code
+        llm-agents.cursor-agent
       ];
       systemd.tmpfiles.rules = [
         "d /root/.grok/bin 0755 root root -"
