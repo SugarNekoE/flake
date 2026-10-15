@@ -383,11 +383,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1791967225,
-        "narHash": "sha256-gw2AkhfFuTSznnG8+nrc8tJvfcY7aVhuD44yzUTqpvI=",
+        "lastModified": 1792045718,
+        "narHash": "sha256-A8PqWj87scdfzMuTUHPlGlnbKc9Z7jmlgwTwfyEm9LU=",
         "ref": "refs/heads/main",
-        "rev": "ac9f2fdf5d585f926e05f9d09a578f1313f4aec4",
-        "revCount": 9,
+        "rev": "11abbaab36e830a3a63e68d8349e607cb1c13b25",
+        "revCount": 13,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/magpie"
       },
