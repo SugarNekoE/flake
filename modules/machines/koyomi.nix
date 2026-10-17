@@ -14,6 +14,9 @@
     aliyun
     nekomonogatari-bot
     (cloudflared.withSecret ../secrets/cloudflared/koyomi.yaml)
+    (tailscale.withAuthKey {
+      sopsFile = ../secrets/tailscale/sne-moe.yaml;
+    })
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =

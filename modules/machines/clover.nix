@@ -15,6 +15,9 @@
     aliyun
     podman
     forgejo
+    (tailscale.withAuthKey {
+      sopsFile = ../secrets/tailscale/sne-moe.yaml;
+    })
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =

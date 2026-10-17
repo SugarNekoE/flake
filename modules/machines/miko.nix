@@ -15,6 +15,9 @@
     podman
     (pocket-id.withEnvFile ../secrets/pocket-id.env)
     (cloudflared.withSecret ../secrets/cloudflared/miko.yaml)
+    (tailscale.withAuthKey {
+      sopsFile = ../secrets/tailscale/sne-moe.yaml;
+    })
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
