@@ -42,14 +42,26 @@
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =
     {
+      inputs,
       identity,
       user,
       lib,
       ...
     }:
     {
+      imports = [ inputs.paseo.nixosModules.default ];
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
       networking.firewall.enable = false;
+      services = {
+        openssh.settings.AllowAgentForwarding = true;
+        paseo-daemon = {
+          enable = true;
+          user = "${user.username}";
+          dataDir = "/home/${user.username}/.paseo";
+          listenAddress = "0.0.0.0";
+          openFirewall = true;
+        };
+      };
     };
   hardware =
     {
