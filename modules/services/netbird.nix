@@ -14,7 +14,7 @@ let
       _class = "aspects";
       imports = [ inputs.self.modules.aspects.netbird ];
       nixosModule =
-        { config, ... }:
+        { pkgs, config, ... }:
         {
           sops.secrets.${secretName} = {
             format = "yaml";
@@ -23,13 +23,16 @@ let
             restartUnits = [ "netbird-${name}-login.service" ];
           };
 
-          services.netbird.clients.${name} = {
-            inherit port;
-            environment.NB_MANAGEMENT_URL = managementUrl;
-            login = {
-              enable = true;
-              setupKeyFile = config.sops.secrets.${secretName}.path;
-              systemdDependencies = [ "sops-install-secrets.service" ];
+          services.netbird = {
+            package = pkgs.unstable.netbird;
+            clients.${name} = {
+              inherit port;
+              environment.NB_MANAGEMENT_URL = managementUrl;
+              login = {
+                enable = true;
+                setupKeyFile = config.sops.secrets.${secretName}.path;
+                systemdDependencies = [ "sops-install-secrets.service" ];
+              };
             };
           };
         };
