@@ -6,6 +6,7 @@ let
       managementUrl,
       name ? "default",
       port ? 51820,
+      interface ? "wt0",
     }:
     let
       secretName = "netbird-${name}-setup-key";
@@ -27,6 +28,7 @@ let
             package = pkgs.unstable.netbird;
             clients.${name} = {
               inherit port;
+              inherit interface;
               environment.NB_MANAGEMENT_URL = managementUrl;
               login = {
                 enable = true;
