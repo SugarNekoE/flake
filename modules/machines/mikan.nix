@@ -19,6 +19,12 @@
       url = "https://assets.sne.moe/Backgrounds/StarNightGirl.jpg";
       hash = "sha256-M4gQnXnNA7tJzSpf0tFWOyHCjablUXQWWAhdDdApHAA=";
     })
+    (netbird.withSetupKey {
+      sopsFile = ../secrets/netbird/atme.yaml;
+      managementUrl = "https://connect.techinteaching.cn:443";
+      name = "atme";
+      port = 51820;
+    })
 
     # roles
     base
