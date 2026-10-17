@@ -28,7 +28,7 @@
     {
       nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
 
-      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.takoyaki ];
+      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
 
       networking.firewall.enable = lib.mkForce false;
       networking.networkmanager.enable = lib.mkForce false;

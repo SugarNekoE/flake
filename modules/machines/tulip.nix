@@ -25,7 +25,7 @@
       ...
     }:
     {
-      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.tulip ];
+      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
 
       networking.firewall.enable = lib.mkForce false;
       networking.networkmanager.enable = lib.mkForce false;

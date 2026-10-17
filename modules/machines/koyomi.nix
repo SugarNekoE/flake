@@ -26,7 +26,7 @@
       ...
     }:
     {
-      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.koyomi ];
+      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
 
       networking.firewall.enable = lib.mkForce false;
       networking.networkmanager.enable = lib.mkForce false;

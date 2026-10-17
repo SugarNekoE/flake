@@ -28,7 +28,7 @@
     }:
     {
       services.openssh.ports = [ 2222 ];
-      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.clover ];
+      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
 
       networking.firewall.enable = lib.mkForce false;
       networking.networkmanager.enable = lib.mkForce false;

@@ -27,7 +27,7 @@
     {
       nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
 
-      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.aster ];
+      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
 
       networking.firewall = {
         allowPing = true;
