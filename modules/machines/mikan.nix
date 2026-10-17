@@ -52,17 +52,30 @@
       imports = [ inputs.paseo.nixosModules.default ];
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
       networking.firewall.enable = false;
-      services = {
-        openssh.settings.AllowAgentForwarding = true;
-        paseo-daemon = {
-          enable = true;
-          user = "${user.username}";
-          dataDir = "/home/${user.username}/.paseo";
-          listenAddress = "0.0.0.0";
-          openFirewall = true;
-        };
+      services.paseo-daemon = {
+        enable = true;
+        user = "${user.username}";
+        dataDir = "/home/${user.username}/.paseo";
+        listenAddress = "0.0.0.0";
+        openFirewall = true;
+      };
+      sops.secrets.mikan-ssh-key = {
+        sopsFile = ../secrets/mikan-ssh-key.yaml;
+        key = "private-key";
+        owner = user.username;
+        mode = "0400";
       };
     };
+  home = { nixosConfig, ... }: {
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings."*" = {
+        IdentityFile = nixosConfig.sops.secrets.mikan-ssh-key.path;
+        IdentitiesOnly = true;
+      };
+    };
+  };
   hardware =
     {
       config,
