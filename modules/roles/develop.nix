@@ -5,6 +5,7 @@
     podman
     (flatpak.withPackages [
       "com.usebruno.Bruno"
+      "com.termius.Termius"
       "com.redis.RedisInsight"
       "org.apache.directory.studio"
     ])
@@ -24,7 +25,6 @@
         blender
         terraform
         podman-desktop
-        unstable.xpipe
         unstable.android-tools
         unstable.android-studio-full
         unstable.jetbrains.idea
