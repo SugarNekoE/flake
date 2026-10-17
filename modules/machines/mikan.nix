@@ -12,8 +12,7 @@
     # services
     podman
     networkmanager
-    (singbox-gui.withProfile {
-      name = "SNEPX";
+    (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
     })
     (stylix.withWallpaper {
