@@ -60,7 +60,7 @@
     }:
     {
       systemd.services.ModemManager.serviceConfig.KillMode = "mixed";
-      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.daisy ];
+      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
       networking.firewall.enable = false;
 
       services.displayManager.autoLogin = {

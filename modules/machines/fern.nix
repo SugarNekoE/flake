@@ -67,8 +67,7 @@
       '';
 
       users.users.${user.username}.openssh.authorizedKeys.keys = [
-        identity.sshKeys.fern
-        identity.sshKeys.nvirellia
+        identity.sshKeys.sugar
       ];
       networking.firewall.enable = false;
     };

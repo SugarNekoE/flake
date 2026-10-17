@@ -1,10 +1,6 @@
 _: {
   identity.sshKeys = {
-    # users
-    nvirellia = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOOz0CMmkGSXv4H77rmrmvadltAlwAZeVimxGoUAfArs";
-    # desktops
-    daisy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKOSbYIOvtjrNmMdViOACfECla6LB8GKYB/mxtfJNVFh";
-    fern = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGT4gTVaCt6cQdFL+vcI7zS6TIkrVyZkltXD6g3lET3";
+    sugar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFn+9chajy5m/jz1WjdBuiKQ9rDX9C+FeC5SKwu2mBpb";
     # servers
     aster = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILXCIMtqjBTbbLmfXhkU0hoKoCLK0qwQ7CtK6rYIDgl9";
     koyomi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFP09c4xZ5e1Pyrg6+bN05XoLtV+6KPYqojbW9XjtTH9";
