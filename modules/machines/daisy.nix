@@ -41,6 +41,8 @@
     social
     unixkey
     work
+    cluster
+    radio
 
     # apps
     gdm
@@ -49,7 +51,6 @@
     waybar
     stasis
     logitech
-    sdrpp
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-luks;
   nixos =

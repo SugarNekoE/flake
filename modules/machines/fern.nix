@@ -42,12 +42,12 @@
     social
     work
     cluster
+    radio
 
     # apps
     plasma
     vicinae
     logitech
-    sdrpp
     davinci
     acs-cli
   ];
