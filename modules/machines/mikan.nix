@@ -52,7 +52,6 @@
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
       networking.firewall.enable = false;
       services = {
-        gnome.gnome-keyring.enable = true;
         paseo-daemon = {
           enable = true;
           user = "${user.username}";
@@ -68,16 +67,22 @@
         mode = "0400";
       };
     };
-  home = { nixosConfig, ... }: {
-    programs.ssh = {
-      enable = true;
-      enableDefaultConfig = false;
-      settings."*" = {
-        IdentityFile = nixosConfig.sops.secrets.mikan-ssh-key.path;
-        IdentitiesOnly = true;
+  home =
+    { lib, nixosConfig, ... }:
+    {
+      services.gpg-agent = {
+        defaultCacheTtl = lib.mkForce 86400;
+        maxCacheTtl = lib.mkForce 2592000;
+      };
+      programs.ssh = {
+        enable = true;
+        enableDefaultConfig = false;
+        settings."*" = {
+          IdentityFile = nixosConfig.sops.secrets.mikan-ssh-key.path;
+          IdentitiesOnly = true;
+        };
       };
     };
-  };
   hardware =
     {
       config,
