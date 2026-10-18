@@ -45,19 +45,21 @@
       inputs,
       identity,
       user,
-      lib,
       ...
     }:
     {
       imports = [ inputs.paseo.nixosModules.default ];
       users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
       networking.firewall.enable = false;
-      services.paseo-daemon = {
-        enable = true;
-        user = "${user.username}";
-        dataDir = "/home/${user.username}/.paseo";
-        listenAddress = "0.0.0.0";
-        openFirewall = true;
+      services = {
+        gnome.gnome-keyring.enable = true;
+        paseo-daemon = {
+          enable = true;
+          user = "${user.username}";
+          dataDir = "/home/${user.username}/.paseo";
+          listenAddress = "0.0.0.0";
+          openFirewall = true;
+        };
       };
       sops.secrets.mikan-ssh-key = {
         sopsFile = ../secrets/mikan-ssh-key.yaml;
