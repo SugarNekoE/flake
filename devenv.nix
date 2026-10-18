@@ -10,6 +10,9 @@
     age
     ssh-to-age
     nixos-rebuild-ng
+    nixos-anywhere
+    sshpass
+    jq
     ruff
     yaml-language-server
     package-version-server
