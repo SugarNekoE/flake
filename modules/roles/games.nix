@@ -13,6 +13,14 @@
     ])
   ];
 
+  nixos = { pkgs, ... }: {
+    services.udev.packages = with pkgs; [
+      game-devices-udev-rules
+    ];
+    hardware.uinput.enable = true;
+    hardware.steam-hardware.enable = true;
+  };
+
   home = { pkgs, ... }: {
     home.packages = with pkgs; [
       zulu21
