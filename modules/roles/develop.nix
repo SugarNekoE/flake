@@ -22,7 +22,6 @@
         b4
         lens
         winbox
-        blender
         terraform
         podman-desktop
         unstable.android-tools
@@ -30,6 +29,10 @@
         unstable.jetbrains.idea
         unstable.jetbrains.datagrip
         unstable.jetbrains.gateway
+        (unstable.blender.override {
+          config.cudaSupport = true;
+          config.rocmSupport = true;
+        })
       ];
     };
 }
