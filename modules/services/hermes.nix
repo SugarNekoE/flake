@@ -20,9 +20,8 @@
       services.hermes-agent = {
         enable = true;
         environmentFiles = [ config.sops.secrets.hermes-env.path ];
-        addToSystemPackages = true;
         backend = {
-          mode = "serve";
+          mode = "dashboard";
           host = "0.0.0.0";
           port = 9119;
         };
