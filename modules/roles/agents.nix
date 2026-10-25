@@ -1,8 +1,9 @@
 { inputs, ... }:
 {
   imports = with inputs.self.aspects; [
-    llm-agents
     paseo
+    hermes-app
+    llm-agents
   ];
 
   home =

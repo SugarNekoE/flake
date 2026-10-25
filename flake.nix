@@ -15,6 +15,7 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    hermes-agent.url = "github:NousResearch/hermes-agent";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     import-tree.url = "github:denful/import-tree";
     kernel-dev = {
