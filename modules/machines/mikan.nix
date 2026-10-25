@@ -12,6 +12,7 @@
     # services
     podman
     networkmanager
+    astrbot
     (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
     })
