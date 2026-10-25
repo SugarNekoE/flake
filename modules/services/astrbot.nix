@@ -1,5 +1,5 @@
 let
-  installPath = "/opt/astrbot";
+  installPath = "/var/lib/astrbot";
 in
 {
   nixos = {
