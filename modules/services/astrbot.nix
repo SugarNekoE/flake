@@ -13,9 +13,11 @@ in
             "6185:6185"
             "6199:6199"
           ];
+          environment = {
+            TZ = "Asia/Shanghai";
+          };
           volumes = [
             "${installPath}:/AstrBot/data"
-            "/etc/timezone:/etc/timezone:ro"
             "/etc/localtime:/etc/localtime:ro"
           ];
           extraOptions = [
