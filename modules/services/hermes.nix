@@ -24,12 +24,6 @@
           mode = "dashboard";
           host = "0.0.0.0";
         };
-        container = {
-          enable = true;
-          backend = "podman";
-          image = "ubuntu:24.04";
-          hostUsers = [ "${user.username}" ];
-        };
       };
     };
 }
