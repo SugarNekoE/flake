@@ -28,6 +28,18 @@
           hostUsers = [ "${user.username}" ];
         };
       };
+
+      security.sudo.extraRules = [
+        {
+          users = [ "${user.username}" ];
+          commands = [
+            {
+              command = "/run/current-system/sw/bin/podman";
+              options = [ "NOPASSWD" ];
+            }
+          ];
+        }
+      ];
     };
   home = { lib, ... }: {
     imports = [ inputs.hermes-agent.homeManagerModules.default ];
