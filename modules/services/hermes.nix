@@ -25,6 +25,12 @@
           host = "0.0.0.0";
           port = 9119;
         };
+        settings = {
+          dashboard.basic_auth = {
+            username = "sugar";
+            password_hash = "scrypt$16384$8$1$C9sx4GR9SIy5jeTm5FM25g==$NBMATAtxHlDZvNnTe63Sjju54NoaGbFFRo91wXZDN+w=";
+          };
+        };
       };
     };
 
