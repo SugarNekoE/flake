@@ -13,7 +13,7 @@
     podman
     networkmanager
     astrbot
-    hermes
+    hermes.nixos
     (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
     })

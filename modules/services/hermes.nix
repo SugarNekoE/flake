@@ -20,6 +20,7 @@
       services.hermes-agent = {
         enable = true;
         environmentFiles = [ config.sops.secrets.hermes-env.path ];
+        addToSystemPackages = true;
         container = {
           enable = true;
           backend = "podman";
@@ -28,4 +29,12 @@
         };
       };
     };
+  home = { lib, ... }: {
+    imports = [ inputs.hermes-agent.homeManagerModules.default ];
+
+    programs.hermes-agent = {
+      enable = true;
+      desktop.enable = true;
+    };
+  };
 }
