@@ -21,26 +21,14 @@
         enable = true;
         environmentFiles = [ config.sops.secrets.hermes-env.path ];
         addToSystemPackages = true;
-        container = {
-          enable = true;
-          backend = "podman";
-          image = "ubuntu:24.04";
-          hostUsers = [ "${user.username}" ];
+        backend = {
+          mode = "serve";
+          host = "0.0.0.0";
+          port = 9119;
         };
       };
-
-      security.sudo.extraRules = [
-        {
-          users = [ "${user.username}" ];
-          commands = [
-            {
-              command = "/run/current-system/sw/bin/podman";
-              options = [ "NOPASSWD" ];
-            }
-          ];
-        }
-      ];
     };
+
   home = { lib, ... }: {
     imports = [ inputs.hermes-agent.homeManagerModules.default ];
 
