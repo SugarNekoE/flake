@@ -24,6 +24,7 @@
           mode = "dashboard";
           host = "0.0.0.0";
         };
+        addToSystemPackages = true;
       };
     };
 }
