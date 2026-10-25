@@ -39,6 +39,7 @@
           };
           model = {
             provider = "pica";
+            default = "group/deepseek-v4.1-flash-1017";
           };
         };
       };
