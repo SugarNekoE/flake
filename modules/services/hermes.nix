@@ -20,10 +20,11 @@
       services.hermes-agent = {
         enable = true;
         environmentFiles = [ config.sops.secrets.hermes-env.path ];
-        backend = {
-          mode = "dashboard";
-          host = "0.0.0.0";
-          port = 9119;
+        container = {
+          enable = true;
+          backend = "podman";
+          image = "ubuntu:24.04";
+          hostUsers = [ "${user.username}" ];
         };
       };
     };
