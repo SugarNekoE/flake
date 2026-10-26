@@ -2,17 +2,32 @@ let
   installPath = "/var/lib/honcho";
 in
 {
-  nixos = { config, ... }: {
+  nixos = { config, pkgs, ... }: {
     sops.secrets.honcho-env = {
       sopsFile = ../secrets/honcho.env;
       format = "dotenv";
     };
+
+    systemd.services.podman-network-honcho = {
+      description = "Create Honcho Podman network";
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      script = ''
+        ${pkgs.podman}/bin/podman network exists honcho ||
+          ${pkgs.podman}/bin/podman network create honcho
+      '';
+    };
+
     virtualisation.oci-containers = {
       backend = "podman";
       containers = {
-        honco-api = {
+        honcho-api = {
           autoStart = true;
           image = "ghcr.io/plastic-labs/honcho:latest";
+          networks = [ "honcho" ];
           ports = [ "8000:8000" ];
           cmd = [
             "sh"
@@ -23,9 +38,10 @@ in
           ];
           environmentFiles = [ "${config.sops.secrets.honcho-env.path}" ];
         };
-        honco-deriver = {
+        honcho-deriver = {
           autoStart = true;
           image = "ghcr.io/plastic-labs/honcho:latest";
+          networks = [ "honcho" ];
           cmd = [
             "/app/.venv/bin/python"
             "-m"
@@ -36,9 +52,10 @@ in
           ];
           environmentFiles = [ "${config.sops.secrets.honcho-env.path}" ];
         };
-        honco-db = {
+        honcho-db = {
           autoStart = true;
           image = "docker.io/pgvector/pgvector:pg15";
+          networks = [ "honcho" ];
           cmd = [
             "postgres"
             "-c"
@@ -50,9 +67,10 @@ in
           ];
           environmentFiles = [ "${config.sops.secrets.honcho-env.path}" ];
         };
-        honco-redis = {
+        honcho-redis = {
           autoStart = true;
           image = "docker.io/redis/redis:latest";
+          networks = [ "honcho" ];
           volumes = [
             "${installPath}/redis-data:/data"
           ];
