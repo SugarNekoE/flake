@@ -4,8 +4,8 @@ in
 {
   nixos = { config, ... }: {
     sops.secrets.honcho-env = {
-      file = "../secrets/honcho.env";
-      format = "env";
+      sopsFile = ../secrets/honcho.env;
+      format = "dotenv";
     };
     virtualisation.oci-containers = {
       backend = "podman";
