@@ -69,7 +69,7 @@ in
         };
         honcho-redis = {
           autoStart = true;
-          image = "docker.io/redis/redis:latest";
+          image = "docker.io/library/redis:8.2";
           networks = [ "honcho" ];
           volumes = [
             "${installPath}/redis-data:/data"
