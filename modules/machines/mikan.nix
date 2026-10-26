@@ -13,6 +13,7 @@
     podman
     networkmanager
     astrbot
+    honcho
     hermes.nixos
     (sing-box.withProfile {
       sopsFile = ../secrets/sing-box/home.json;
