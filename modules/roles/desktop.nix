@@ -3,6 +3,7 @@
   imports = with inputs.self.aspects; [
     _1password
     avahi
+    clawd-on-desk
     fcitx5
     fish
     fonts

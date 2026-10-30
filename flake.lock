@@ -137,6 +137,26 @@
         "type": "github"
       }
     },
+    "clawd-on-desk": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793377459,
+        "narHash": "sha256-4gON3yHmGtkOa9sz6/9zkxrk3FC+F83Fop2UduCOTog=",
+        "ref": "refs/heads/main",
+        "rev": "d4b91a981592750b2472f77f2c2b0903a5862715",
+        "revCount": 1,
+        "type": "git",
+        "url": "https://forge.asnk.io/sugar/clawd-on-desk"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://forge.asnk.io/sugar/clawd-on-desk"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -945,6 +965,7 @@
       "inputs": {
         "acs-k8s": "acs-k8s",
         "aliyun-assist-client": "aliyun-assist-client",
+        "clawd-on-desk": "clawd-on-desk",
         "disko": "disko",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",

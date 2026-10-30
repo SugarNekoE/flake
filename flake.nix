@@ -9,6 +9,10 @@
       url = "github:aliyun/aliyun_assist_client/release";
       flake = false;
     };
+    clawd-on-desk = {
+      url = "git+https://forge.asnk.io/sugar/clawd-on-desk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko.url = "github:nix-community/disko";
     flake-file.url = "github:denful/flake-file";
     flake-parts = {
