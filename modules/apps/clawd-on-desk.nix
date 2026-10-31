@@ -2,7 +2,6 @@
 {
   flake-file.inputs.clawd-on-desk = {
     url = "git+https://forge.asnk.io/sugar/clawd-on-desk";
-    inputs.nixpkgs.follows = "nixpkgs";
   };
 
   home =
