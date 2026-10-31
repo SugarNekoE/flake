@@ -1,4 +1,4 @@
-name: Build machines
+name: Build everything
 on:
   push:
     branches: [main]
@@ -42,3 +42,28 @@ jobs:
           server-url: https://amber.asnk.io
       - name: Build ${{ matrix.host }}
         run: nix build --print-build-logs --no-link "path:.#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
+  outputs:
+    name: Build checks and packages
+    runs-on: nixos-latest
+    enable-openid-connect: true
+    steps:
+      - name: Install Node.js 24
+        run: |
+          nix profile add nixpkgs#nodejs_24
+          echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Configure niks3 cache
+        uses: https://github.com/Mic92/niks3-action@v1.5.0
+        with:
+          server-url: https://amber.asnk.io
+      - name: Build checks and packages
+        run: |
+          installables=()
+          for output in checks packages; do
+            for name in $(nix eval --raw "path:.#$output.x86_64-linux" \
+                --apply 'xs: builtins.concatStringsSep " " (builtins.attrNames xs)'); do
+              installables+=("path:.#$output.x86_64-linux.$name")
+            done
+          done
+          nix build --print-build-logs --no-link "${installables[@]}"
