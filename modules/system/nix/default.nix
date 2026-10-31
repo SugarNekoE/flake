@@ -15,9 +15,11 @@
             "flakes"
           ];
           extra-substituters = [
+            "https://cache.asnk.io"
             "https://nix-community.cachix.org"
           ];
           trusted-public-keys = [
+            "cache.asnk.io:DKhl0+cwd1dbzpuDbpVkpAAZPOqRES6HxuUSRXEitgA="
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           ];
           trusted-users = [ "@wheel" ];
