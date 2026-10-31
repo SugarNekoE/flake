@@ -24,5 +24,7 @@
       networking.useNetworkd = true;
       networking.useDHCP = false;
       networking.interfaces.eth0.useDHCP = true;
+
+      security.googleOsLogin.enable = lib.mkForce false;
     };
 }
