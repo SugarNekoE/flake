@@ -90,6 +90,12 @@
           };
         };
 
+        tmpfiles.settings.grafana-data.${grafana.dataDir}.d = {
+          user = "grafana";
+          group = "grafana";
+          mode = "0700";
+        };
+
         timers.monitoring-growfs = {
           wantedBy = [ "timers.target" ];
           timerConfig = {
