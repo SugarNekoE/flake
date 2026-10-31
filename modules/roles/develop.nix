@@ -25,7 +25,15 @@
         terraform
         podman-desktop
         unstable.android-tools
-        unstable.android-studio-full
+        (unstable.android-studio.withSdk
+          (unstable.androidenv.composeAndroidPackages {
+            includeEmulator = true;
+            includeSystemImages = true;
+            platformVersions = [ "36" ];
+            systemImageTypes = [ "google_apis_playstore" ];
+            abiVersions = [ "x86_64" ];
+          }).androidsdk
+        )
         unstable.jetbrains.idea
         unstable.jetbrains.datagrip
         unstable.jetbrains.gateway
