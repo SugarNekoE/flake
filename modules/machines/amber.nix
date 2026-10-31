@@ -118,17 +118,14 @@
           "https://id.sne.moe/healthz"
           "https://sh-derp.sne.moe:8448"
           "https://forge.asnk.io/api/healthz"
-          "https://amber.asnk.io/health"
           "https://cache.asnk.io/nix-cache-info"
           "https://mon.asnk.io/api/health"
           "https://ignisnet.co"
           "https://r2-storage.ignisnet.co"
-          "https://files.nix.org.cn"
           "https://adguard.dwelf-hoki.ts.net"
           "https://hass.dwelf-hoki.ts.net"
           "https://immich.dwelf-hoki.ts.net"
           "https://jellyfin.dwelf-hoki.ts.net"
-          "https://pica-magpie.dwelf-hoki.ts.net"
         ];
       };
 
