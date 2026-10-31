@@ -74,7 +74,7 @@
         "d /usr/local/share/aliyun-assist 0755 root root -"
       ];
 
-      systemd.services.aliyun = {
+      systemd.services.aliyun-agent = {
         description = "Aliyun Assist";
         wantedBy = [ "multi-user.target" ];
         after = [

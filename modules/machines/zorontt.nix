@@ -13,9 +13,7 @@
 
     # services
     magpie
-    (tailscale.withAuthKey {
-      sopsFile = ../secrets/tailscale/sne-moe.yaml;
-    })
+    (tailscale.withAuthKey ../secrets/tailscale/sne-moe.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota-bios;
   nixos =

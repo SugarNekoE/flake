@@ -6,100 +6,32 @@
     efi
     i18n
     nfs
+    aliyun
 
     # roles
     base
     server
 
     # services
-    aliyun
     podman
     forgejo
-    (tailscale.withAuthKey {
-      sopsFile = ../secrets/tailscale/sne-moe.yaml;
-    })
+    (tailscale.withAuthKey ../secrets/tailscale/sne-moe.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
-  nixos =
-    {
-      identity,
-      lib,
-      ...
-    }:
-    {
-      services.openssh.ports = [ 2222 ];
-      users.users.root.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
+  nixos = {
+    services.openssh.ports = [ 2222 ];
 
-      networking.firewall.enable = lib.mkForce false;
-      networking.networkmanager.enable = lib.mkForce false;
-      networking.enableIPv6 = true;
-      networking.useNetworkd = true;
-      networking.useDHCP = false;
-
-      services = {
-        cloud-init = {
-          enable = true;
-          network.enable = true;
-          settings = {
-            datasource_list = [ "AliYun" ];
-            preserve_hostname = false;
-            growpart = {
-              mode = "auto";
-              devices = [ "/" ];
-            };
-            resize_rootfs = true;
-          };
-        };
-        qemuGuest.enable = true;
-      };
-
-      boot.kernel.sysctl = lib.mkForce {
-        "vm.swappiness" = "0";
-        "kernel.sysrq" = "1";
-        "net.ipv4.neigh.default.gc_stale_time" = "120";
-        "net.ipv4.conf.all.rp_filter" = "0";
-        "net.ipv4.conf.default.rp_filter" = "0";
-        "net.ipv4.conf.default.arp_announce" = "2";
-        "net.ipv4.conf.lo.arp_announce" = "2";
-        "net.ipv4.conf.all.arp_announce" = "2";
-        "net.ipv4.tcp_max_tw_buckets" = "5000";
-        "net.ipv4.tcp_syncookies" = "1";
-        "net.ipv4.tcp_max_syn_backlog" = "1024";
-        "net.ipv4.tcp_synack_retries" = "2";
-        "net.ipv4.tcp_slow_start_after_idle" = "0";
+    mounts.nfs = {
+      "/mnt/data" = {
+        remote = "121wm2ey8pigiyqr6qw-xqr37.cn-hongkong.nas.aliyuncs.com:/";
+        version = "4";
+        minorVersion = "0";
+        extraOptions = [
+          "rsize=1048576"
+          "wsize=1048576"
+          "nconnect=16"
+        ];
       };
     };
-
-  hardware =
-    {
-      lib,
-      modulesPath,
-      ...
-    }:
-    {
-      imports = [
-        (modulesPath + "/profiles/qemu-guest.nix")
-      ];
-
-      boot.initrd.availableKernelModules = [
-        "nvme"
-      ];
-
-      disko.devices.disk.system.device = "/dev/vda";
-
-      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-      mounts.nfs = {
-        "/mnt/data" = {
-          remote = "121wm2ey8pigiyqr6qw-xqr37.cn-hongkong.nas.aliyuncs.com:/";
-          version = "4";
-          minorVersion = "0";
-          extraOptions = [
-            "rsize=1048576"
-            "wsize=1048576"
-            "nconnect=16"
-          ];
-        };
-      };
-    };
+  };
 }
