@@ -62,6 +62,10 @@ build-qcow2 hostname:
 build-qcow2-script hostname:
     nix build --out-link "{{ hostname }}-result" "path:.#qcow2Configurations.{{ hostname }}.config.system.build.diskoImagesScript"
 
+# Build a machine's Google Compute Engine image tarball as <hostname>-gce-image.
+build-gce hostname:
+    nix build --out-link "{{ hostname }}-gce-image" "path:.#gceImages.{{ hostname }}"
+
 # Build and activate a machine locally.
 switch hostname:
     nh os switch "path:.#{{ hostname }}"
