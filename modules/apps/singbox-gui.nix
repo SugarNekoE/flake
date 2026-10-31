@@ -96,15 +96,6 @@ in
         users.${user.username}.extraGroups = [ "sing-box" ];
       };
 
-      nix.settings = {
-        substituters = [
-          "https://sfd-nix.cachix.org"
-        ];
-        trusted-public-keys = [
-          "sfd-nix.cachix.org-1:SX5EpvFvgFZXgG94/0fX1L+lUWQ90dPq0Ieor7/rDig="
-        ];
-      };
-
       programs.sing-box-for-desktop = {
         enable = true;
         settings = {
