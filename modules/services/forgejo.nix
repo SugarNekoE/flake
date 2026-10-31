@@ -15,7 +15,7 @@ in
         plugins = [
           "github.com/mholt/caddy-l4@v0.1.1"
         ];
-        hash = "sha256-Xo2WhsctWfrJ7sJDStd4f+4CKIibQ/CbEIY7cDsjvf0=";
+        hash = "sha256-rUuUxT0LkmY6ZMaxqIK0ZPrszKelC97gynNy5PoHGqo=";
       };
 
       caddyBase = pkgs.dockerTools.pullImage {
