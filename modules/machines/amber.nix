@@ -13,7 +13,7 @@
 
     # services
     gcp-ops-agent
-    (cloud-sql-proxy.withInstance "PROJECT:REGION:INSTANCE")
+    (cloud-sql-proxy.withInstance "project-48516ea4-5e61-4dea-8a1:us-central1:amber-db")
     (niks3.withSecrets ../secrets/niks3/amber.yaml)
     (cloudflared.withSecret ../secrets/cloudflared/amber.yaml)
     (tailscale.withAuthKey ../secrets/tailscale/sne-moe.yaml)
@@ -28,16 +28,16 @@
 
       services.niks3 = {
         s3 = {
-          endpoint = "ACCOUNT_ID.r2.cloudflarestorage.com";
-          bucket = "BUCKET";
+          endpoint = "297bf25f648e310a3564843054342e44.r2.cloudflarestorage.com";
+          bucket = "amber";
         };
-        cacheUrl = "https://CACHE_DOMAIN";
-        serverUrl = "https://NIKS3_DOMAIN";
-        database.connectionString = "postgres://SERVICE_ACCOUNT%40PROJECT.iam@127.0.0.1:5432/niks3?sslmode=disable";
-        oidc.providers.github = {
-          issuer = "https://token.actions.githubusercontent.com";
-          audience = "https://NIKS3_DOMAIN";
-          boundClaims.repository_owner = [ "GITHUB_OWNER" ];
+        cacheUrl = "https://cache.asnk.io";
+        serverUrl = "https://amber.asnk.io";
+        database.connectionString = "postgres://amber-vm%40project-48516ea4-5e61-4dea-8a1.iam.gserviceaccount.com@127.0.0.1:5432/amber?sslmode=disable";
+        oidc.providers.forgejo = {
+          issuer = "https://forge.asnk.io/api/actions";
+          audience = "https://amber.asnk.io";
+          boundClaims.repository_owner = [ "sugar" ];
         };
       };
 
