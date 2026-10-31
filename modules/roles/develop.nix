@@ -23,6 +23,7 @@
         lens
         winbox
         terraform
+        google-cloud-sdk
         podman-desktop
         unstable.android-tools
         unstable.android-studio-full
