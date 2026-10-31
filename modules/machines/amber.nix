@@ -14,6 +14,7 @@
     # services
     gcp-ops-agent
     blackbox-exporter
+    postgres-exporter
     (cloud-sql-proxy.withInstance "project-48516ea4-5e61-4dea-8a1:us-central1:amber-db")
     (niks3.withSecrets ../secrets/niks3.yaml)
     (cloudflared.withSecret ../secrets/cloudflared/amber.yaml)
@@ -151,6 +152,14 @@
       };
 
       systemd.services.niks3 = {
+        after = [ "cloud-sql-proxy.service" ];
+        requires = [ "cloud-sql-proxy.service" ];
+      };
+
+      services.prometheus.exporters.postgres.dataSourceName =
+        "postgresql://amber-vm%40project-48516ea4-5e61-4dea-8a1.iam@127.0.0.1:5432/postgres?sslmode=disable";
+
+      systemd.services.prometheus-postgres-exporter = {
         after = [ "cloud-sql-proxy.service" ];
         requires = [ "cloud-sql-proxy.service" ];
       };
