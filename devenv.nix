@@ -11,6 +11,7 @@
     ssh-to-age
     nixos-rebuild-ng
     nixos-anywhere
+    google-cloud-sdk
     sshpass
     jq
     ruff
