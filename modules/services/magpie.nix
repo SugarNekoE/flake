@@ -5,12 +5,6 @@
     { inputs, pkgs, ... }:
     {
       imports = [ inputs.magpie.nixosModules.default ];
-      nix.settings = {
-        extra-substituters = [ "https://magpie.cachix.org" ];
-        extra-trusted-public-keys = [
-          "magpie.cachix.org-1:ITAJciUQeU2SXzGFZvLXLMguTs0Uu9pYjT76gLmW4gs="
-        ];
-      };
 
       services.magpie = {
         enable = true;
