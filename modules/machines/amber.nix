@@ -33,7 +33,7 @@
         };
         cacheUrl = "https://cache.asnk.io";
         serverUrl = "https://amber.asnk.io";
-        database.connectionString = "postgres://amber-vm%40project-48516ea4-5e61-4dea-8a1.iam.gserviceaccount.com@127.0.0.1:5432/amber?sslmode=disable";
+        database.connectionString = "postgres://amber-vm%40project-48516ea4-5e61-4dea-8a1.iam@127.0.0.1:5432/amber?sslmode=disable";
         oidc.providers.forgejo = {
           issuer = "https://forge.asnk.io/api/actions";
           audience = "https://amber.asnk.io";
