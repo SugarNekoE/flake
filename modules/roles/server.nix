@@ -2,6 +2,7 @@
   imports = with inputs.self.aspects; [
     openssh
     networkmanager.nixos
+    node-exporter
   ];
 
   nixos = {
