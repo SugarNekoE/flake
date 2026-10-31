@@ -157,7 +157,7 @@
       };
 
       services.prometheus.exporters.postgres.dataSourceName =
-        "postgresql://amber-vm%40project-48516ea4-5e61-4dea-8a1.iam@127.0.0.1:5432/postgres?sslmode=disable";
+        "host=127.0.0.1 port=5432 user=amber-vm@project-48516ea4-5e61-4dea-8a1.iam dbname=postgres sslmode=disable";
 
       systemd.services.prometheus-postgres-exporter = {
         after = [ "cloud-sql-proxy.service" ];
