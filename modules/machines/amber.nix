@@ -118,6 +118,11 @@
           "https://ignisnet.co"
           "https://r2-storage.ignisnet.co"
           "https://files.nix.org.cn"
+          "https://adguard.dwelf-hoki.ts.net"
+          "https://hass.dwelf-hoki.ts.net"
+          "https://immich.dwelf-hoki.ts.net"
+          "https://jellyfin.dwelf-hoki.ts.net"
+          "https://pica-magpie.dwelf-hoki.ts.net"
         ];
       };
 
