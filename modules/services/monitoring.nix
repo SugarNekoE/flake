@@ -117,6 +117,12 @@ in
           default = [ ];
           description = "host:port targets the blackbox exporter opens a TCP connection to.";
         };
+
+        extraNodeTargets = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          description = "Additional host:port node exporter targets outside this flake.";
+        };
       };
 
       config = {
@@ -150,7 +156,7 @@ in
           prometheusConfig = {
             global.scrape_interval = "60s";
             scrape_configs = [
-              (staticJob "node" nodeTargets)
+              (staticJob "node" (nodeTargets ++ cfg.extraNodeTargets))
               (staticJob "victoriametrics" [ victoriametrics.listenAddress ])
             ]
             ++ lib.optionals blackbox.enable [

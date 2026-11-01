@@ -126,6 +126,11 @@
           "https://immich.dwelf-hoki.ts.net"
           "https://jellyfin.dwelf-hoki.ts.net"
         ];
+        extraNodeTargets = [
+          "nori-la:9100"
+          "nori-jp:9100"
+          "nori-hk:9100"
+        ];
       };
 
       services.grafana.settings.database = {
