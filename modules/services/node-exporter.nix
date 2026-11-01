@@ -7,7 +7,7 @@ _: {
         enabledCollectors = [ "systemd" ];
       };
 
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+      networking.firewall.allowedTCPPorts = [
         config.services.prometheus.exporters.node.port
       ];
     };
