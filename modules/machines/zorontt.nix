@@ -44,6 +44,7 @@
         matchConfig.MACAddress = "f4:0d:60:00:09:fc";
         linkConfig.Name = "eth0";
       };
+      zramSwap.enable = true;
       services = {
         cloud-init = {
           enable = true;
