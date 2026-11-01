@@ -53,8 +53,7 @@ in
           (name: host: "${name}:${toString host.config.services.prometheus.exporters.node.port}")
           (
             lib.filterAttrs (
-              _: host:
-              host.config.services.tailscale.enable && host.config.services.prometheus.exporters.node.enable
+              _: host: host.config.services.prometheus.exporters.node.enable
             ) inputs.self.nixosConfigurations
           );
 
@@ -82,6 +81,18 @@ in
             replacement = "${blackbox.listenAddress}:${toString blackbox.port}";
           }
         ];
+      };
+
+      pveJob = targets: {
+        job_name = "pve";
+        metrics_path = "/pve";
+        params = {
+          target = [ "localhost" ];
+          module = [ "default" ];
+          cluster = [ "1" ];
+          node = [ "1" ];
+        };
+        static_configs = [ { inherit targets; } ];
       };
     in
     {
@@ -122,6 +133,12 @@ in
           type = lib.types.listOf lib.types.str;
           default = [ ];
           description = "Additional host:port node exporter targets outside this flake.";
+        };
+
+        pveTargets = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          description = "host:port prometheus-pve-exporter targets; each exporter queries its own host's API.";
         };
       };
 
@@ -168,7 +185,8 @@ in
             )
             ++ lib.optional postgresExporter.enable (
               staticJob "postgres" [ "${postgresExporter.listenAddress}:${toString postgresExporter.port}" ]
-            );
+            )
+            ++ lib.optional (cfg.pveTargets != [ ]) (pveJob cfg.pveTargets);
           };
         };
 

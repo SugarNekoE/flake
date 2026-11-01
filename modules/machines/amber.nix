@@ -130,7 +130,9 @@
           "nori-la:9100"
           "nori-jp:9100"
           "nori-hk:9100"
+          "router:9100"
         ];
+        pveTargets = [ "router:9221" ];
       };
 
       services.grafana.settings.database = {
