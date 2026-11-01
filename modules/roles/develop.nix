@@ -37,10 +37,12 @@
         unstable.jetbrains.idea
         unstable.jetbrains.datagrip
         unstable.jetbrains.gateway
-        (unstable.blender.override {
-          config.cudaSupport = true;
-          config.rocmSupport = true;
-        })
+        (import inputs.nixpkgs-unstable {
+          inherit (pkgs.stdenv.hostPlatform) system;
+          config = pkgs.config // {
+            cudaSupport = true;
+          };
+        }).blender
       ];
     };
 }

@@ -41,7 +41,11 @@ jobs:
         with:
           server-url: https://amber.asnk.io
       - name: Build ${{ matrix.host }}
-        run: nix build --print-build-logs --no-link "path:.#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
+        run: >-
+          nix build --print-build-logs --no-link
+          --option extra-substituters "https://cache.nixos-cuda.org https://nix-community.cachix.org"
+          --option extra-trusted-public-keys "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "path:.#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
   outputs:
     name: Build checks and packages
     runs-on: nixos-latest
