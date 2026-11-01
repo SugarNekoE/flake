@@ -46,6 +46,7 @@ in
       blackbox = config.services.prometheus.exporters.blackbox;
       postgresExporter = config.services.prometheus.exporters.postgres;
       cloudflareExporter = config.services.cloudflare-exporter or { tokenFile = null; };
+      niks3 = config.services.niks3 or { enable = false; };
       adminGroup = "grafana_admin";
 
       nodeTargets =
@@ -186,6 +187,7 @@ in
             ++ lib.optional postgresExporter.enable (
               staticJob "postgres" [ "${postgresExporter.listenAddress}:${toString postgresExporter.port}" ]
             )
+            ++ lib.optional niks3.enable (staticJob "niks3" [ niks3.httpAddr ])
             ++ lib.optional (cfg.pveTargets != [ ]) (pveJob cfg.pveTargets);
           };
         };
