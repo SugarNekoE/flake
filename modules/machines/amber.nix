@@ -20,7 +20,6 @@
     (cloudflared.withSecret ../secrets/cloudflared/amber.yaml)
     (tailscale.withAuthKey ../secrets/tailscale/sne-moe.yaml)
     (monitoring.withSecrets ../secrets/monitoring.yaml)
-    (cloudflare-exporter.withSecret ../secrets/cloudflare-exporter.yaml)
   ];
   diskoConfig = inputs.self.diskoConfigurations.xfs-with-quota;
   nixos =

@@ -92,7 +92,6 @@ in
       victoriametrics = config.services.victoriametrics;
       blackbox = config.services.prometheus.exporters.blackbox;
       postgresExporter = config.services.prometheus.exporters.postgres;
-      cloudflareExporter = config.services.cloudflare-exporter or { tokenFile = null; };
       niks3 = config.services.niks3 or { enable = false; };
       adminGroup = "grafana_admin";
 
@@ -228,9 +227,6 @@ in
               (blackboxJob "blackbox_http" "http_2xx" cfg.httpProbes)
               (blackboxJob "blackbox_tcp" "tcp_connect" cfg.tcpProbes)
             ]
-            ++ lib.optional (cloudflareExporter.tokenFile != null) (
-              staticJob "cloudflare" [ "127.0.0.1:${toString cloudflareExporter.port}" ]
-            )
             ++ lib.optional postgresExporter.enable (
               staticJob "postgres" [ "${postgresExporter.listenAddress}:${toString postgresExporter.port}" ]
             )
