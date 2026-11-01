@@ -2,6 +2,7 @@
 {
   imports = with inputs.self.aspects; [
     halloy
+    wechat
     (flatpak.withPackages [
       "com.teamspeak.TeamSpeak3"
       "com.discordapp.Discord"
@@ -14,9 +15,6 @@
   home =
     { pkgs, ... }:
     {
-      home.packages = with pkgs.unstable; [
-        qq
-        wechat
-      ];
+      home.packages = with pkgs.unstable; [ qq ];
     };
 }
