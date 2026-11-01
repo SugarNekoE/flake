@@ -20,16 +20,63 @@ let
           grafana-secret-key = secret "grafana_secret_key";
           grafana-oidc-client-id = secret "oidc_client_id";
           grafana-oidc-client-secret = secret "oidc_client_secret";
+          grafana-telegram-bot-token = secret "telegram_bot_token";
+          grafana-telegram-chat-id = secret "telegram_chat_id";
         };
 
-        services.grafana.settings = {
-          security = {
-            admin_password = file "grafana-admin-password";
-            secret_key = file "grafana-secret-key";
+        sops.templates."grafana-contact-points.yaml" = {
+          owner = "grafana";
+          restartUnits = [ "grafana.service" ];
+          content = builtins.toJSON {
+            apiVersion = 1;
+            contactPoints = [
+              {
+                orgId = 1;
+                name = "telegram";
+                receivers = [
+                  {
+                    uid = "telegram";
+                    type = "telegram";
+                    settings = {
+                      bottoken = config.sops.placeholder.grafana-telegram-bot-token;
+                      chatid = config.sops.placeholder.grafana-telegram-chat-id;
+                    };
+                  }
+                ];
+              }
+            ];
           };
-          "auth.generic_oauth" = {
-            client_id = file "grafana-oidc-client-id";
-            client_secret = file "grafana-oidc-client-secret";
+        };
+
+        services.grafana = {
+          settings = {
+            security = {
+              admin_password = file "grafana-admin-password";
+              secret_key = file "grafana-secret-key";
+            };
+            "auth.generic_oauth" = {
+              client_id = file "grafana-oidc-client-id";
+              client_secret = file "grafana-oidc-client-secret";
+            };
+          };
+          provision = {
+            enable = true;
+            alerting = {
+              contactPoints.path = config.sops.templates."grafana-contact-points.yaml".path;
+              policies.settings = {
+                apiVersion = 1;
+                policies = [
+                  {
+                    orgId = 1;
+                    receiver = "telegram";
+                    group_by = [
+                      "grafana_folder"
+                      "alertname"
+                    ];
+                  }
+                ];
+              };
+            };
           };
         };
       };
