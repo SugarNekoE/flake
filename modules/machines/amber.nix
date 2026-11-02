@@ -124,6 +124,9 @@
             name = "grafana";
             user = "amber-vm@project-48516ea4-5e61-4dea-8a1.iam";
             ssl_mode = "disable";
+            max_open_conn = 10;
+            max_idle_conn = 5;
+            conn_max_lifetime = 14400;
           };
         };
         vmagent.dataDir = "/var/lib/vmagent";
