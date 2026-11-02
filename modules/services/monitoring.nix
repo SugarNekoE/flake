@@ -160,6 +160,13 @@ in
       local = port: "127.0.0.1:${toString port}";
       publish = port: "${toString port}:${toString port}";
       containerUser = "${toString cfg.containerUid}:${toString cfg.containerUid}";
+      restartAlways = {
+        startLimitIntervalSec = 0;
+        serviceConfig = {
+          Restart = lib.mkForce "always";
+          RestartSec = "10s";
+        };
+      };
 
       nodeTargets =
         lib.mapAttrsToList
@@ -465,15 +472,17 @@ in
             '';
           };
 
-          podman-clickhouse = {
+          podman-clickhouse = restartAlways // {
             after = [ "podman-network-monitoring.service" ];
             requires = [ "podman-network-monitoring.service" ];
           };
 
-          podman-gigapipe = {
+          podman-gigapipe = restartAlways // {
             after = [ "podman-network-monitoring.service" ];
             requires = [ "podman-network-monitoring.service" ];
           };
+
+          podman-grafana = restartAlways;
 
           vmagent = {
             after = [ "podman-gigapipe.service" ];
