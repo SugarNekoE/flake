@@ -12,6 +12,7 @@
     server
 
     # services
+    podman
     gcp-ops-agent
     blackbox-exporter
     postgres-exporter
@@ -33,9 +34,15 @@
     }:
     let
       monitoringDisk = "/mnt/monitoring";
-      inherit (config.services.monitoring) victoriametrics grafana;
+      inherit (config.services.monitoring)
+        containerUid
+        vmagent
+        clickhouse
+        grafana
+        ;
       bindMounts = {
-        ${victoriametrics.dataDir} = "${monitoringDisk}/victoriametrics";
+        ${vmagent.dataDir} = "${monitoringDisk}/vmagent";
+        ${clickhouse.dataDir} = "${monitoringDisk}/clickhouse";
         ${grafana.dataDir} = "${monitoringDisk}/grafana";
       };
       bindMountUnits = map (path: "${utils.escapeSystemdPath path}.mount") (lib.attrNames bindMounts);
@@ -73,7 +80,14 @@
               Type = "oneshot";
               RemainAfterExit = true;
             };
-            script = "mkdir -p ${lib.concatStringsSep " " (lib.attrValues bindMounts)}";
+            script = ''
+              mkdir -p ${bindMounts.${vmagent.dataDir}}
+              for dir in ${bindMounts.${clickhouse.dataDir}} ${bindMounts.${grafana.dataDir}}; do
+                mkdir -p "$dir"
+                chown ${toString containerUid}:${toString containerUid} "$dir"
+                chmod 0700 "$dir"
+              done
+            '';
           };
 
           monitoring-growfs = {
@@ -81,19 +95,15 @@
             script = "${lib.getExe' pkgs.xfsprogs "xfs_growfs"} ${monitoringDisk}";
           };
 
-          victoriametrics.unitConfig.RequiresMountsFor = [ victoriametrics.dataDir ];
+          vmagent.unitConfig.RequiresMountsFor = [ vmagent.dataDir ];
 
-          grafana = {
+          podman-clickhouse.unitConfig.RequiresMountsFor = [ clickhouse.dataDir ];
+
+          podman-grafana = {
             after = [ "cloud-sql-proxy.service" ];
             requires = [ "cloud-sql-proxy.service" ];
             unitConfig.RequiresMountsFor = [ grafana.dataDir ];
           };
-        };
-
-        tmpfiles.settings.grafana-data.${grafana.dataDir}.d = {
-          user = "grafana";
-          group = "grafana";
-          mode = "0700";
         };
 
         timers.monitoring-growfs = {
@@ -106,8 +116,18 @@
       };
 
       services.monitoring = {
-        victoriametrics.dataDir = "/var/lib/victoriametrics";
-        grafana.dataDir = "/var/lib/grafana";
+        grafana = {
+          dataDir = "/var/lib/grafana";
+          settings.database = {
+            type = "postgres";
+            host = "127.0.0.1:5432";
+            name = "grafana";
+            user = "amber-vm@project-48516ea4-5e61-4dea-8a1.iam";
+            ssl_mode = "disable";
+          };
+        };
+        vmagent.dataDir = "/var/lib/vmagent";
+        clickhouse.dataDir = "/var/lib/clickhouse";
         grafanaUrl = "https://mon.asnk.io";
         oidcIssuer = "https://id.sne.moe";
         httpProbes = [
@@ -136,14 +156,6 @@
           "edge:9100"
         ];
         pveTargets = [ "router:9221" ];
-      };
-
-      services.grafana.settings.database = {
-        type = "postgres";
-        host = "127.0.0.1:5432";
-        name = "grafana";
-        user = "amber-vm@project-48516ea4-5e61-4dea-8a1.iam";
-        ssl_mode = "disable";
       };
 
       services.niks3 = {
