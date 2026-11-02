@@ -432,6 +432,7 @@ in
                 CLICKHOUSE_SERVER = "clickhouse";
                 SAMPLES_DAYS = toString cfg.retentionDays;
                 LABELS_DAYS = toString cfg.retentionDays;
+                ADVANCED_SAMPLES_ORDERING = "fingerprint,timestamp_ns";
               };
             };
 
