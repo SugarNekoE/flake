@@ -120,6 +120,8 @@
           "https://cache.asnk.io/nix-cache-info"
           "https://mon.asnk.io/api/health"
           "https://ignisnet.co"
+          "https://nvirellia.im"
+          "https://nuts.nvirellia.im"
           "https://adguard.dwelf-hoki.ts.net"
           "https://hass.dwelf-hoki.ts.net"
           "https://immich.dwelf-hoki.ts.net"
@@ -130,6 +132,8 @@
           "nori-jp:9100"
           "nori-hk:9100"
           "router:9100"
+          "neko-sphere:9100"
+          "edge:9100"
         ];
         pveTargets = [ "router:9221" ];
       };
