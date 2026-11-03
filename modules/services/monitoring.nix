@@ -25,6 +25,7 @@ let
           clickhouse-monitoring-db = secret "clickhouse-monitoring-db";
           clickhouse-monitoring-user = secret "clickhouse-monitoring-user";
           clickhouse-monitoring-password = secret "clickhouse-monitoring-password";
+          otel-ingest-token = secret "otel-ingest-token";
         };
 
         sops.templates = {
@@ -61,6 +62,13 @@ let
             content = ''
               CLICKHOUSE_AUTH=${placeholder.clickhouse-monitoring-user}:${placeholder.clickhouse-monitoring-password}
               CLICKHOUSE_DB=${placeholder.clickhouse-monitoring-db}
+            '';
+          };
+
+          "otel-collector.env" = {
+            restartUnits = [ "opentelemetry-collector.service" ];
+            content = ''
+              OTEL_INGEST_TOKEN=${placeholder.otel-ingest-token}
             '';
           };
 
@@ -113,6 +121,9 @@ let
           grafana.environmentFiles = [ config.sops.templates."grafana.env".path ];
         };
 
+        systemd.services.opentelemetry-collector.serviceConfig.EnvironmentFile =
+          config.sops.templates."otel-collector.env".path;
+
         services.monitoring.grafana = {
           provision = {
             "alerting/contactPoints.yaml" = config.sops.templates."grafana-contact-points.yaml".path;
@@ -157,6 +168,7 @@ in
       gigapipePort = 3100;
       clickhouseMetricsPort = 9363;
       grafanaPort = 3000;
+      otelHttpPort = 4318;
       local = port: "127.0.0.1:${toString port}";
       publish = port: "${toString port}:${toString port}";
       containerUser = "${toString cfg.containerUid}:${toString cfg.containerUid}";
@@ -381,6 +393,37 @@ in
           };
         };
 
+        services.opentelemetry-collector = {
+          enable = true;
+          package = pkgs.opentelemetry-collector-contrib;
+          settings = {
+            extensions.bearertokenauth.token = "\${env:OTEL_INGEST_TOKEN}";
+            receivers.otlp.protocols.http = {
+              endpoint = "0.0.0.0:${toString otelHttpPort}";
+              auth.authenticator = "bearertokenauth";
+            };
+            processors.deltatocumulative = { };
+            exporters.otlp_http = {
+              endpoint = "http://${local gigapipePort}";
+              compression = "none";
+            };
+            service = {
+              extensions = [ "bearertokenauth" ];
+              pipelines = {
+                traces = {
+                  receivers = [ "otlp" ];
+                  exporters = [ "otlp_http" ];
+                };
+                metrics = {
+                  receivers = [ "otlp" ];
+                  processors = [ "deltatocumulative" ];
+                  exporters = [ "otlp_http" ];
+                };
+              };
+            };
+          };
+        };
+
         services.monitoring.grafana = {
           settings = {
             analytics = {
@@ -483,6 +526,8 @@ in
           };
 
           podman-grafana = restartAlways;
+
+          opentelemetry-collector.after = [ "podman-gigapipe.service" ];
 
           vmagent = {
             after = [ "podman-gigapipe.service" ];
