@@ -2,6 +2,7 @@
 {
   imports = with inputs.self.aspects; [
     paseo
+    tern
     llm-agents
   ];
 
