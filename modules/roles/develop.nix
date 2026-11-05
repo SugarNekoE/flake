@@ -23,7 +23,7 @@
         lens
         winbox
         terraform
-        podman-desktop
+        unstable.podman-desktop
         unstable.android-tools
         (unstable.android-studio.withSdk
           (unstable.androidenv.composeAndroidPackages {
