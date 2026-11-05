@@ -1,14 +1,19 @@
 {
   lib,
-  stdenvNoCC,
+  stdenv,
   requireFile,
+  autoPatchelfHook,
   makeDesktopItem,
   makeWrapper,
-  patchelf,
   versionCheckHook,
   git,
-  pkgsMusl,
-  tern-runtime,
+  libglvnd,
+  vulkan-loader,
+  wayland,
+  libxkbcommon,
+  libxcb,
+  libpulseaudio,
+  linux-pam,
 }:
 let
   desktopItem = makeDesktopItem {
@@ -22,43 +27,38 @@ let
     ];
   };
 in
-stdenvNoCC.mkDerivation (finalAttrs: {
+stdenv.mkDerivation (finalAttrs: {
   pname = "tern";
   version = "0.9.12";
 
   src = requireFile {
-    name = "Tern-${finalAttrs.version}-linux-musl-x86_64.tar.gz";
+    name = "Tern-${finalAttrs.version}-linux-x86_64.tar.gz";
     url = "https://build.stencil.so/tern";
-    hash = "sha256-+3Re4Tb10C2MEmPJlTfIEqacb+CAz3wGOYfvkv1SRwk=";
+    hash = "sha256-9n6MK/9DfzNlrjpHi7wY9jr7blO9bnzVVrrHziTRNpM=";
   };
 
   nativeBuildInputs = [
+    autoPatchelfHook
     makeWrapper
-    patchelf
   ];
 
-  dontPatchELF = true;
-  dontStrip = true;
+  buildInputs = [ (lib.getLib stdenv.cc.cc) ];
+
+  runtimeDependencies = [
+    libglvnd
+    vulkan-loader
+    wayland
+    libxkbcommon
+    libxcb
+    libpulseaudio
+    linux-pam
+  ];
 
   installPhase = ''
     runHook preInstall
 
     install -Dm755 tern $out/libexec/tern/tern
-    patchelf \
-      --set-interpreter ${pkgsMusl.musl}/lib/ld-musl-x86_64.so.1 \
-      --set-rpath ${tern-runtime}/lib \
-      $out/libexec/tern/tern
-
     makeWrapper $out/libexec/tern/tern $out/bin/tern \
-      --unset LD_LIBRARY_PATH \
-      --set __EGL_VENDOR_LIBRARY_FILENAMES ${tern-runtime}/share/glvnd/egl_vendor.d/50_mesa.json \
-      --set VK_DRIVER_FILES ${
-        lib.concatMapStringsSep ":" (icd: "${tern-runtime}/share/vulkan/icd.d/${icd}_icd.x86_64.json") [
-          "intel"
-          "radeon"
-          "lvp"
-        ]
-      } \
       --prefix PATH : ${lib.makeBinPath [ git ]}
 
     install -Dm644 -t $out/share/applications ${desktopItem}/share/applications/tern.desktop

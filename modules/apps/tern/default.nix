@@ -1,17 +1,15 @@
 { inputs, lib, ... }:
 {
   perSystem =
-    { pkgs, system, ... }:
+    { system, ... }:
     let
-      tern-runtime = pkgs.callPackage ./_runtime.nix { };
       unfreePkgs = import inputs.nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
     in
     lib.mkIf (system == "x86_64-linux") {
-      packages = { inherit tern-runtime; };
-      legacyPackages.tern = unfreePkgs.callPackage ./_package.nix { inherit tern-runtime; };
+      legacyPackages.tern = unfreePkgs.callPackage ./_package.nix { };
     };
 
   home =
