@@ -1,6 +1,11 @@
 { pkgsMusl }:
 let
-  mesa = pkgsMusl.mesa.override {
+  muslPkgs = pkgsMusl.extend (
+    _: prev: {
+      tzdata = prev.tzdata.overrideAttrs { doCheck = false; };
+    }
+  );
+  mesa = muslPkgs.mesa.override {
     galliumDrivers = [
       "iris"
       "llvmpipe"
@@ -15,9 +20,9 @@ let
     vulkanLayers = [ "device-select" ];
   };
 in
-pkgsMusl.symlinkJoin {
+muslPkgs.symlinkJoin {
   name = "tern-runtime";
-  paths = with pkgsMusl; [
+  paths = with muslPkgs; [
     musl
     stdenv.cc.cc.lib
     libglvnd
