@@ -46,6 +46,19 @@ jobs:
           --option extra-substituters "https://cache.nixos-cuda.org https://nix-community.cachix.org"
           --option extra-trusted-public-keys "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "path:.#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
+      - name: Upload ${{ matrix.host }} SBOM
+        if: github.event_name == 'push'
+        env:
+          DTRACK_URL: ${{ vars.DTRACK_URL }}
+          DTRACK_API_KEY: ${{ secrets.DTRACK_API_KEY }}
+        run: |
+          nix run nixpkgs#sbomnix -- \
+            "path:.#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" \
+            --cdx=sbom.cdx.json
+          curl -sSf -X POST "$DTRACK_URL/api/v1/bom" -H "X-Api-Key: $DTRACK_API_KEY" \
+            -F autoCreate=true \
+            -F "projectName=nixos/${{ matrix.host }}" -F projectVersion=main \
+            -F projectTags=nixos -F "bom=@sbom.cdx.json"
   outputs:
     name: Build checks and packages
     runs-on: nixos-latest

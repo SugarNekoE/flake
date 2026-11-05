@@ -39,11 +39,13 @@
         vmagent
         clickhouse
         grafana
+        dtrack
         ;
       bindMounts = {
         ${vmagent.dataDir} = "${monitoringDisk}/vmagent";
         ${clickhouse.dataDir} = "${monitoringDisk}/clickhouse";
         ${grafana.dataDir} = "${monitoringDisk}/grafana";
+        ${dtrack.dataDir} = "${monitoringDisk}/dependency-track";
       };
       bindMountUnits = map (path: "${utils.escapeSystemdPath path}.mount") (lib.attrNames bindMounts);
     in
@@ -82,7 +84,9 @@
             };
             script = ''
               mkdir -p ${bindMounts.${vmagent.dataDir}}
-              for dir in ${bindMounts.${clickhouse.dataDir}} ${bindMounts.${grafana.dataDir}}; do
+              for dir in ${
+                bindMounts.${clickhouse.dataDir}
+              } ${bindMounts.${grafana.dataDir}} ${bindMounts.${dtrack.dataDir}}; do
                 mkdir -p "$dir"
                 chown ${toString containerUid}:${toString containerUid} "$dir"
                 chmod 0700 "$dir"
@@ -103,6 +107,12 @@
             after = [ "cloud-sql-proxy.service" ];
             requires = [ "cloud-sql-proxy.service" ];
             unitConfig.RequiresMountsFor = [ grafana.dataDir ];
+          };
+
+          podman-dtrack-apiserver = {
+            after = [ "cloud-sql-proxy.service" ];
+            requires = [ "cloud-sql-proxy.service" ];
+            unitConfig.RequiresMountsFor = [ dtrack.dataDir ];
           };
         };
 
@@ -142,6 +152,7 @@
           "https://forge.asnk.io/api/healthz"
           "https://cache.asnk.io/nix-cache-info"
           "https://mon.asnk.io/api/health"
+          "https://dtrack.asnk.io/api/openapi.json"
           "https://ignisnet.co"
           "https://nvirellia.im"
           "https://nuts.nvirellia.im"
@@ -159,6 +170,10 @@
           "edge:9100"
         ];
         pveTargets = [ "router:9221" ];
+        dtrack = {
+          url = "https://dtrack.asnk.io";
+          database.username = "amber-vm@project-48516ea4-5e61-4dea-8a1.iam";
+        };
       };
 
       services.niks3 = {

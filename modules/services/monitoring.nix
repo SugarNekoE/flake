@@ -26,6 +26,9 @@ let
           clickhouse-monitoring-user = secret "clickhouse-monitoring-user";
           clickhouse-monitoring-password = secret "clickhouse-monitoring-password";
           otel-ingest-token = secret "otel-ingest-token";
+          dtrack-kek = secret "dtrack_kek";
+          dtrack-oidc-client-id = secret "dtrack_oidc_client_id";
+          dtrack-exporter-api-key = secret "dtrack_exporter_api_key";
         };
 
         sops.templates = {
@@ -69,6 +72,28 @@ let
             restartUnits = [ "opentelemetry-collector.service" ];
             content = ''
               OTEL_INGEST_TOKEN=${placeholder.otel-ingest-token}
+            '';
+          };
+
+          "dtrack.env" = {
+            restartUnits = [ "podman-dtrack-apiserver.service" ];
+            content = ''
+              DT_SECRET_MANAGEMENT_DATABASE_KEK=${placeholder.dtrack-kek}
+              DT_OIDC_CLIENT_ID=${placeholder.dtrack-oidc-client-id}
+            '';
+          };
+
+          "dtrack-frontend.env" = {
+            restartUnits = [ "podman-dtrack-frontend.service" ];
+            content = ''
+              OIDC_CLIENT_ID=${placeholder.dtrack-oidc-client-id}
+            '';
+          };
+
+          "dtrack-exporter.env" = {
+            restartUnits = [ "dtrack-exporter.service" ];
+            content = ''
+              DEPENDENCY_TRACK_API_KEY=${placeholder.dtrack-exporter-api-key}
             '';
           };
 
@@ -119,10 +144,15 @@ let
           };
           gigapipe.environmentFiles = [ config.sops.templates."gigapipe.env".path ];
           grafana.environmentFiles = [ config.sops.templates."grafana.env".path ];
+          dtrack-apiserver.environmentFiles = [ config.sops.templates."dtrack.env".path ];
+          dtrack-frontend.environmentFiles = [ config.sops.templates."dtrack-frontend.env".path ];
         };
 
-        systemd.services.opentelemetry-collector.serviceConfig.EnvironmentFile =
-          config.sops.templates."otel-collector.env".path;
+        systemd.services = {
+          opentelemetry-collector.serviceConfig.EnvironmentFile =
+            config.sops.templates."otel-collector.env".path;
+          dtrack-exporter.serviceConfig.EnvironmentFile = config.sops.templates."dtrack-exporter.env".path;
+        };
 
         services.monitoring.grafana = {
           provision = {
@@ -157,6 +187,7 @@ in
     }:
     let
       cfg = config.services.monitoring;
+      inherit (cfg) dtrack;
       blackbox = config.services.prometheus.exporters.blackbox;
       postgresExporter = config.services.prometheus.exporters.postgres;
       niks3 = config.services.niks3 or { enable = false; };
@@ -169,6 +200,10 @@ in
       clickhouseMetricsPort = 9363;
       grafanaPort = 3000;
       otelHttpPort = 4318;
+      dtrackApiPort = 8080;
+      dtrackFrontendPort = 8081;
+      dtrackManagementPort = 9002;
+      dtrackExporterPort = 9916;
       local = port: "127.0.0.1:${toString port}";
       publish = port: "${toString port}:${toString port}";
       containerUser = "${toString cfg.containerUid}:${toString cfg.containerUid}";
@@ -321,7 +356,7 @@ in
 
         oidcIssuer = lib.mkOption {
           type = lib.types.str;
-          description = "Pocket ID issuer URL used for Grafana login.";
+          description = "Pocket ID issuer URL used for Grafana and Dependency-Track login.";
         };
 
         httpProbes = lib.mkOption {
@@ -346,6 +381,38 @@ in
           type = lib.types.listOf lib.types.str;
           default = [ ];
           description = "host:port prometheus-pve-exporter targets; each exporter queries its own host's API.";
+        };
+
+        dtrack = {
+          url = lib.mkOption {
+            type = lib.types.str;
+            description = "Public URL serving the frontend and, under /api, the API server.";
+          };
+
+          dataDir = lib.mkOption {
+            type = lib.types.path;
+            default = "/var/lib/dependency-track";
+            description = "Dependency-Track API server data directory.";
+          };
+
+          memory = lib.mkOption {
+            type = lib.types.str;
+            default = "1536m";
+            description = "Memory limit of the API server container.";
+          };
+
+          database = {
+            url = lib.mkOption {
+              type = lib.types.str;
+              default = "jdbc:postgresql://127.0.0.1:5432/dtrack";
+              description = "JDBC URL of the PostgreSQL database.";
+            };
+
+            username = lib.mkOption {
+              type = lib.types.str;
+              description = "PostgreSQL user; authentication is left to the local proxy.";
+            };
+          };
         };
       };
 
@@ -380,6 +447,8 @@ in
               (staticJob "vmagent" [ (local vmagentPort) ])
               (staticJob "gigapipe" [ (local gigapipePort) ])
               (staticJob "clickhouse" [ (local clickhouseMetricsPort) ])
+              (staticJob "dependency-track" [ (local dtrackManagementPort) ])
+              (staticJob "dependency-track-exporter" [ (local dtrackExporterPort) ])
             ]
             ++ lib.optionals blackbox.enable [
               (blackboxJob "blackbox_http" "http_2xx" cfg.httpProbes)
@@ -499,6 +568,46 @@ in
               ) cfg.grafana.provision;
               extraOptions = [ "--network=host" ];
             };
+
+            dtrack-apiserver = {
+              autoStart = true;
+              image = "ghcr.io/dependencytrack/apiserver:5.2.1";
+              user = containerUser;
+              volumes = [ "${dtrack.dataDir}:/data" ];
+              environment = {
+                DT_DATA_DIRECTORY = "/data";
+                DT_DATASOURCE_URL = dtrack.database.url;
+                DT_DATASOURCE_USERNAME = dtrack.database.username;
+                DT_DATASOURCE_PASSWORD = "";
+                DT_MANAGEMENT_HOST = "127.0.0.1";
+                DT_MANAGEMENT_PORT = toString dtrackManagementPort;
+                DT_METRICS_ENABLED = "true";
+                DT_OUTBOUND_ALLOWED_DESTINATIONS = "external,127.0.0.1";
+                DT_OIDC_ENABLED = "true";
+                DT_OIDC_ISSUER = cfg.oidcIssuer;
+                DT_OIDC_USERNAME_CLAIM = "preferred_username";
+                DT_OIDC_USER_PROVISIONING = "true";
+                DT_OIDC_TEAM_SYNCHRONIZATION = "true";
+                DT_OIDC_TEAMS_CLAIM = "groups";
+              };
+              extraOptions = [
+                "--network=host"
+                "--memory=${dtrack.memory}"
+              ];
+            };
+
+            dtrack-frontend = {
+              autoStart = true;
+              image = "ghcr.io/dependencytrack/frontend:5.2.1";
+              ports = [ "${local dtrackFrontendPort}:8080" ];
+              environment = {
+                API_BASE_URL = dtrack.url;
+                OIDC_ISSUER = cfg.oidcIssuer;
+                OIDC_SCOPE = "openid profile email groups";
+                OIDC_FLOW = "code";
+                OIDC_LOGIN_BUTTON_TEXT = "Pocket ID";
+              };
+            };
           };
         };
 
@@ -526,6 +635,26 @@ in
           };
 
           podman-grafana = restartAlways;
+
+          podman-dtrack-apiserver = restartAlways;
+
+          podman-dtrack-frontend = restartAlways;
+
+          dtrack-exporter = {
+            description = "Dependency-Track Prometheus exporter";
+            wantedBy = [ "multi-user.target" ];
+            after = [ "podman-dtrack-apiserver.service" ];
+            serviceConfig = {
+              DynamicUser = true;
+              Restart = "always";
+              RestartSec = "10s";
+              ExecStart = lib.escapeShellArgs [
+                (lib.getExe pkgs.dependency-track-exporter)
+                "--web.listen-address=${local dtrackExporterPort}"
+                "--dtrack.address=http://${local dtrackApiPort}"
+              ];
+            };
+          };
 
           opentelemetry-collector.after = [ "podman-gigapipe.service" ];
 

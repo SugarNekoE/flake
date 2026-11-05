@@ -1,0 +1,36 @@
+name: Container SBOMs
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+jobs:
+  images:
+    name: Scan container images
+    runs-on: nixos-latest
+    steps:
+      - name: Install tools
+        run: |
+          nix profile add nixpkgs#nodejs_24 nixpkgs#syft nixpkgs#jq
+          echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Scan and upload declared images
+        env:
+          DTRACK_URL: ${{ vars.DTRACK_URL }}
+          DTRACK_API_KEY: ${{ secrets.DTRACK_API_KEY }}
+        run: |
+          nix eval --json path:.#nixosConfigurations --apply 'hosts: builtins.concatMap
+              (host: map (container: container.image)
+                (builtins.attrValues host.config.virtualisation.oci-containers.containers))
+              (builtins.attrValues hosts)' \
+            | jq -r 'unique[] | select(test("^[^/]+\\.[^/]+/"))' \
+            | while read -r image; do
+                echo "Scanning $image"
+                syft "registry:$image" -q -o cyclonedx-json=sbom.cdx.json
+                curl -sSf -X POST "$DTRACK_URL/api/v1/bom" -H "X-Api-Key: $DTRACK_API_KEY" \
+                  -F autoCreate=true \
+                  -F "projectName=${image%:*}" -F "projectVersion=${image##*:}" \
+                  -F projectTags=container -F "bom=@sbom.cdx.json"
+              done
