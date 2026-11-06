@@ -15,17 +15,24 @@
   home =
     { config, ... }:
     let
-      daemon = "${config.home.homeDirectory}/.nix-profile/libexec/tern/tern";
+      tern = "${config.home.homeDirectory}/.nix-profile/libexec/tern/tern";
     in
     {
-      systemd.user.services.tern-daemon = {
+      systemd.user.services.tern-remote = {
         Unit = {
-          Description = "Tern session daemon";
-          ConditionPathExists = daemon;
+          Description = "Tern remote sessions (this user)";
+          ConditionPathExists = tern;
+          StartLimitIntervalSec = 60;
+          StartLimitBurst = 10;
         };
         Service = {
-          ExecStart = "${daemon} daemon";
+          Type = "exec";
+          ExecStart = "${tern} remote serve --user --authorized-keys /etc/ssh/authorized_keys.d/${config.home.username}";
           Restart = "on-failure";
+          RestartSec = 2;
+          RestartPreventExitStatus = 2;
+          KillMode = "process";
+          TimeoutStopSec = 10;
         };
         Install.WantedBy = [ "default.target" ];
       };

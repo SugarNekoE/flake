@@ -52,7 +52,10 @@
     }:
     {
       imports = [ inputs.paseo.nixosModules.default ];
-      users.users.${user.username}.openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
+      users.users.${user.username} = {
+        openssh.authorizedKeys.keys = [ identity.sshKeys.sugar ];
+        linger = true;
+      };
       networking.firewall.enable = false;
       services = {
         paseo-daemon = {
