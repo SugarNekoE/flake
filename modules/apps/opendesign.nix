@@ -7,6 +7,9 @@
 
   home = {
     imports = [ inputs.opendesign.homeModules.default ];
-    programs.open-design.enable = true;
+    programs.open-design = {
+      enable = true;
+      allowedInternalHosts = [ "pica" ];
+    };
   };
 }
