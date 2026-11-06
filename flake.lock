@@ -943,11 +943,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1793976490,
-        "narHash": "sha256-L8UZ/Qo7x4c3L4mqSuU6q4rl6UdJU/DPuqMEjz41vic=",
+        "lastModified": 1793988167,
+        "narHash": "sha256-5c6NNOhmot4d8e0aVQDYlJQU8BnirbHWGtUJ2ln50/s=",
         "ref": "refs/heads/main",
-        "rev": "9ca17cd02d21822505c41a9338eac3af786dd494",
-        "revCount": 4,
+        "rev": "fca9a29f52168ab35747112ad86e393b26eed3b1",
+        "revCount": 7,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/opendesign"
       },
