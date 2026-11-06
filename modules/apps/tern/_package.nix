@@ -14,6 +14,7 @@
   libxcb,
   libpulseaudio,
   linux-pam,
+  webkitgtk_4_1,
 }:
 let
   desktopItem = makeDesktopItem {
@@ -52,6 +53,7 @@ stdenv.mkDerivation (finalAttrs: {
     libxcb
     libpulseaudio
     linux-pam
+    webkitgtk_4_1
   ];
 
   installPhase = ''
