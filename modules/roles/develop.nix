@@ -3,6 +3,7 @@
   imports = with inputs.self.aspects; [
     zed
     podman
+    opendesign
     (flatpak.withPackages [
       "com.usebruno.Bruno"
       "com.termius.Termius"

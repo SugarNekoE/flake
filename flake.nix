@@ -36,6 +36,10 @@
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
+    opendesign = {
+      url = "git+https://forge.asnk.io/sugar/opendesign";
+      inputs.home-manager.follows = "home-manager";
+    };
     ops-agent = {
       url = "git+https://github.com/GoogleCloudPlatform/ops-agent?submodules=1";
       flake = false;
